@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Cozy</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link
+      href="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/css/fortes-6ab192-94c6fb9c5e5c9df1c2e63bb72.webflow.41f754e57.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"
+      type="text/javascript"
+    ></script>
+    <script type="text/javascript">
+      !(function (o, c) {
+        var n = c.documentElement,
+          t = " w-mod-";
+        (n.className += t + "js"),
+          ("ontouchstart" in o ||
+            (o.DocumentTouch && c instanceof DocumentTouch)) &&
+            (n.className += t + "touch");
+      })(window, document);
+    </script>
+    <style>
+      html,
+      body {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .Navbar {
+        position: sticky !important;
+      }
+      @media (min-width: 768px) {
+        .wrap-border {
+          display: inline-block;
+          border-radius: 44px;
+          background-clip: content;
+          background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/6199fcbe6e036ad6d12c58ea_gradient.webp);
+          color: transparent;
+          background-size: 100%;
+          animation: gradient-animation 7s infinite alternate;
+        }
+      }
+      .wrap-border {
+        background-clip: content;
+        background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/6199fcbe6e036ad6d12c58ea_gradient.webp);
+        color: transparent;
+        background-size: 100%;
+        animation: gradient-animation 7s infinite alternate;
+      }
+      .wrap-border-card-reverse,
+      .wrap-border-card {
+        background-clip: content;
+        background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/6199fcbe6e036ad6d12c58ea_gradient.webp);
+        color: transparent;
+        background-size: 400%;
+        animation: gradient-animation-reverse 7s infinite alternate;
+      }
+      button,
+      button:focus,
+      div,
+      div:focus,
+      input,
+      input:focus {
+        outline: none;
+      }
+      .gradient,
+      .main-heading-gradient {
+        background-clip: text;
+        background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/6199fcbe6e036ad6d12c58ea_gradient.webp);
+        color: transparent;
+        background-size: 180%;
+        animation: gradient-animation 7s infinite alternate;
+      }
+      .circular-gradient {
+        background-clip: content;
+        background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/6199fcbe6e036ad6d12c58ea_gradient.webp);
+        color: transparent;
+        background-size: 250%;
+        animation: gradient-animation 7s infinite alternate;
+      }
+      .choice.choiceActive {
+        background: white;
+        transition: 100ms all ease;
+        color: #0d0d0d;
+      }
+      .choiceActiveBorder {
+        display: inline-block;
+        padding: 2px;
+        border-radius: 8px;
+        background-clip: content;
+        background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/6199fcbe6e036ad6d12c58ea_gradient.webp);
+        color: transparent;
+        background-size: 250%;
+        animation: gradient-animation 7s infinite alternate;
+        transition: 175ms all ease;
+      }
+      @keyframes gradient-animation {
+        0% {
+          background-position: left;
+        }
+        100% {
+          background-position: right;
+        }
+      }
+      @keyframes gradient-animation-reverse {
+        0% {
+          background-position: right;
+        }
+        100% {
+          background-position: left;
+        }
+      }
+      body:hover .cursor {
+        opacity: 1;
+      }
+      .cursor {
+        pointer-events: none;
+        z-index: 9999999;
+      }
+      .blog-link-list,
+      .blog-link-list:focus {
+        border: none;
+        outline: none;
+      }
+      .why-so-cheap-hover {
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      @media (max-width: 1150px) {
+        .price-per-metre-note {
+          right: 27%;
+          width: 170px;
+        }
+      }
+      .input-field input:focus ~ #space-label,
+      .input-field input:valid ~ #space-label {
+        color: #0d0d0d;
+        cursor: default;
+      }
+      #space-label {
+        font-family: "Golos", sans-serif;
+        position: absolute;
+        top: 6px;
+        bottom: 0;
+        left: 80%;
+        font-size: 16px;
+        line-height: 16px;
+        color: rgba(13, 13, 13, 0.5);
+        font-weight: 400;
+        cursor: text;
+        -webkit-transition: all 325ms ease;
+        transition: all 325ms ease;
+        z-index: 10;
+        user-select: none;
+      }
+      .input-field input:focus ~ .underline {
+        width: 100%;
+      }
+      .input-field input:focus ~ .space-label {
+        color: rgba(13, 13, 13, 0.75);
+      }
+      .increment-input:focus {
+        border: none;
+        outline: none;
+        width: 18px;
+        text-align: center;
+        margin: 0 12px;
+      }
+      .increment-field {
+        user-select: none;
+      }
+      .disabled {
+        opacity: 25%;
+        pointer-events: none;
+      }
+      label {
+        user-select: none;
+      }
+      #space {
+        border-bottom: 1px solid rgba(13, 13, 13, 0.5);
+        margin: 0;
+        color: #0d0d0d;
+      }
+      #space:focus {
+        border: none;
+        border-bottom: 1px solid rgba(13, 13, 13, 0.5);
+      }
+      .cost-header {
+        text-decoration-style: dotted;
+      }
+      .submit-container {
+        box-shadow: 0px -1px 4px rgba(0, 0, 0, 0.16);
+      }
+      @media (max-width: 1095px) and (min-width: 991px) {
+        .nav-number {
+          display: none;
+        }
+      }
+
+      #name {
+        border-bottom: 1px solid rgba(13, 13, 13, 0.25);
+        transition: 250ms all ease;
+      }
+      #name:focus {
+        border-bottom: rgba(13, 13, 13, 0.75) solid 1px;
+      }
+      .checkmark {
+        pointer-events: none;
+      }
+      .calculator-slider-side .slick-track,
+      .calculator-slider-side .slick-list {
+        height: 100%;
+      }
+      #kitchenTotalPriceDiscount {
+        font-weight: 500;
+      }
+      @media print {
+        .final-section,
+        .sticky-btn-section {
+          display: none !important;
+        }
+        .body-5,
+        .specification-body,
+        .canvas_div_pdf {
+          padding: 0 !important;
+        }
+      }
+      .list-option-container.summary {
+        display: grid !important;
+      }
+      .wrap-border,
+      .button.circular-gradient,
+      .circular-button-btn {
+        transition: all 225ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .wrap-border:hover,
+      .button.circular-gradient:hover,
+      .circular-button-btn:hover {
+        transform: scale(1.035);
+      }
+      .button.circular-gradient:hover {
+        transform: scale(1.05);
+      }
+      .increment {
+        transition: 125ms all ease-in-out;
+      }
+      .inrement:hover {
+        transform: scale(1.05);
+      }
+      .weglot-container,
+      .country-selector {
+        font-family: "Golos";
+      }
+
+      .increment-field {
+        display: flex;
+        flex-direction: row;
+        height: 24px !important;
+        width: auto;
+        min-width: 90px;
+      }
+      #space {
+        border-radius: 0px;
+      }
+      .increment-field input {
+        border: none;
+        margin: 0 12px;
+        width: 18px;
+        min-width: 18px;
+        height: 24px;
+        min-height: 24px;
+        pointer-events: none;
+        text-align: center;
+        padding: 0 !important;
+      }
+      .increment {
+        background-color: black;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 50%;
+        border-radius: 50%;
+        width: 24px !important;
+        height: 24px !important;
+        padding: 0 !important;
+      }
+      .increment.minus {
+        background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/5f9da619b9c50540869e0df1_Vector.svg);
+      }
+      .increment.plus {
+        background-image: url(https://uploads-ssl.webflow.com/5f96e6943e1db5653cad7f3e/5f9da6f62817be6c0c81c854_Vector%2B.svg);
+      }
+      .hidden,
+      #wf-form-client-info #phone {
+        display: none;
+      }
+      .list-option-container.summary {
+        grid-template-columns: 1fr 0.25fr;
+      }
+      .list-option-container.margined {
+        margin-top: 56px;
+      }
+      .division-block,
+      .division-block.pricelist {
+        margin: 16px 0;
+      }
+      .splide__list {
+        transition: height 375ms ease-in-out;
+      }
+      .splide__list.calc {
+        justify-content: flex-start;
+      }
+      .calc.splide__list {
+        display: flex;
+        flex-direction: row;
+      }
+      .calculator-slide.splide__slide {
+        width: 100% !important;
+      }
+      .calcultor-slide:not(.main) {
+        display: none !important;
+      }
+      *.hidden-elem {
+        display: none !important;
+      }
+      @media screen and (max-width: 479px) {
+        .wrap-border.specification.telegram {
+          max-width: 100% !important;
+        }
+      }
+    </style>
+    <style>
+      #kitchenTotal {
+        font-weight: bold;
+      }
+      #space {
+        text-decoration: none;
+        border: none;
+      }
+      @media print {
+        .bodt-5.specification-body {
+          padding: 0 !important;
+        }
+      }
+      @media (max-width: 769px) {
+        .weglot-container,
+        .country-selector {
+          top: 0 !important;
+          bottom: auto !important;
+          left: auto !important;
+          right: 5% !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="body-5 specification-body">
+    <div id="test" class="specification-main wf-section">
+      <div class="specification-heading-container">
+        <a href="/" class="w-inline-block"
+          ><div class="logo no-border">
+            <img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780077a50eca9_fortes.svg"
+              loading="lazy"
+              width="140"
+              height="18"
+              alt=""
+              class="nav-logo"
+            /><img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778007d950eca6_fortes-text.svg"
+              loading="lazy"
+              width="140"
+              height="18"
+              alt=""
+              class="nav-text bigger"
+            /></div
+        ></a>
+        <h1 class="specification-heading">Your project specification</h1>
+        <div class="specification-props">
+          <div class="prop-container">
+            <div class="prop-heading">Style:</div>
+            <div id="styleSpec" class="prop-value">Cozy</div>
+          </div>
+          <div class="prop-container">
+            <div class="prop-heading">Area:</div>
+            <div class="prop-value"><span id="space">0</span> m²</div>
+          </div>
+          <div class="prop-container">
+            <div class="prop-heading">Renovation Cost:</div>
+            <div class="prop-value">€<span id="pricePerMetre">0</span>/m²</div>
+          </div>
+          <div class="prop-container">
+            <div class="prop-heading">Total cost:</div>
+            <div class="prop-value">€<span id="total">0</span></div>
+          </div>
+          <div class="prop-container">
+            <div class="prop-heading">Time to completion:</div>
+            <div class="prop-value"><span id="months">0</span> міc.</div>
+          </div>
+        </div>
+      </div>
+      <img
+        src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780a8bc50ecb5_cozy%205.webp"
+        loading="lazy"
+        srcset="
+          https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780a8bc50ecb5_cozy%25205-p-500.jpeg   500w,
+          https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780a8bc50ecb5_cozy%25205-p-1080.jpeg 1080w,
+          https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780a8bc50ecb5_cozy%25205-p-1600.jpeg 1600w,
+          https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780a8bc50ecb5_cozy%25205-p-2000.jpeg 2000w,
+          https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780a8bc50ecb5_cozy%205.webp          2500w
+        "
+        sizes="(max-width: 767px) 100vw, 93vw"
+        alt=""
+        class="intro-img-1"
+      />
+      <div class="first-section-img-container">
+        <div class="accented-text-container neoclassic">
+          <p class="accented-text neoclassic">
+            Cozy is a mix of modern and Scandinavian styles, functionality, and
+            simplicity. Light design, soft shapes, and basic shades – white,
+            beige, gray, and black. Since this is quire a neutral interior, it
+            is easily transformable with distinctive details.<br /><br />Cozy is
+            well-balanced between price and quality. It features tiles from
+            Golden Tile and Geotiles, sanitary ware from Imprese, Kolo, and
+            Grohe, furniture from Ikea and Jysk, as well as low-cost options
+            from Ukrainian manufacturers. <br /><br />This is a great design for
+            a young person or small family. It is also affordable and commonly
+            preferred, which makes it perfect for renting out.<br />
+          </p>
+        </div>
+        <div class="main-container japandi">
+          <div class="container-vertical">
+            <div class="container-horizontal upper cozy">
+              <img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77802ec150ea4f_main%202.webp"
+                loading="lazy"
+                sizes="(max-width: 767px) 33vw, 28vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77802ec150ea4f_main%25202-p-800.jpeg 800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77802ec150ea4f_main%202.webp         890w
+                "
+                alt=""
+                class="image-45 higher cozy"
+              /><img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780360750ea98_8798717771806.webp"
+                loading="lazy"
+                sizes="(max-width: 479px) 66vw, (max-width: 767px) 67vw, 62vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780360750ea98_8798717771806-p-500.jpeg  500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780360750ea98_8798717771806-p-800.jpeg  800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780360750ea98_8798717771806.webp       1000w
+                "
+                alt=""
+                class="image-45 middle cozy"
+              />
+            </div>
+            <div class="container-horizontal bottom">
+              <img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fb9050ea96_granboda-komplekt-stoliv-3-sht__0836328_PE661897_S5.webp"
+                loading="lazy"
+                sizes="(max-width: 767px) 33vw, 28vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fb9050ea96_granboda-komplekt-stoliv-3-sht__0836328_PE661897_S5-p-800.jpeg   800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fb9050ea96_granboda-komplekt-stoliv-3-sht__0836328_PE661897_S5-p-1080.jpeg 1080w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fb9050ea96_granboda-komplekt-stoliv-3-sht__0836328_PE661897_S5-p-1600.jpeg 1600w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fb9050ea96_granboda-komplekt-stoliv-3-sht__0836328_PE661897_S5.webp        2000w
+                "
+                alt=""
+                class="image-45 cozy"
+              /><img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780359a50ea97_buskbo-buskbu-kreslo-rotang-yupvik-belyy__0837600_PE719534_S5.webp"
+                loading="lazy"
+                sizes="(max-width: 767px) 33vw, 31vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780359a50ea97_buskbo-buskbu-kreslo-rotang-yupvik-belyy__0837600_PE719534_S5-p-500.jpeg   500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780359a50ea97_buskbo-buskbu-kreslo-rotang-yupvik-belyy__0837600_PE719534_S5-p-800.jpeg   800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780359a50ea97_buskbo-buskbu-kreslo-rotang-yupvik-belyy__0837600_PE719534_S5-p-1080.jpeg 1080w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780359a50ea97_buskbo-buskbu-kreslo-rotang-yupvik-belyy__0837600_PE719534_S5.webp        1400w
+                "
+                alt=""
+                class="image-46 cozy"
+              /><img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778061b850ea80_%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F%203.webp"
+                loading="lazy"
+                id="w-node-b146ecfb-1cf4-a531-2024-12218c797343-2f50e884"
+                sizes="(max-width: 767px) 33vw, 28vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778061b850ea80_%25D0%25B3%25D0%25BB%25D0%25B0%25D0%25B2%25D0%25BD%25D0%25B0%25D1%258F%25203-p-500.jpeg  500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778061b850ea80_%25D0%25B3%25D0%25BB%25D0%25B0%25D0%25B2%25D0%25BD%25D0%25B0%25D1%258F%25203-p-800.jpeg  800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778061b850ea80_%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F%203.webp                                     1000w
+                "
+                alt=""
+                class="image-45 cozy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pricelist-section">
+      <div class="content-container pricelist">
+        <div id="workList" class="list-container">
+          <h1 class="specification-heading small">Estimate for your project</h1>
+          <div class="pricelist-header">Construction works</div>
+          <div class="list-option-container">
+            <div class="notation heading-name">Name</div>
+            <div
+              id="w-node-d4bb3384-6b30-b458-517a-14ac151176e6-2f50e884"
+              class="notation"
+            >
+              Cost
+            </div>
+          </div>
+        </div>
+        <div id="materialsList" class="list-container materials">
+          <div class="pricelist-header small">
+            Комплектуючі та чистові матеріали
+          </div>
+          <div class="list-option-container">
+            <div class="notation heading-name">Найменування</div>
+            <div
+              id="w-node-d4bb3384-6b30-b458-517a-14ac151176ee-2f50e884"
+              class="notation amount"
+            >
+              Кількість
+            </div>
+          </div>
+        </div>
+        <div id="furnitureList" class="list-container">
+          <div class="pricelist-header">Furniture</div>
+        </div>
+        <div id="appliancesListTotal" class="list-container last">
+          <div class="pricelist-header">Appliances</div>
+          <div class="list-option-container">
+            <div class="notation heading-name">Name</div>
+            <div class="notation amount">Quantity</div>
+            <div class="notation">Cost</div>
+          </div>
+        </div>
+        <div class="division-block sumup"></div>
+        <div class="list-option-container total">
+          <div class="name sumup">Estimated renovation cost:</div>
+          <div id="totalPriceTotal" class="list-text sumup">415 120 €</div>
+        </div>
+        <p class="specification-paragraph black pricelist">
+          <span class="notation black">* Margin of error: 10%</span>
+        </p>
+        <p class="paragraph-2">
+          <span class="notation black bottom"
+            >Please note that since it is an online calculation, it has a small
+            margin of error, and the actual price may be either higher or lower.
+            After measurements are made, you will get a more detailed individual
+            estimate, an example of which you can </span
+          ><a
+            href="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778031b850ec84_%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80%20%D1%81%D0%BC%D0%B5%D1%82%D1%8B.pdf"
+            target="_blank"
+            ><span class="notation black bottom">download here</span></a
+          ><span class="notation black">.</span>
+        </p>
+      </div>
+    </div>
+    <div class="final-section">
+      <div class="specification-header final">Thank you!</div>
+      <p class="final">
+        More detailed specification for the work you can get during and
+        individual estimate.
+      </p>
+      <a href="#" class="specification w-inline-block"
+        ><div
+          id="specificationBtn"
+          data-w-id="b698cf9d-e981-f9c7-7e5b-0e4dbcd18fb6"
+          class="circular-gradient specification"
+        >
+          <div class="circular-gradient-heading">
+            Download specification and layout
+          </div>
+          <img
+            src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77807aae50eb1f_pdf.png"
+            loading="lazy"
+            width="32"
+            alt=""
+            class="image-69"
+          /></div
+      ></a>
+      
+    </div>
+    <div class="couch-section">
+      <div class="content-container couch japandi">
+        <div class="container-horizontal couch japandi">
+          <div class="container-vertical couch-right japandi">
+            <div class="specification-header white couch">Sofa</div>
+            <p class="specification-paragraph white japandi">
+              This cozy four-sear lounge sofa will fit virtually any interior.
+              Flexible material on the bottom and elastic foam let you sink
+              deeply into the seat, with additional support from cushions on the
+              back. Plus you can combine its sections in different ways,
+              depending on your needs.
+            </p>
+          </div>
+        </div>
+        <img
+          src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778073bc50ea9c_photo5431508233882808490.webp"
+          loading="lazy"
+          sizes="(max-width: 479px) 100vw, (max-width: 767px) 97vw, 93vw"
+          srcset="
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778073bc50ea9c_photo5431508233882808490-p-1080.jpeg 1080w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778073bc50ea9c_photo5431508233882808490.webp        1280w
+          "
+          alt=""
+          class="image-48"
+        />
+      </div>
+    </div>
+    <div class="bed-section japandi">
+      <div class="content-container bed japandi">
+        <div class="container-horizontal japandi">
+          <div class="container-vertical bed japandi">
+            <div class="article-container japandi">
+              <div class="text-container">
+                <div class="specification-header">Bedroom</div>
+                <p class="specification-paragraph japandi">
+                  A double bed made from natural wood with a soft headboard. A
+                  minimalistic design and a stylish shape. The bed upholstery
+                  comes in different materials and colors.
+                </p>
+              </div>
+            </div>
+            <img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778056a150ecb6_cozy%202.webp"
+              loading="lazy"
+              height=""
+              width="728"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778056a150ecb6_cozy%25202-p-1080.jpeg 1080w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778056a150ecb6_cozy%25202-p-1600.jpeg 1600w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778056a150ecb6_cozy%25202-p-2000.jpeg 2000w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce778056a150ecb6_cozy%202.webp          2500w
+              "
+              sizes="(max-width: 479px) 100vw, (max-width: 767px) 97vw, (max-width: 991px) 85vw, 59vw"
+              alt=""
+              class="image-49"
+            />
+          </div>
+          <div class="container-vertical bed-right">
+            <div class="mobile-container">
+              <img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780dac350ea9a_%D0%BA%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%202.webp"
+                loading="lazy"
+                height=""
+                width="448"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780dac350ea9a_%25D0%25BA%25D1%2580%25D0%25BE%25D0%25B2%25D0%25B0%25D1%2582%25D1%258C%25202-p-500.jpeg 500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780dac350ea9a_%D0%BA%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%202.webp                                     600w
+                "
+                sizes="(max-width: 479px) 48vw, (max-width: 767px) 47vw, 31vw"
+                alt=""
+                class="image-50 horizontal cozy"
+              />
+              <p class="specification-paragraph cozy bed">
+                A medium hardness double-side mattress. Air Foam – an innovative
+                termofiber material. It bears loads of up to 150 kg.
+              </p>
+            </div>
+            <img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c8ec50ea9b_%D0%BA%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%201.webp"
+              loading="lazy"
+              sizes="(max-width: 479px) 100vw, (max-width: 767px) 97vw, (max-width: 991px) 85vw, 31vw"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c8ec50ea9b_%25D0%25BA%25D1%2580%25D0%25BE%25D0%25B2%25D0%25B0%25D1%2582%25D1%258C%25201-p-1080.jpeg 1080w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c8ec50ea9b_%D0%BA%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%201.webp                                      1155w
+              "
+              alt=""
+              class="image-64"
+            />
+          </div>
+        </div>
+        <div class="container-horizontal bed"></div>
+      </div>
+    </div>
+    <div class="doors-section modern">
+      <div class="content-container">
+        <div class="container-vertical doors japandi">
+          <div class="article-container doors japandi">
+            <div class="text-container">
+              <div class="specification-header white">Interior doors</div>
+              <p class="specification-paragraph white doors">
+                Stylish minimalistic doors. Leaf thickness – 34-40 mm. Coating –
+                PVC film. Frame – joint pine eurobar.<br />
+              </p>
+            </div>
+          </div>
+          <img
+            src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b71950eaf7_%D0%BA%D0%BE%D0%B7%D0%B8%20%D0%B4%D0%B2%D0%B5%D1%80%D1%8C.webp"
+            loading="lazy"
+            sizes="(max-width: 479px) 100vw, (max-width: 767px) 97vw, (max-width: 991px) 85vw, 47vw"
+            srcset="
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b71950eaf7_%25D0%25BA%25D0%25BE%25D0%25B7%25D0%25B8%2520%25D0%25B4%25D0%25B2%25D0%25B5%25D1%2580%25D1%258C-p-500.jpeg   500w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b71950eaf7_%25D0%25BA%25D0%25BE%25D0%25B7%25D0%25B8%2520%25D0%25B4%25D0%25B2%25D0%25B5%25D1%2580%25D1%258C-p-800.jpeg   800w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b71950eaf7_%25D0%25BA%25D0%25BE%25D0%25B7%25D0%25B8%2520%25D0%25B4%25D0%25B2%25D0%25B5%25D1%2580%25D1%258C-p-1080.jpeg 1080w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b71950eaf7_%25D0%25BA%25D0%25BE%25D0%25B7%25D0%25B8%2520%25D0%25B4%25D0%25B2%25D0%25B5%25D1%2580%25D1%258C-p-1600.jpeg 1600w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b71950eaf7_%25D0%25BA%25D0%25BE%25D0%25B7%25D0%25B8%2520%25D0%25B4%25D0%25B2%25D0%25B5%25D1%2580%25D1%258C-p-2000.jpeg 2000w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b71950eaf7_%D0%BA%D0%BE%D0%B7%D0%B8%20%D0%B4%D0%B2%D0%B5%D1%80%D1%8C.webp                                              2061w
+            "
+            alt=""
+            class="image-59"
+          />
+        </div>
+        <div class="container-vertical doors-right cozy">
+          <div class="container-horizontal doors cozy">
+            <div class="container-vertical doors-right modern">
+              <p class="doors-text cozy">
+                Door mechanism — MVM BLACK.<br />Door handles — MVM. This model
+                is extremely resistant to external factors and loads.
+              </p>
+              <img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77805e0b50eafd_%D0%A0%D1%83%D1%87%D0%BA%D0%B0%20%D0%A1%D0%BA%D0%B0%D0%BD%D0%B4%D0%B8%D0%BD%D0%B0%D0%B2%D0%B8%D1%8F.webp"
+                loading="lazy"
+                alt=""
+                class="image-52 modern"
+              />
+            </div>
+            <img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780dc2650ea78_%D0%B4%D0%B2%D0%B5%D1%80%D0%B8%20%D0%BC%D0%BE%D0%B4%D0%B5%D1%80%D0%BD%203.webp"
+              loading="lazy"
+              sizes="(max-width: 479px) 94vw, (max-width: 767px) 96vw, (max-width: 991px) 85vw, 44vw"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780dc2650ea78_%25D0%25B4%25D0%25B2%25D0%25B5%25D1%2580%25D0%25B8%2520%25D0%25BC%25D0%25BE%25D0%25B4%25D0%25B5%25D1%2580%25D0%25BD%25203-p-500.jpeg 500w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780dc2650ea78_%D0%B4%D0%B2%D0%B5%D1%80%D0%B8%20%D0%BC%D0%BE%D0%B4%D0%B5%D1%80%D0%BD%203.webp                                                       501w
+              "
+              alt=""
+              class="image-52 mobile"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bath-section">
+      <div class="content-container bath japandi">
+        <div class="container-vertical bath cozy">
+          <img
+            src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780d1a350ecb4_cozy%203.webp"
+            loading="lazy"
+            height=""
+            width="560"
+            srcset="
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780d1a350ecb4_cozy%25203-p-500.jpeg   500w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780d1a350ecb4_cozy%25203-p-800.jpeg   800w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780d1a350ecb4_cozy%25203-p-1080.jpeg 1080w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780d1a350ecb4_cozy%25203-p-1600.jpeg 1600w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780d1a350ecb4_cozy%203.webp          2000w
+            "
+            sizes="(max-width: 479px) 100vw, (max-width: 767px) 97vw, (max-width: 991px) 85vw, 49vw"
+            alt=""
+            class="image-53 cozy"
+          />
+        </div>
+        <div class="container-vertical bath-right modern">
+          <div class="article-container bath">
+            <div class="text-container">
+              <div class="specification-header">Bathroom</div>
+              <p class="specification-paragraph cozy">
+                A functional bathroom with a spacious shower. Spanish tiles with
+                Scandinavian ornament. High-quality sanitary ware from Imprese
+                and Grohe, a wall-hung toilet with installation. The bath is
+                complemented by a stylish and a large round mirror with
+                convenient lighting.
+              </p>
+            </div>
+          </div>
+          <div class="container-horizontal bath mobile cozy">
+            <img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c54750eaa4_%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%203.webp"
+              loading="lazy"
+              height=""
+              width="280"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c54750eaa4_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25203-p-500.jpeg   500w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c54750eaa4_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25203-p-800.jpeg   800w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c54750eaa4_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25203-p-1080.jpeg 1080w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c54750eaa4_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25203-p-1600.jpeg 1600w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780c54750eaa4_%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%203.webp                              2000w
+              "
+              sizes="(max-width: 479px) 49vw, (max-width: 767px) 48vw, (max-width: 991px) 42vw, 20vw"
+              alt=""
+              class="image-54"
+            /><img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801e2650eafe_dushova-sistema-grohe-new-tempesta-rustic-system-200-z-peremikachem-27389002-48030178755918.webp"
+              loading="lazy"
+              height=""
+              width="280"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801e2650eafe_dushova-sistema-grohe-new-tempesta-rustic-system-200-z-peremikachem-27389002-48030178755918-p-500.jpeg   500w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801e2650eafe_dushova-sistema-grohe-new-tempesta-rustic-system-200-z-peremikachem-27389002-48030178755918-p-800.jpeg   800w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801e2650eafe_dushova-sistema-grohe-new-tempesta-rustic-system-200-z-peremikachem-27389002-48030178755918-p-1080.jpeg 1080w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801e2650eafe_dushova-sistema-grohe-new-tempesta-rustic-system-200-z-peremikachem-27389002-48030178755918.webp        1291w
+              "
+              sizes="(max-width: 479px) 49vw, (max-width: 767px) 48vw, (max-width: 991px) 42vw, 20vw"
+              alt=""
+              class="image-54"
+            />
+          </div>
+          <div class="container-horizontal bath mobile">
+            <img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b8ef50eaa3_%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%201.webp"
+              loading="lazy"
+              height=""
+              width="280"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b8ef50eaa3_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25201-p-500.jpeg   500w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b8ef50eaa3_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25201-p-800.jpeg   800w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b8ef50eaa3_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25201-p-1080.jpeg 1080w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780b8ef50eaa3_%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%201.webp                              1500w
+              "
+              sizes="(max-width: 479px) 49vw, (max-width: 767px) 48vw, (max-width: 991px) 42vw, 20vw"
+              alt=""
+              class="image-56 modern"
+            /><img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803dac50eaa1_%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%204.webp"
+              loading="lazy"
+              height=""
+              width="280"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803dac50eaa1_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25204-p-500.jpeg   500w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803dac50eaa1_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25204-p-800.jpeg   800w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803dac50eaa1_%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25B0%25204-p-1080.jpeg 1080w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803dac50eaa1_%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%204.webp                              1378w
+              "
+              sizes="(max-width: 479px) 49vw, (max-width: 767px) 48vw, (max-width: 991px) 42vw, 20vw"
+              alt=""
+              class="image-54 cozy"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="kitchenSection" class="kitchen-section">
+      <div class="kitchen-container">
+        <div class="article-container kitchen">
+          <div class="text-container">
+            <div class="specification-header white">Kitchen</div>
+            <p class="specification-paragraph white kitchen">
+              The kitchen in designed with the most thought-out and proven
+              ergonomics in mind to conveniently access all the surfaces and
+              drawers. Also, it has space for built-in appliances.<br /><br />The
+              cabinets and facades in the kitchen are made of high-quality
+              chipboard from the Austrian manufacturer Egger, and so is the
+              tabletop. All fittings are made by the Austrian brand Blum.<br /><br />This
+              kitchen option costs 9,999;<br />Assembly/installation – 9,450;<br />Delivery
+              and lifting – 9,450;<br />Total – 9,999.<span
+                ><strong id="kitchenTotal"></strong></span
+              ><br />
+            </p>
+          </div>
+        </div>
+        <img
+          src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801c9750eaa8_%D0%9A%D1%83%D1%85%D0%BD%D0%B8%20%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%2028.12.2020-1.png"
+          loading="lazy"
+          sizes="(max-width: 479px) 100vw, 93vw"
+          srcset="
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801c9750eaa8_%25D0%259A%25D1%2583%25D1%2585%25D0%25BD%25D0%25B8%2520%25D1%2581%25D1%2582%25D0%25B0%25D0%25BD%25D0%25B4%25D0%25B0%25D1%2580%25D1%2582%252028.12.2020-1-p-500.png   500w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801c9750eaa8_%25D0%259A%25D1%2583%25D1%2585%25D0%25BD%25D0%25B8%2520%25D1%2581%25D1%2582%25D0%25B0%25D0%25BD%25D0%25B4%25D0%25B0%25D1%2580%25D1%2582%252028.12.2020-1-p-800.png   800w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801c9750eaa8_%25D0%259A%25D1%2583%25D1%2585%25D0%25BD%25D0%25B8%2520%25D1%2581%25D1%2582%25D0%25B0%25D0%25BD%25D0%25B4%25D0%25B0%25D1%2580%25D1%2582%252028.12.2020-1-p-1080.png 1080w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801c9750eaa8_%25D0%259A%25D1%2583%25D1%2585%25D0%25BD%25D0%25B8%2520%25D1%2581%25D1%2582%25D0%25B0%25D0%25BD%25D0%25B4%25D0%25B0%25D1%2580%25D1%2582%252028.12.2020-1-p-1600.png 1600w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77801c9750eaa8_%D0%9A%D1%83%D1%85%D0%BD%D0%B8%20%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%2028.12.2020-1.png                                                                3669w
+          "
+          alt=""
+          class="kitchen-blueprint"
+        />
+        <div class="content-container kitchen japandi">
+          <div class="container-vertical kitchen">
+            <img
+              src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780314c50ecb7_cozy%201.webp"
+              loading="lazy"
+              sizes="(max-width: 479px) 100vw, 93vw"
+              srcset="
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780314c50ecb7_cozy%25201-p-500.jpeg   500w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780314c50ecb7_cozy%25201-p-800.jpeg   800w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780314c50ecb7_cozy%25201-p-1080.jpeg 1080w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780314c50ecb7_cozy%25201-p-1600.jpeg 1600w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780314c50ecb7_cozy%25201-p-2000.jpeg 2000w,
+                https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780314c50ecb7_cozy%201.webp          2500w
+              "
+              alt=""
+              class="image-66"
+            />
+            <p class="kitchen-text japandi">
+              The kitchen design is overall very calm, with predominant white
+              color and natural materials. A large dining table from a Ukrainian
+              manufacturer and a set of stylish chairs. A wooden rack for
+              additional storage space.
+            </p>
+          </div>
+          <div class="container-vertical kitchen">
+            <div class="container-horizontal japandi kitchen small">
+              <img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780e49750eaa5_%D1%82%D0%B5%D0%BA%D1%81%D1%82%D1%83%D1%80%D0%B0.webp"
+                loading="lazy"
+                sizes="(max-width: 479px) 63vw, (max-width: 767px) 46vw, 26vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780e49750eaa5_%25D1%2582%25D0%25B5%25D0%25BA%25D1%2581%25D1%2582%25D1%2583%25D1%2580%25D0%25B0-p-500.png 500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780e49750eaa5_%D1%82%D0%B5%D0%BA%D1%81%D1%82%D1%83%D1%80%D0%B0.webp                                      512w
+                "
+                alt=""
+                class="image-62"
+              /><img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780376d50ea51_main%205.webp"
+                loading="lazy"
+                sizes="(max-width: 479px) 100vw, (max-width: 767px) 196.0850830078125px, 28vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780376d50ea51_main%25205-p-500.jpeg   500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780376d50ea51_main%25205-p-800.jpeg   800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780376d50ea51_main%25205-p-1080.jpeg 1080w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780376d50ea51_main%25205-p-1600.jpeg 1600w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780376d50ea51_main%205.webp          1700w
+                "
+                alt=""
+                class="image-62 texture"
+              /><img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803ac650ea6c_%D0%BA%D1%83%D1%85%D0%BD%D1%8F%20%D0%BD%D0%B0%D0%B2%D0%B5%D1%81.webp"
+                loading="lazy"
+                sizes="(max-width: 479px) 63vw, (max-width: 767px) 46vw, 37vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803ac650ea6c_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%2520%25D0%25BD%25D0%25B0%25D0%25B2%25D0%25B5%25D1%2581-p-1080.jpeg 1080w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803ac650ea6c_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%2520%25D0%25BD%25D0%25B0%25D0%25B2%25D0%25B5%25D1%2581-p-1600.jpeg 1600w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803ac650ea6c_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%2520%25D0%25BD%25D0%25B0%25D0%25B2%25D0%25B5%25D1%2581-p-2000.jpeg 2000w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce77803ac650ea6c_%D0%BA%D1%83%D1%85%D0%BD%D1%8F%20%D0%BD%D0%B0%D0%B2%D0%B5%D1%81.webp                                                  2282w
+                "
+                alt=""
+                class="image-63"
+              />
+            </div>
+            <div class="container-horizontal cozy kitchen">
+              <img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780603650eaa6_%D0%BA%D1%83%D1%85%D0%BD%D1%8F%203.webp"
+                loading="lazy"
+                sizes="(max-width: 479px) 63vw, (max-width: 767px) 45vw, (max-width: 991px) 36vw, 352.8819580078125px"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780603650eaa6_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%25203-p-500.jpeg   500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780603650eaa6_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%25203-p-800.jpeg   800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780603650eaa6_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%25203-p-1080.jpeg 1080w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780603650eaa6_%D0%BA%D1%83%D1%85%D0%BD%D1%8F%203.webp                              1290w
+                "
+                alt=""
+                class="image-60 cozy"
+              /><img
+                src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fe8150eaa7_%D0%BA%D1%83%D1%85%D0%BD%D1%8F%205.webp"
+                loading="lazy"
+                sizes="(max-width: 479px) 63vw, 46vw"
+                srcset="
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fe8150eaa7_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%25205-p-500.jpeg   500w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fe8150eaa7_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%25205-p-800.jpeg   800w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fe8150eaa7_%25D0%25BA%25D1%2583%25D1%2585%25D0%25BD%25D1%258F%25205-p-1080.jpeg 1080w,
+                  https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780fe8150eaa7_%D0%BA%D1%83%D1%85%D0%BD%D1%8F%205.webp                              1360w
+                "
+                alt=""
+                class="image-61 cozy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comfy-section">
+      <div class="content-container comfy">
+        <div class="comfy-big mobile">
+          <img
+            src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780908150e8af_comfy%20big.svg"
+            loading="lazy"
+            alt=""
+            class="image-34"
+          /><img
+            src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780466850e895_%3F%3F%3F.png"
+            loading="lazy"
+            width="347"
+            sizes="(max-width: 479px) 100vw, (max-width: 767px) 205.40798950195312px, 30vw"
+            srcset="
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780466850e895_%253F%253F%253F-p-500.png 500w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780466850e895_%3F%3F%3F.png             694w
+            "
+            alt=""
+            class="image-33"
+          />
+        </div>
+        <div class="article-container comfy">
+          <div class="text-container comfy w-container">
+            <h3 class="specification-header white">Appliances</h3>
+            <p class="specification-paragraph white comfy">
+              We chose appliances at our discretion, but you always can replace
+              them with any other options.<br /><br />Price/retail:
+              <span id="kitchenTotalPrice">9999</span>.<strong
+                class="bold-text-4"
+                ><strong
+                  id="discountTotal"
+                  class="bold-text-7"
+                ></strong></strong
+              ><strong class="bold-text-6">‍</strong><br />
+            </p>
+          </div>
+        </div>
+        <div id="appliancesList" class="list-container">
+          <div class="list-option-container heading">
+            <div class="notation white heading-name">Name</div>
+            <div
+              id="w-node-_3745e3df-9b54-7277-82a0-94b46d9ac193-2f50e884"
+              class="notation white"
+            >
+              Cost
+            </div>
+          </div>
+          <div id="lastOptionBlock" class="option-block">
+            <div class="option-block"></div>
+          </div>
+        </div>
+        <img
+          src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780639750e8ae_Group%2015.png"
+          loading="lazy"
+          width="800"
+          height=""
+          srcset="
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780639750e8ae_Group%252015-p-500.png   500w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780639750e8ae_Group%252015-p-800.png   800w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780639750e8ae_Group%252015-p-1080.png 1080w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780639750e8ae_Group%2015.png          1600w
+          "
+          sizes="(max-width: 479px) 100vw, (max-width: 767px) 97vw, (max-width: 991px) 83vw, 800.0000610351562px"
+          alt=""
+          class="image-31"
+        /><img
+          src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780e96d50e89e_percentage.png"
+          loading="lazy"
+          width="484"
+          sizes="(max-width: 479px) 100vw, (max-width: 767px) 97vw, 483.9930725097656px"
+          srcset="
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780e96d50e89e_percentage-p-500.png 500w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780e96d50e89e_percentage-p-800.png 800w,
+            https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780e96d50e89e_percentage.png       968w
+          "
+          alt=""
+          class="image-32"
+        />
+        <div class="comfy-big">
+          <img
+            src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780908150e8af_comfy%20big.svg"
+            loading="lazy"
+            alt=""
+            class="image-34"
+          /><img
+            src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780466850e895_%3F%3F%3F.png"
+            loading="lazy"
+            width="347"
+            sizes="(max-width: 479px) 100vw, (max-width: 767px) 205.40798950195312px, 30vw"
+            srcset="
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780466850e895_%253F%253F%253F-p-500.png 500w,
+              https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/63877fa2ce7780466850e895_%3F%3F%3F.png             694w
+            "
+            alt=""
+            class="image-33 mobile"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="sticky-btn-section">
+      <div
+        data-w-id="ad271329-d575-1632-284c-c281703c2a0e"
+        class="wrap-border specification bottom desktop"
+      >
+        <a href="#" class="button specification w-button"
+          >Download specification and layout<br
+        /></a>
+      </div>
+      <div class="wrap-border specification bottom mobile">
+        <a href="#" class="button specification w-button"
+          >Download specification</a
+        >
+      </div>
+      <a
+        data-w-id="ad271329-d575-1632-284c-c281703c2a15"
+        href="#"
+        class="button consult nav-btn specification circular-gradient w-button"
+        >Get a free consultation<br /></a
+      ><a
+        href="#"
+        class="button consult nav-btn specification circular-gradient mobile w-button"
+        >Consultation</a
+      >
+      
+    </div>
+    <script
+      src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=63877fa2ce7780f9ef50e7fc"
+      type="text/javascript"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://uploads-ssl.webflow.com/63877fa2ce7780f9ef50e7fc/js/webflow.1204173ba.js"
+      type="text/javascript"
+    ></script>
+
+    <script src="/dist/specification_portugal_33.js"></script>
+  </body>
+</html>
