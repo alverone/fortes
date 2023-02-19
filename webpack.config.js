@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const TerserPlugin = require("terser-webpack-plugin");
 const NodemonPlugin = require("nodemon-webpack-plugin");
 const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
 
@@ -85,6 +86,10 @@ module.exports = [
     resolve: {
       extensions: [".ts", ".js", ".json"],
     },
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    },
   },
   {
     stats: "errors-only",
@@ -113,6 +118,10 @@ module.exports = [
     plugins: [new ForkTsCheckerPlugin(), new NodemonPlugin()],
     resolve: {
       extensions: [".ts", ".js", ".json"],
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
     },
   },
 ];

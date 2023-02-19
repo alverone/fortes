@@ -216,7 +216,8 @@ $(function () {
     storage.set("demontage", $("#dismantlingWorks").is(":checked"));
     storage.set("heated_flooring", $("#heatedFlooring").val());
     storage.set("conditioning", $("#conditioning").val());
-    storage.set("builtin_furniture", $("#builtinFurniture").is(":checked"));
+    //mistake is on purpose
+    storage.set("builtin_furiture", $("#builtinFurniture").is(":checked"));
     storage.set("cement_screed", $("#cementScreed").is(":checked"));
     storage.set("finishing_materials", $("#finishingMaterials").is(":checked"));
     storage.set("furniture_bool", $("#furnitureBool").is(":checked"));
