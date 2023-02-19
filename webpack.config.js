@@ -25,28 +25,28 @@ fs.readdirSync("./src/")
 
 const replacements = [
   {
-    search: "{{specification}}",
-    replace: (..._) => replacementFiles["specification"],
+    search: /\$spec\W/,
+    replace: replacementFiles["specification"] + '"',
   },
   {
-    search: "{{logics}}",
-    replace: (..._) => replacementFiles["logics"],
+    search: /\$log\W/,
+    replace: replacementFiles["logics"] + '"',
   },
   {
-    search: "{{calc}}",
-    replace: (..._) => replacementFiles["calculator"],
+    search: /\$calc\W/,
+    replace: replacementFiles["calculator"] + '"',
   },
   {
-    search: "{{specificationP}}",
-    replace: (..._) => replacementFiles["specification_portugal"],
+    search: /\$specP/,
+    replace: replacementFiles["specification_portugal"],
   },
   {
-    search: "{{logicsP}}",
-    replace: (..._) => replacementFiles["logics_portugal"],
+    search: /\$logP/,
+    replace: replacementFiles["logics_portugal"],
   },
   {
-    search: "{{calcP}}",
-    replace: (..._) => replacementFiles["calculator_portugal"],
+    search: /\$calcP/,
+    replace: replacementFiles["calculator_portugal"],
   },
 ];
 
@@ -64,13 +64,6 @@ module.exports = [
     module: {
       rules: [
         {
-          test: /injection/gi,
-          loader: "string-replace-loader",
-          options: {
-            multiple: replacements,
-          },
-        },
-        {
           test: /\.(js|jsx|ts|tsx)?$/,
           loader: "esbuild-loader",
           options: {
@@ -78,6 +71,13 @@ module.exports = [
             target: "es2015",
           },
           exclude: /node_modules/,
+        },
+        {
+          test: /injection/,
+          loader: "string-replace-loader",
+          options: {
+            multiple: replacements,
+          },
         },
       ],
     },

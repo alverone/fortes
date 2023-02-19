@@ -20,8 +20,7 @@ const scripts = document.location.href.includes("specifications")
       {
         async: false,
         defer: false,
-        src: "//cdn.jsdelivr.net/gh/alverone/fortes@main/dist/{{specification}}",
-        //"specification_portugal_35.js"
+        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$spec",
       },
     ]
   : document.location.href.includes("dyakuiemo")
@@ -35,12 +34,12 @@ const scripts = document.location.href.includes("specifications")
       {
         async: false,
         defer: false,
-        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/{{calc}}",
+        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$calc",
       },
       {
         async: false,
         defer: true,
-        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/{{logics}}",
+        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$log",
       },
     ];
 
