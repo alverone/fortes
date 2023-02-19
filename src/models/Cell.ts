@@ -1,6 +1,6 @@
 import { Formatter } from "../utils/Formatter";
 
-class Cell {
+export class Cell {
   public readonly address: string;
   private readonly _value: string;
 
@@ -25,5 +25,3 @@ class Cell {
     return Formatter.formatCurrency(parseFloat(this.value()));
   }
 }
-
-export { Cell };

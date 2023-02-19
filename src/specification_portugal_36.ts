@@ -1,6 +1,6 @@
 import { Cell } from "./models/Cell";
 import { Table } from "./models/Table";
-import { ResponseRow } from "./interfaces/Row";
+import { ResponseRow } from "./models/interfaces/Row";
 import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
@@ -84,8 +84,8 @@ fetch(
     }
 
     $("#months").html(months.toString());
-    const workInflation = table.getCell("S45").numeric();
-    const s43 = table.getCell("S43").numeric();
+    const workInflation = table.getCell("S46").numeric();
+    const S44 = table.getCell("S44").numeric();
 
     if (style == "cozy") {
       letter = "I";
@@ -108,18 +108,18 @@ fetch(
     let flooringNum, ceilingNum, flooringNum2, mouldings;
 
     if (flooring == "laminat") {
-      flooringNum = "58";
-      flooringNum2 = "84";
-      flooringPrice =
-        space * (space <= 70 ? 201.26 : 198.81) * workInflation * 2;
-    } else if (flooring == "vynil") {
       flooringNum = "59";
       flooringNum2 = "85";
       flooringPrice =
-        space * (space <= 70 ? 220.33 : 161.8) * workInflation * 2;
-    } else if (flooring == "parket") {
+        space * (space <= 70 ? 201.26 : 198.81) * workInflation * 2;
+    } else if (flooring == "vynil") {
       flooringNum = "60";
       flooringNum2 = "86";
+      flooringPrice =
+        space * (space <= 70 ? 220.33 : 161.8) * workInflation * 2;
+    } else if (flooring == "parket") {
+      flooringNum = "61";
+      flooringNum2 = "87";
       flooringPrice =
         space * (space <= 80 ? 369.96 : 240.31) * workInflation * 2;
     }
@@ -135,10 +135,10 @@ fetch(
         //inflation
         workInflation *
         2 *
-        s43 +
-      (bath ? 1 : 0) * amountOfBathrooms * 2500 * 2 * s43 * workInflation -
+        S44 +
+      (bath ? 1 : 0) * amountOfBathrooms * 2500 * 2 * S44 * workInflation -
       (950 * workInflation) / 41 +
-      (shower ? 1 : 0) * 4000 * amountOfBathrooms * 2 * s43 * workInflation -
+      (shower ? 1 : 0) * 4000 * amountOfBathrooms * 2 * S44 * workInflation -
       (800 * workInflation) / 41;
     let canalisation =
       1974 *
@@ -149,18 +149,18 @@ fetch(
       //inflation
       workInflation *
       2 *
-      s43;
+      S44;
     const vents =
       space *
       amountOfBathrooms *
       (space <= 100 ? 83.2 : 33.98) *
-      s43 *
+      S44 *
       workInflation *
       2;
     const electricity =
       (space / amountOfRooms <= 50 ? 1149 * space : amountOfRooms * 24 * 3519) *
       workInflation *
-      s43;
+      S44;
 
     const workPriceArray = [
       space / amountOfRooms <= 50
@@ -213,7 +213,7 @@ fetch(
         workInflation,
       140 *
         (space <= 60
-          ? table.getCell(`${letter}54`).numeric()
+          ? table.getCell(`${letter}55`).numeric()
           : space <= 80
           ? 50
           : space <= 120
@@ -231,11 +231,11 @@ fetch(
         (style == "japandi" || style == "fusion" ? 1 : 0),
     ];
     const workAmountArray = [1, 1, amountOfBathrooms, 1, 1, 1, 1, 1];
-    const workAdressesArray = [49, 50, 51, /*54,*/ 55, 56, flooringNum, 62, 63];
+    const workAdressesArray = [50, 51, 52, /*55,*/ 56, 57, flooringNum, 63, 64];
 
     workSum += water;
     textObject = returnObject(
-      table.getCell("F43").value(),
+      table.getCell("F44").value(),
       "",
       Math.round(water) + " €"
     );
@@ -243,7 +243,7 @@ fetch(
 
     workSum += canalisation;
     textObject = returnObject(
-      table.getCell("F44").value(),
+      table.getCell("F45").value(),
       "",
       Math.round(canalisation) + " €"
     );
@@ -251,7 +251,7 @@ fetch(
 
     workSum += vents;
     textObject = returnObject(
-      table.getCell("F45").value(),
+      table.getCell("F46").value(),
       "",
       Math.round(vents) + " €"
     );
@@ -259,40 +259,14 @@ fetch(
 
     workSum += electricity;
     textObject = returnObject(
-      table.getCell("F48").value(),
+      table.getCell("F49").value(),
       "",
       Math.round(electricity) + " €"
     );
     $("#workList").append(textObject);
 
-    // if (shower) {
-    //   //workSum += Math.round(parseInt(shower));
-    //   textObject = returnObject(
-    //     table.getCell("F46").value(),
-    //     "",
-    //     table
-    //       .getCell(getRightStyleLetter(style) + 46)
-    //       .numeric()
-    //       .toString() + " €"
-    //   );
-    //   $("#workList").append(textObject);
-    // }
-
-    // if (bath) {
-    //   //workSum += Math.round(parseInt(bath));
-    //   textObject = returnObject(
-    //     table.getCell("F47").value(),
-    //     "",
-    //     table
-    //       .getCell(getRightStyleLetter(style) + 47)
-    //       .numeric()
-    //       .toString() + " €"
-    //   );
-    //   $("#workList").append(textObject);
-    // }
-
     for (let i = 0; i < workAdressesArray.length; i++) {
-      const price = workPriceArray[i] * workAmountArray[i] * s43;
+      const price = workPriceArray[i] * workAmountArray[i] * S44;
 
       if (price === 0 || isNaN(price)) {
         continue;
@@ -315,18 +289,17 @@ fetch(
       .last()
       .append(
         `<h4 class=\"pricelist-header small no-padding\">${table
-          .getCell("F67")
+          .getCell("F68")
           .value()}</h4><span class=\'notation amount\'> </span><span class=\'notation\'>Cost</span>`
       );
 
     let materialsPriceArray = [
-      table.getCell(`${letter}68`).numeric(),
       table.getCell(`${letter}69`).numeric(),
       table.getCell(`${letter}70`).numeric(),
       table.getCell(`${letter}71`).numeric(),
       table.getCell(`${letter}72`).numeric(),
-      64 * table.getCell("S70").numeric(),
-      table.getCell(`${letter}75`).numeric(),
+      table.getCell(`${letter}73`).numeric(),
+      64 * table.getCell("S71").numeric(),
       table.getCell(`${letter}76`).numeric(),
       table.getCell(`${letter}77`).numeric(),
       table.getCell(`${letter}78`).numeric(),
@@ -334,6 +307,7 @@ fetch(
       table.getCell(`${letter}80`).numeric(),
       table.getCell(`${letter}81`).numeric(),
       table.getCell(`${letter}82`).numeric(),
+      table.getCell(`${letter}83`).numeric(),
       table.getCell(`${letter + flooringNum2}`).numeric(),
     ];
     let materialsAmountArray = [
@@ -356,20 +330,20 @@ fetch(
         : space - amountOfBathrooms * 10,
     ];
     let materialsAdressesArray = [
-      68,
       69,
       70,
       71,
       72,
       73,
-      75,
+      74,
       76,
       77,
       78,
       79,
       80,
-      81,
       82,
+      83,
+      84,
       flooringNum2,
     ];
 
@@ -378,7 +352,7 @@ fetch(
         materialsPriceArray[i] *
         materialsAmountArray[i] *
         //table.getCell("S70").numeric() *
-        table.getCell("S68").numeric();
+        table.getCell("S69").numeric();
 
       if (price === 0 || isNaN(price)) {
         continue;
@@ -401,11 +375,11 @@ fetch(
       .last()
       .append(
         `<h4 class=\"pricelist-header small no-padding\">${table
-          .getCell("F92")
+          .getCell("F93")
           .value()}</h4><span class=\'notation amount\'>Amount</span><span class=\'notation\'>Cost</span>`
       );
     textObject = `<div class=\"option-block\"><div class=\"division-block pricelist\"></div><div class=\"list-option-container\"><span class=\'name\'>${table
-      .getCell("F93")
+      .getCell("F94")
       .value()}</span><span class=\'list-text amount\'>${months} months</span><span class=\'list-text\'> </span></div></div>`;
     $("#workList").append(textObject);
 
@@ -415,12 +389,12 @@ fetch(
         2 /
         1.5 +
         100 * space) *
-        s43 *
+        S44 *
         workInflation,
       workSum * 0.022 * workInflation,
-      (months * 2 * 1200 + 3000 + space * 220) * s43 * workInflation,
+      (months * 2 * 1200 + 3000 + space * 220) * S44 * workInflation,
     ];
-    const casualtiesAdressesArray = [94, 95, 96];
+    const casualtiesAdressesArray = [95, 96, 97];
 
     for (let i = 0; i < casualtiesAdressesArray.length; i++) {
       const price = casualtiesPriceArray[i];
@@ -429,7 +403,7 @@ fetch(
         .getCell(`F${casualtiesAdressesArray[i]}`)
         .value()}</span><span class=\'list-text amount\'>${Formatter.formatCurrency(
         price / months
-      )} €/місяць</span><span class=\'list-text\'>${Formatter.formatCurrency(
+      )} €/month</span><span class=\'list-text\'>${Formatter.formatCurrency(
         price
       )} €</span></div></div>`;
       $("#workList").append(textObject);
@@ -442,21 +416,13 @@ fetch(
       $("#furnitureList .list-option-container")
         .last()
         .append(
-          `<h4 class=\"pricelist-header small no-padding\">Кухня</h4><span class=\'notation amount\'>Кількість</span><span class=\'notation\'>Ціна</span>`
+          `<h4 class=\"pricelist-header small no-padding\">Kitchen</h4><span class=\'notation amount\'>Amount</span><span class=\'notation\'>Cost</span>`
         );
-
-      appendFurnitureOption(
-        table.getCell("F120").value(),
-        table.getCell(`${letterModel}120`)?.value(),
-        1,
-        table.getCell(`${letter}120`).numeric(),
-        table.getCell("G120").value()
-      );
 
       appendFurnitureOption(
         table.getCell("F121").value(),
         table.getCell(`${letterModel}121`)?.value(),
-        4,
+        1,
         table.getCell(`${letter}121`).numeric(),
         table.getCell("G121").value()
       );
@@ -464,9 +430,17 @@ fetch(
       appendFurnitureOption(
         table.getCell("F122").value(),
         table.getCell(`${letterModel}122`)?.value(),
-        1,
+        4,
         table.getCell(`${letter}122`).numeric(),
         table.getCell("G122").value()
+      );
+
+      appendFurnitureOption(
+        table.getCell("F123").value(),
+        table.getCell(`${letterModel}123`)?.value(),
+        1,
+        table.getCell(`${letter}123`).numeric(),
+        table.getCell("G123").value()
       );
 
       appendObject(
@@ -476,17 +450,10 @@ fetch(
       appendObject(
         $("#furnitureList .list-option-container").last(),
         `<h4 class=\"pricelist-header small no-padding\">${table
-          .getCell("F123")
+          .getCell("F124")
           .value()}</h4><span class=\'notation amount\'>Amount</span><span class=\'notation\'>Cost</span>`
       );
 
-      appendFurnitureOption(
-        table.getCell("F123").value(),
-        table.getCell(letterModel + "123")?.value(),
-        1,
-        table.getCell(`${letter}123`)?.numeric(),
-        table.getCell("G123")?.value()
-      );
       appendFurnitureOption(
         table.getCell("F124").value(),
         table.getCell(letterModel + "124")?.value(),
@@ -494,6 +461,13 @@ fetch(
         table.getCell(`${letter}124`)?.numeric(),
         table.getCell("G124")?.value()
       );
+      appendFurnitureOption(
+        table.getCell("F125").value(),
+        table.getCell(letterModel + "125")?.value(),
+        1,
+        table.getCell(`${letter}125`)?.numeric(),
+        table.getCell("G125")?.value()
+      );
 
       appendObject(
         $("#furnitureList"),
@@ -502,17 +476,10 @@ fetch(
       appendObject(
         $("#furnitureList .list-option-container").last(),
         `<h4 class=\"pricelist-header small no-padding\">${table
-          .getCell("F126")
+          .getCell("F127")
           .value()}</h4><span class=\'notation amount\'>Amount</span><span class=\'notation\'>Cost</span>`
       );
 
-      appendFurnitureOption(
-        table.getCell("F127").value(),
-        table.getCell(letterModel + "127")?.value(),
-        1,
-        table.getCell(`${letter}127`)?.numeric(),
-        table.getCell("G127")?.value()
-      );
       appendFurnitureOption(
         table.getCell("F128").value(),
         table.getCell(letterModel + "128")?.value(),
@@ -523,24 +490,31 @@ fetch(
       appendFurnitureOption(
         table.getCell("F129").value(),
         table.getCell(letterModel + "129")?.value(),
-        2,
+        1,
         table.getCell(`${letter}129`)?.numeric(),
         table.getCell("G129")?.value()
       );
-
       appendFurnitureOption(
         table.getCell("F130").value(),
         table.getCell(letterModel + "130")?.value(),
-        1,
+        2,
         table.getCell(`${letter}130`)?.numeric(),
         table.getCell("G130")?.value()
       );
+
       appendFurnitureOption(
         table.getCell("F131").value(),
         table.getCell(letterModel + "131")?.value(),
         1,
         table.getCell(`${letter}131`)?.numeric(),
         table.getCell("G131")?.value()
+      );
+      appendFurnitureOption(
+        table.getCell("F132").value(),
+        table.getCell(letterModel + "132")?.value(),
+        1,
+        table.getCell(`${letter}132`)?.numeric(),
+        table.getCell("G132")?.value()
       );
 
       appendObject(
@@ -551,37 +525,30 @@ fetch(
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\">${table
-            .getCell("F132")
+            .getCell("F133")
             .value()}</h4><span class=\'notation amount\'>Amount</span><span class=\'notation\'>Cost</span>`
         );
 
       appendFurnitureOption(
-        table.getCell("F133").value(),
-        table.getCell(letterModel + "133")?.value(),
-        Math.ceil(space * 0.48),
-        table.getCell(`${letter}133`)?.numeric(),
-        table.getCell("G133")?.value()
-      );
-      appendFurnitureOption(
         table.getCell("F134").value(),
         table.getCell(letterModel + "134")?.value(),
-        1,
+        Math.ceil(space * 0.48),
         table.getCell(`${letter}134`)?.numeric(),
         table.getCell("G134")?.value()
       );
       appendFurnitureOption(
-        table.getCell("F136").value(),
-        table.getCell(letterModel + "136")?.value(),
+        table.getCell("F135").value(),
+        table.getCell(letterModel + "135")?.value(),
         1,
-        table.getCell(`${letter}136`)?.numeric(),
-        table.getCell("G136")?.value()
+        table.getCell(`${letter}135`)?.numeric(),
+        table.getCell("G135")?.value()
       );
       appendFurnitureOption(
-        table.getCell("F138").value(),
-        table.getCell(letterModel + "138")?.value(),
+        table.getCell("F137").value(),
+        table.getCell(letterModel + "137")?.value(),
         1,
-        table.getCell(`${letter}138`)?.numeric(),
-        table.getCell("G138")?.value()
+        table.getCell(`${letter}137`)?.numeric(),
+        table.getCell("G137")?.value()
       );
       appendFurnitureOption(
         table.getCell("F139").value(),
@@ -590,20 +557,27 @@ fetch(
         table.getCell(`${letter}139`)?.numeric(),
         table.getCell("G139")?.value()
       );
+      appendFurnitureOption(
+        table.getCell("F140").value(),
+        table.getCell(letterModel + "140")?.value(),
+        1,
+        table.getCell(`${letter}140`)?.numeric(),
+        table.getCell("G140")?.value()
+      );
 
       appendFurnitureOption(
-        table.getCell("F135").value(),
-        table.getCell(letterModel + "135")?.value(),
+        table.getCell("F136").value(),
+        table.getCell(letterModel + "136")?.value(),
         amountOfRooms > 1 ? 1 : 0,
-        table.getCell(`${letter}135`)?.numeric(),
-        table.getCell("G135")?.value()
+        table.getCell(`${letter}136`)?.numeric(),
+        table.getCell("G136")?.value()
       );
       appendFurnitureOption(
-        table.getCell("F137").value(),
-        table.getCell(letterModel + "137")?.value(),
+        table.getCell("F138").value(),
+        table.getCell(letterModel + "138")?.value(),
         2,
-        table.getCell(`${letter}137`)?.numeric(),
-        table.getCell("G137")?.value()
+        table.getCell(`${letter}138`)?.numeric(),
+        table.getCell("G138")?.value()
       );
 
       $("#furnitureList").append(
@@ -613,17 +587,10 @@ fetch(
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\">${table
-            .getCell("F140")
+            .getCell("F141")
             .value()}</h4><span class=\'notation amount\'>Amount</span><span class=\'notation\'>Cost</span>`
         );
 
-      appendFurnitureOption(
-        table.getCell("F141").value(),
-        table.getCell(letterModel + "141")?.value(),
-        amountOfRooms,
-        table.getCell(`${letter}141`)?.numeric(),
-        table.getCell("G141")?.value()
-      );
       appendFurnitureOption(
         table.getCell("F142").value(),
         table.getCell(letterModel + "142")?.value(),
@@ -638,26 +605,33 @@ fetch(
         table.getCell(`${letter}143`)?.numeric(),
         table.getCell("G143")?.value()
       );
-
       appendFurnitureOption(
         table.getCell("F144").value(),
         table.getCell(letterModel + "144")?.value(),
-        1,
+        amountOfRooms,
         table.getCell(`${letter}144`)?.numeric(),
         table.getCell("G144")?.value()
       );
+
       appendFurnitureOption(
         table.getCell("F145").value(),
         table.getCell(letterModel + "145")?.value(),
-        amountOfRooms - 1,
+        1,
         table.getCell(`${letter}145`)?.numeric(),
         table.getCell("G145")?.value()
+      );
+      appendFurnitureOption(
+        table.getCell("F146").value(),
+        table.getCell(letterModel + "146")?.value(),
+        amountOfRooms - 1,
+        table.getCell(`${letter}146`)?.numeric(),
+        table.getCell("G146")?.value()
       );
 
       appendObject(
         $("#furnitureList"),
         returnObject(
-          table.getCell("F146").value(),
+          table.getCell("F147").value(),
           " ",
           Math.round(furnitureSum * 0.3) + "€"
         )
@@ -697,10 +671,10 @@ fetch(
         );
 
       const optionsPriceArray: number[] = [
-        table.getCell(`${letter}102`).numeric() * space,
-        table.getCell(`${letter}103`).numeric(),
+        table.getCell(`${letter}103`).numeric() * space,
         table.getCell(`${letter}104`).numeric(),
-        table.getCell(`${letter}105`).numeric(),
+        space <= 60 ? 460 : 310 * workInflation * 2,
+        table.getCell(`${letter}106`).numeric(),
         ((space <= 60
           ? 90.02
           : space <= 95
@@ -720,9 +694,9 @@ fetch(
             ? 66.24
             : 0)) *
           space *
-          table.getCell("T102").numeric(),
-        table.getCell(`${letter}107`).numeric(),
-        table.getCell(`${letter}109`).numeric() * space,
+          table.getCell("T103").numeric(),
+        table.getCell(`${letter}108`).numeric(),
+        table.getCell(`${letter}110`).numeric() * space,
       ];
       const optionsAmountArray: number[] = [
         demontage ? 1 : 0,
@@ -734,14 +708,14 @@ fetch(
         conditioning,
       ];
       const optionsAdressesArray: number[] = [
-        102, 103, 104, 105, 106, 107, 109,
+        103, 104, 105, 106, 107, 108, 110,
       ];
 
       for (let i = 0; i < optionsAdressesArray.length; i++) {
         const price =
           optionsPriceArray[i] *
           optionsAmountArray[i] *
-          table.getCell("S103").numeric();
+          table.getCell("S104").numeric();
         if (price === 0 || optionsAmountArray[i] == 0) {
           continue;
         }
@@ -760,16 +734,16 @@ fetch(
       if (conditioning > 0) {
         const conditioningAppl =
           (conditioning *
-            table.getCell(`${letter}112`).numeric() *
-            (1 + table.getCell("S112").numeric() / 100)) /
+            table.getCell(`${letter}113`).numeric() *
+            (1 + table.getCell("S113").numeric() / 100)) /
           table.getCell("E5").numeric();
         const conditioningDelivery =
-          conditioningAppl * 0.05 * table.getCell("T102").numeric();
+          conditioningAppl * 0.05 * table.getCell("T103").numeric();
 
         appendObject(
           $work,
           returnObject(
-            table.getCell("F112")?.value(),
+            table.getCell("F113")?.value(),
             "",
             Formatter.formatCurrency(conditioningAppl) + "€"
           )
@@ -777,7 +751,7 @@ fetch(
         appendObject(
           $work,
           returnObject(
-            table.getCell("F113")?.value(),
+            table.getCell("F114")?.value(),
             "",
             Formatter.formatCurrency(conditioningDelivery) + "€"
           )
@@ -805,7 +779,13 @@ fetch(
       )} €</span>`
     );
 
-    function appendFurnitureOption(name, manufacturer, amount, price, dim) {
+    function appendFurnitureOption(
+      name: string,
+      manufacturer: string | null,
+      amount: number | null,
+      price: number | null,
+      dim: string | null
+    ) {
       if (!furnitureBool || amount == 0 || !amount || !price) {
         return;
       }
@@ -846,13 +826,13 @@ fetch(
     const appliancesTuple: number[] = [];
 
     if (appliances === "gorenje") {
-      appliancesTuple.push(...[153, 9]);
+      appliancesTuple.push(...[154, 9]);
     } else if (appliances === "bosch") {
-      appliancesTuple.push(...[168, 10]);
+      appliancesTuple.push(...[169, 10]);
     } else if (appliances === "smeg") {
-      appliancesTuple.push(...[184, 9]);
+      appliancesTuple.push(...[185, 9]);
     } else {
-      appliancesTuple.push(...[153, 9]);
+      appliancesTuple.push(...[154, 9]);
     }
 
     if (appliancesBoolTotal) {
@@ -880,12 +860,12 @@ fetch(
           table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9;
       }
 
-      const g34 = table.getCell("G34").numeric();
+      const g35 = table.getCell("G35").numeric();
       const e5 = table.getCell("E5").numeric();
-      applianceSum += ((appliancesTuple[1] * g34) / e5) * 0.9;
+      applianceSum += ((appliancesTuple[1] * g35) / e5) * 0.9;
 
       appliancesListTotalString += `<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"><span class=\'name\'>Доставка техніки</span><span class=\'list-text amount\'></span><span class=\'list-text\'>${Formatter.formatCurrency(
-        ((appliancesTuple[1] * g34) / e5) * 0.9
+        ((appliancesTuple[1] * g35) / e5) * 0.9
       )} €</span></div></div>`;
 
       appliancesListTotalString += `<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"><span class=\'name\'>${table
@@ -895,7 +875,7 @@ fetch(
       )} €</span></div></div>`;
 
       appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>Доставка техніки</span><span class=\'list-text white\'>${Formatter.formatCurrency(
-        ((appliancesTuple[1] * g34) / e5) * 0.9
+        ((appliancesTuple[1] * g35) / e5) * 0.9
       )} €</span></div></div>`;
 
       appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>${table
@@ -920,11 +900,11 @@ fetch(
       return `<div class=\"option-block\"><div class=\"division-block pricelist\"></div><div class=\"list-option-container\"><span class=\'name\'>${line1}</span><span class=\'list-text amount\'>${line2}</span><span class=\'list-text\'>${line3}</span></div></div>`;
     }
 
-    function appendObject(obj, text) {
+    function appendObject(obj: JQuery<HTMLElement>, text: any) {
       obj.append(text);
     }
 
-    function getRightStyleLetter(style) {
+    function getRightStyleLetter(style: string) {
       let styleLetter = "J";
 
       if (style == "cozy") {
@@ -942,9 +922,9 @@ fetch(
       return styleLetter;
     }
 
-    const kitchenPrice = table.getCell(`${styleLetter}120`).numeric();
-    const kitchenMontage = table.getCell(`${styleLetter}121`).numeric();
-    const kitchenDelivery = table.getCell(`${styleLetter}122`).numeric();
+    const kitchenPrice = table.getCell(`${styleLetter}121`).numeric();
+    const kitchenMontage = table.getCell(`${styleLetter}122`).numeric();
+    const kitchenDelivery = table.getCell(`${styleLetter}123`).numeric();
     const kitchenTotal = kitchenMontage + kitchenPrice + kitchenDelivery;
 
     $("#kitchenPrice").html(Formatter.formatCurrency(kitchenPrice) + " €");

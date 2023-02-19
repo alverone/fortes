@@ -3,45 +3,116 @@ const fs = require("fs");
 const NodemonPlugin = require("nodemon-webpack-plugin");
 const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
 
-const entries = {
+const entriesProd = {};
+const entriesDev = {
   test: "./src/test.ts",
 };
 
-//dynamically read contents of /src/ folder and create entries
+const replacementFiles = {};
+
 fs.readdirSync("./src/")
-  .filter((file) => {
-    return file.match(
-      /(logics|logics_portugal|calculator|calculator_portugal|specification|specification_portugal)[_0-9]*.ts$/
-    );
-  })
+  .filter((file) => file.match(/_?\d?\.ts$/i))
   .forEach((file) => {
-    entries[file.replace(/\.ts$/, "")] = ["./src/" + file];
+    const name = file.replace(/_*\d*\.ts$/i, "");
+
+    if (name !== "test") {
+      entriesProd[file.replace(".ts", "")] = ["./src/" + file];
+    }
+
+    entriesDev[name] = ["./src/" + file];
+    replacementFiles[name] = file.replace("ts", "js");
   });
 
-module.exports = {
-  stats: "errors-only",
-  target: "node",
-  entry: entries,
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].js",
-    clean: true,
+const replacements = [
+  {
+    search: "{{specification}}",
+    replace: (..._) => replacementFiles["specification"],
   },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx|ts|tsx)?$/,
-        loader: "esbuild-loader",
-        options: {
-          loader: "tsx",
-          target: "es2015",
+  {
+    search: "{{logics}}",
+    replace: (..._) => replacementFiles["logics"],
+  },
+  {
+    search: "{{calc}}",
+    replace: (..._) => replacementFiles["calculator"],
+  },
+  {
+    search: "{{specificationP}}",
+    replace: (..._) => replacementFiles["specification_portugal"],
+  },
+  {
+    search: "{{logicsP}}",
+    replace: (..._) => replacementFiles["logics_portugal"],
+  },
+  {
+    search: "{{calcP}}",
+    replace: (..._) => replacementFiles["calculator_portugal"],
+  },
+];
+
+module.exports = [
+  {
+    stats: "errors-only",
+    target: "node",
+    entry: entriesProd,
+    output: {
+      path: path.resolve(__dirname, "dist"),
+      filename: "[name].js",
+      clean: true,
+    },
+    mode: "production",
+    module: {
+      rules: [
+        {
+          test: /injection/gi,
+          loader: "string-replace-loader",
+          options: {
+            multiple: replacements,
+          },
         },
-        exclude: /node_modules/,
-      },
-    ],
+        {
+          test: /\.(js|jsx|ts|tsx)?$/,
+          loader: "esbuild-loader",
+          options: {
+            loader: "tsx",
+            target: "es2015",
+          },
+          exclude: /node_modules/,
+        },
+      ],
+    },
+    plugins: [new ForkTsCheckerPlugin(), new NodemonPlugin()],
+    resolve: {
+      extensions: [".ts", ".js", ".json"],
+    },
   },
-  plugins: [new ForkTsCheckerPlugin(), new NodemonPlugin()],
-  resolve: {
-    extensions: [".tsx", ".ts", ".js", ".json"],
+  {
+    stats: "errors-only",
+    target: "node",
+    entry: entriesDev,
+    devtool: "inline-source-map",
+    output: {
+      path: path.resolve(__dirname, "build"),
+      filename: "[name].js",
+      clean: true,
+    },
+    mode: "development",
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx|ts|tsx)?$/,
+          loader: "esbuild-loader",
+          options: {
+            loader: "tsx",
+            target: "es2015",
+          },
+          exclude: /node_modules/,
+        },
+      ],
+    },
+    plugins: [new ForkTsCheckerPlugin(), new NodemonPlugin()],
+    resolve: {
+      extensions: [".ts", ".js", ".json"],
+    },
   },
-};
+];

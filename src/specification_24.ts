@@ -1,6 +1,6 @@
 import { Cell } from "./models/Cell";
 import { Table } from "./models/Table";
-import { ResponseRow } from "./interfaces/Row";
+import { ResponseRow } from "./models/interfaces/Row";
 import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
@@ -998,6 +998,7 @@ fetch(
     } else if (appliances === "miele") {
       array = miele;
     }
+
     let quantity = 0;
     if (appliances !== "undefined") {
       quantity = 1;

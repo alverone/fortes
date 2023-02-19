@@ -1,4 +1,4 @@
-import { ResponseRow } from "./interfaces/Row";
+import { ResponseRow } from "./models/interfaces/Row";
 import { Cell } from "./models/Cell";
 import { Table } from "./models/Table";
 import { Utils } from "./utils/Utils";

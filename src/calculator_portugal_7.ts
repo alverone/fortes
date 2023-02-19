@@ -7,7 +7,11 @@ import * as $ from "jquery";
 $(function () {
   const storage: LocalStorageHandler = new LocalStorageHandler();
 
-  $("#space").val(50);
+  const $space = $("#space");
+  const $total = $("#total");
+  const $totalWhole = $("#totalWhole");
+
+  $space.val(50);
   storage.initPortugal();
   calculate();
 
@@ -25,10 +29,10 @@ $(function () {
         .toString()
         .match(/\d*\.?\d+/)
     );
-    storage.set("space", $("#space").val());
+    storage.set("space", $space.val());
     if (storage.get("space") === 0 || storage.get("amount_of_rooms") === 0) {
-      $("#total").html("0");
-      $("#totalWhole").html("0");
+      $total.html("0");
+      $totalWhole.html("0");
       return;
     }
     calculate();
@@ -39,10 +43,10 @@ $(function () {
     calculate();
   });
 
-  $("#space").on("focusout", function () {
+  $space.on("focusout", function () {
     if (parseInt($(this).val().toString()) < 30 || !$(this).val()) {
       $(this).val(30);
-      storage.set("space", $("#space").val());
+      storage.set("space", $space.val());
 
       calculate();
     }
@@ -68,8 +72,8 @@ $(function () {
     }
 
     if (storage.get("amount_of_rooms") == 0) {
-      $("#total").html("0");
-      $("#totalWhole").html("0");
+      $total.html("0");
+      $totalWhole.html("0");
       return;
     }
 
@@ -178,10 +182,8 @@ $(function () {
     storage.set("costPerMetre", costVAT);
     storage.set("summedPrice", costVAT * storage.get("space"));
 
-    $("#total").html(Formatter.formatCurrency(costVAT));
-    $("#totalWhole").html(
-      Formatter.formatCurrency(cost * storage.get("space"))
-    );
+    $total.html(Formatter.formatCurrency(costVAT));
+    $totalWhole.html(Formatter.formatCurrency(cost * storage.get("space")));
     $("#totalWholeVAT").html(
       Formatter.formatCurrency(costVAT * storage.get("space"))
     );
@@ -207,14 +209,16 @@ $(function () {
   }
 
   function updateUserData() {
-    storage.set("space", $("#space").val());
+    storage.set("space", $space.val());
     storage.set("amount_of_rooms", $("#amountOfRooms").val());
     storage.set("amount_of_bathrooms", $("#amountOfBathrooms").val());
-    storage.set("windows_installtion", $("#amountOfWindows").val());
-    storage.set("demontage", $("#demontage").is(":checked"));
+    storage.set("windows_installation", $("#amountOfWindows").val());
+    storage.set("demontage", $("#dismantlingWorks").is(":checked"));
     storage.set("heated_flooring", $("#heatedFlooring").val());
     storage.set("conditioning", $("#conditioning").val());
-    storage.set("hygienic_shower", $("#hygienicShower").is(":checked"));
+    storage.set("builtin_furniture", $("#builtinFurniture").is(":checked"));
+    storage.set("cement_screed", $("#cementScreed").is(":checked"));
+    storage.set("finishing_materials", $("#finishingMaterials").is(":checked"));
     storage.set("furniture_bool", $("#furnitureBool").is(":checked"));
     storage.set("bath", $("#bathtub").is(":checked"));
     storage.set("shower", $("#shower").is(":checked"));

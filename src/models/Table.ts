@@ -1,6 +1,6 @@
 import { Cell } from "./Cell";
 
-class Table {
+export class Table {
   public cells: Cell[];
 
   constructor(cells: Cell[]) {
@@ -19,5 +19,3 @@ class Table {
     }
   }
 }
-
-export { Table };
