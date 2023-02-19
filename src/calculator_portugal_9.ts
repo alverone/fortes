@@ -1,6 +1,7 @@
 import { DesignStyle } from "./models/Style";
 import { Formatter } from "./utils/Formatter";
 import { LocalStorageHandler } from "./utils/LocalStorageHandler";
+import { debounce } from "ts-debounce";
 
 import * as $ from "jquery";
 
@@ -11,6 +12,8 @@ $(function () {
   const $total = $("#total");
   const $totalWhole = $("#totalWhole");
 
+  const debounceCalculate = debounce(calculate, 300);
+
   $space.val(50);
   storage.initPortugal();
   calculate();
@@ -19,7 +22,7 @@ $(function () {
     .not(".form-2 input")
     .on("change", () => {
       updateUserData();
-      calculate();
+      debounceCalculate();
     });
 
   $("#space").on("focusout", function () {
@@ -35,12 +38,12 @@ $(function () {
       $totalWhole.html("0");
       return;
     }
-    calculate();
+    debounceCalculate();
   });
 
   $(".slider-tab").on("click", function () {
     storage.set("style", DesignStyle.fromNumber($(this).data("slider-index")));
-    calculate();
+    debounceCalculate();
   });
 
   $space.on("focusout", function () {
@@ -48,7 +51,7 @@ $(function () {
       $(this).val(30);
       storage.set("space", $space.val());
 
-      calculate();
+      debounceCalculate();
     }
   });
 
@@ -78,7 +81,7 @@ $(function () {
     }
 
     if (!input.is("#distance")) {
-      calculate();
+      debounceCalculate();
     }
   });
 
@@ -86,7 +89,7 @@ $(function () {
     const num: number = parseInt($(this).data("slider-index"));
     storage.set("style", DesignStyle.fromNumber(num));
 
-    calculate();
+    debounceCalculate();
   });
 
   $("#calculate").on("click", function () {
@@ -98,7 +101,7 @@ $(function () {
     $(".calculator-tab[data-slider-index='" + slideNumber + "']").addClass(
       "w--current"
     );
-    calculate();
+    debounceCalculate();
     $(".calculator-slide").toggle(false);
     $(".calculator-slide.main").toggle(true);
     $(".calculator-slide." + storage.get("style")).toggle(true);
@@ -114,7 +117,7 @@ $(function () {
     $("calculator-tab:eq(0)").addClass("w--current");
     $(".calculator-tab").removeClass("w--current");
     $(".calculator-tab:eq(0)").addClass("w--current");
-    calculate();
+    debounceCalculate();
 
     $(".calculator-slide").toggle(false);
     $(".calculator-slide.main, .calculator-slide.cozy").toggle(true);
@@ -133,13 +136,13 @@ $(function () {
 
     storage.set("appliances_bool_total", true);
     storage.set("appliances", $(this).data("appliances"));
-    calculate();
+    debounceCalculate();
   });
 
   $("#node").on("click", function () {
     storage.set("appliances_bool_total", false);
 
-    calculate();
+    debounceCalculate();
   });
 
   $("#appliancesBool").on("click", function () {
@@ -150,14 +153,14 @@ $(function () {
       storage.set("appliances_bool_total", 1);
       storage.set("appliances", "gorenje");
 
-      calculate();
+      debounceCalculate();
     }
   });
 
   $("#appliancesBool").on("change", function () {
     if ($(this).is(":checked")) {
       storage.set("appliances_bool_total", true);
-      calculate();
+      debounceCalculate();
     }
   });
 

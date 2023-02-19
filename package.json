@@ -33,6 +33,7 @@
   "dependencies": {
     "@splidejs/splide": "3.5.8",
     "jquery": "^3.6.3",
-    "string-replace-loader": "^3.1.0"
+    "string-replace-loader": "^3.1.0",
+    "ts-debounce": "^4.0.0"
   }
 }
