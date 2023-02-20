@@ -160,7 +160,7 @@ fetch(
       workInflation *
       2;
     const electricity =
-      (space / amountOfRooms <= 50 ? 1149 * space : amountOfRooms * 24 * 3519) *
+      (space / amountOfRooms <= 50 ? 850 * space : amountOfRooms * 24 * 3519) *
       workInflation *
       S44;
 
