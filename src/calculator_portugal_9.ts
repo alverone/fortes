@@ -16,7 +16,7 @@ $(function () {
 
   $space.val(50);
   storage.initPortugal();
-  calculate();
+  debounceCalculate();
 
   $(".calculator input")
     .not(".form-2 input")

@@ -423,25 +423,9 @@ $(function () {
         $(this).siblings(".image-price").removeClass("active");
       } else {
         $(this).addClass("hidden");
-        $(this).siblings(".image-price").removeClass("active");
+        $(this).siblings(".image-price").addClass("active");
       }
     });
-  }
-
-  function getData(obj: JQuery<HTMLElement>, dataVal: string): string | number {
-    if (isFinite(Number(obj.data(dataVal)))) {
-      return parseInt(obj.data(dataVal));
-    } else {
-      return obj.data(dataVal);
-    }
-  }
-
-  function val(object: JQuery<HTMLElement>): number | string | string[] {
-    if (isFinite(Number(object.val()))) {
-      return Number(object.val());
-    } else {
-      return object.val();
-    }
   }
 
   function isInViewport(element: HTMLElement): boolean {

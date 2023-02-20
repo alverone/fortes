@@ -51,15 +51,16 @@ fetch(
       amountOfBathrooms: number = storage.get("amount_of_bathrooms"),
       letter: string = "",
       letterModel: string = "",
-      ceiling: string = storage.get("ceiling"),
-      hygienicShower: boolean = storage.get("hygienic_shower"),
-      demontage: boolean = storage.get("demontage"),
-      windows: number = storage.get("windows_installtion"),
+      demontage: boolean = Boolean(storage.get("demontage")),
+      windows: number = storage.get("windows_installation"),
+      finishingMaterials: boolean = Boolean(storage.get("finishing_materials")),
+      cementScreed: boolean = Boolean(storage.get("cement_screed")),
+      builtinFurniture: boolean = Boolean(storage.get("builtin_furiture")),
       heatedFlooring: number = storage.get("heated_flooring"),
-      denoising: boolean = storage.get("denoising"),
-      entranceDoors: boolean = storage.get("entrance_doors"),
+      denoising: boolean = Boolean(storage.get("denoising")),
+      entranceDoors: boolean = Boolean(storage.get("entrance_doors")),
       conditioning: number = storage.get("conditioning"),
-      flooring = storage.get("flooring"),
+      flooring: string = storage.get("flooring"),
       workSum = 0,
       furnitureSum = 0,
       $furniture = $("#furnitureList");
@@ -104,15 +105,10 @@ fetch(
       letterModel = "E";
     }
 
-    let flooringPrice = 0;
-    let flooringNum, ceilingNum, flooringNum2, mouldings;
+    let flooringPrice: number = 0;
+    let flooringNum: string, flooringNum2: string;
 
-    if (flooring == "laminat") {
-      flooringNum = "59";
-      flooringNum2 = "85";
-      flooringPrice =
-        space * (space <= 70 ? 201.26 : 198.81) * workInflation * 2;
-    } else if (flooring == "vynil") {
+    if (flooring == "vynil") {
       flooringNum = "60";
       flooringNum2 = "86";
       flooringPrice =
@@ -122,6 +118,12 @@ fetch(
       flooringNum2 = "87";
       flooringPrice =
         space * (space <= 80 ? 369.96 : 240.31) * workInflation * 2;
+    } else {
+      //laminat
+      flooringNum = "59";
+      flooringNum2 = "85";
+      flooringPrice =
+        space * (space <= 70 ? 201.26 : 198.81) * workInflation * 2;
     }
 
     let $work = $("#workList");
@@ -651,7 +653,9 @@ fetch(
     }
 
     if (
-      hygienicShower ||
+      builtinFurniture ||
+      cementScreed ||
+      finishingMaterials ||
       windows ||
       demontage ||
       heatedFlooring > 0 ||
@@ -666,14 +670,15 @@ fetch(
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\">${table
-            .getCell("F101")
+            .getCell("F102")
             .value()}</h4><span class=\'notation amount\'></span><span class=\'notation\'>Cost</span>`
         );
 
       const optionsPriceArray: number[] = [
         table.getCell(`${letter}103`).numeric() * space,
         table.getCell(`${letter}104`).numeric(),
-        space <= 60 ? 460 : 310 * workInflation * 2,
+        //FIXME:
+        space <= 60 ? 440 : 410 * workInflation * 2,
         table.getCell(`${letter}106`).numeric(),
         ((space <= 60
           ? 90.02
@@ -695,20 +700,22 @@ fetch(
             : 0)) *
           space *
           table.getCell("T103").numeric(),
-        table.getCell(`${letter}108`).numeric(),
-        table.getCell(`${letter}110`).numeric() * space,
+        table.getCell(`${letter}108`).numeric() / 1.23,
+        table.getCell(`${letter}109`).numeric() / 1.23,
+        table.getCell(`${letter}110`).numeric() / 1.23,
       ];
       const optionsAmountArray: number[] = [
         demontage ? 1 : 0,
         windows,
-        hygienicShower ? 1 : 0,
+        cementScreed ? 1 : 0,
         heatedFlooring,
         denoising ? 1 : 0,
         entranceDoors ? 1 : 0,
-        conditioning,
+        builtinFurniture ? 1 : 0,
+        builtinFurniture ? 1 : 0,
       ];
       const optionsAdressesArray: number[] = [
-        103, 104, 105, 106, 107, 108, 110,
+        103, 104, 105, 106, 107, 108, 109, 110,
       ];
 
       for (let i = 0; i < optionsAdressesArray.length; i++) {

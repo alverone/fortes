@@ -16,7 +16,7 @@ fs.readdirSync("./src/")
   .forEach((file) => {
     const name = file.replace(/_*\d*\.ts$/i, "");
 
-    if (name !== "test") {
+    if (name !== "test" && !name.includes("snippet")) {
       entriesProd[file.replace(".ts", "")] = ["./src/" + file];
     }
 
@@ -121,7 +121,7 @@ module.exports = [
     },
     optimization: {
       minimize: true,
-      minimizer: [new TerserPlugin()],
+      minimizer: [new TerserPlugin({ extractComments: false })],
     },
   },
 ];
