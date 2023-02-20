@@ -677,7 +677,6 @@ fetch(
       const optionsPriceArray: number[] = [
         table.getCell(`${letter}103`).numeric() * space,
         table.getCell(`${letter}104`).numeric(),
-        //FIXME:
         space <= 60 ? 440 : 410 * workInflation * 2,
         table.getCell(`${letter}106`).numeric(),
         ((space <= 60
@@ -947,10 +946,14 @@ fetch(
     //$("#kitchenTotalPriceDiscount").html(Formatter.formatCurrency(applianceSum * 0.9));
 
     if (storage.get("summedPrice") < workSum) {
-      $("#totalPriceTotal").html(Formatter.formatCurrency(workSum) + " € *");
+      $("#totalPriceTotal").html(
+        Formatter.formatCurrency(workSum / 1.23) + " € *"
+      );
+      $("#totalVAT").html(Formatter.formatCurrency(workSum) + " € *");
     } else {
       $("#totalPriceTotal").html(
-        Formatter.formatCurrency(storage.get("summedPrice"))
+        Formatter.formatCurrency(storage.get("summedPrice") / 1.23)
       );
+      $("#totalVAT").html(Formatter.formatCurrency(storage.get("summedPrice")));
     }
   });
