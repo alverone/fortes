@@ -335,6 +335,7 @@ $(function () {
 
   if (vw <= 480) {
     $(".tab-new").eq(1).trigger("click");
+    $(".image-75").removeAttr("sizes");
   }
 
   if (vw >= 992) {
