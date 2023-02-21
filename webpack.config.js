@@ -1,7 +1,6 @@
 const path = require("path");
 const fs = require("fs");
 const TerserPlugin = require("terser-webpack-plugin");
-const NodemonPlugin = require("nodemon-webpack-plugin");
 const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
 
 const entriesProd = {};
@@ -82,7 +81,7 @@ module.exports = [
         },
       ],
     },
-    plugins: [new ForkTsCheckerPlugin(), new NodemonPlugin()],
+    plugins: [new ForkTsCheckerPlugin()],
     resolve: {
       extensions: [".ts", ".js", ".json"],
     },
@@ -115,7 +114,7 @@ module.exports = [
         },
       ],
     },
-    plugins: [new ForkTsCheckerPlugin(), new NodemonPlugin()],
+    plugins: [new ForkTsCheckerPlugin()],
     resolve: {
       extensions: [".ts", ".js", ".json"],
     },
