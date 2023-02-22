@@ -1,4 +1,4 @@
-abstract class Utils {
+export abstract class Utils {
   private static readonly alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   public static numberToEncodedLetter(number: number): string | undefined {
@@ -42,5 +42,3 @@ abstract class Utils {
     }
   }
 }
-
-export { Utils };

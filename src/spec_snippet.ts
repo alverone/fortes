@@ -14,7 +14,7 @@ storage.set("cement_screed", 1);
 storage.set("finishing_materials", 1);
 storage.set("furniture_bool", 1);
 storage.set("bath", 1);
-storage.set("shower", 1);
+storage.set("shower", 0);
 storage.set("appliances_bool_total", 1);
 storage.set("denoising", 1);
 storage.set("entrance_doors", 1);

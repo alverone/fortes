@@ -1,1 +1,1 @@
-class SpecificationManager {}
+export class SpecificationManager {}

@@ -4,6 +4,7 @@ import { ResponseRow } from "./models/interfaces/Row";
 import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
+import { StringConsts } from "./utils/StringConsts";
 
 fetch(
   "https://docs.google.com/spreadsheets/d/1KkkpKbytztt48mwP1RGgpVFpfke8-IqB0KLWA8Sn2FE/gviz/tq?tqx=out:json&gid=1219923480"
@@ -179,7 +180,7 @@ fetch(
         S46 *
         1.35 *
         1.45,
-      space *
+      (space *
         (space <= 60
           ? 700.67
           : space <= 100
@@ -189,7 +190,11 @@ fetch(
           : 317.36) *
         S46 *
         1.1 *
+        1.5) /
         2,
+      (space / amountOfRooms < 50
+        ? (space <= 50 ? 1000 * space : 990 * space) * 1.77
+        : Math.sqrt(space) * 4 * 3 * 600) * S46,
       space *
         (space <= 60
           ? 418.86
@@ -219,8 +224,8 @@ fetch(
         2 *
         (style == "japandi" || style == "fusion" ? 1 : 0),
     ];
-    const workAmountArray = [1, 1, amountOfBathrooms, 1, 1, 1, 1, 1];
-    const workAdressesArray = [50, 51, 52, /*55,*/ 56, 57, flooringNum, 63, 64];
+    const workAmountArray = [1, 1, amountOfBathrooms, 1, 1, 1, 1, 1, 1];
+    const workAdressesArray = [50, 51, 52, 55, 56, 57, flooringNum, 63, 64];
 
     workSum += water;
     textObject = returnObject(
@@ -340,11 +345,12 @@ fetch(
       ];
 
       for (let i = 0; i < materialsAdressesArray.length; i++) {
-        let price =
-          materialsPriceArray[i] *
-          materialsAmountArray[i] *
-          //table.getCell("S70").numeric() *
-          table.getCell("S69").numeric();
+        const price =
+          (materialsPriceArray[i] *
+            materialsAmountArray[i] *
+            //table.getCell("S70").numeric() *
+            table.getCell("S69").numeric()) /
+          1.23;
 
         if (price === 0 || isNaN(price)) {
           continue;
