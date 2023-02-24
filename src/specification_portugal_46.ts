@@ -709,7 +709,8 @@ fetch(
       const optionsPriceArray: number[] = [
         table.getCell(`${letter}103`).numeric() * space,
         table.getCell(`${letter}104`).numeric(),
-        (space <= 60 ? 440 : 410) * S46 * 2 * space * S44,
+        ((space <= 60 ? 440 : 410) * S46 * 2 * space * S44) /
+          table.getCell("S104").numeric(),
         table.getCell(`${letter}106`).numeric(),
         ((space <= 60
           ? 90.02
