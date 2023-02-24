@@ -827,7 +827,7 @@ fetch(
       appendObject(
         $("#workList .list-option-container").last(),
         `<span class=\'name summary\'>Total for renovation:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
-          workSum / 1.23
+          workSum
         )} €</span>`
       );
     }
