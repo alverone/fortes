@@ -89,6 +89,9 @@ fetch(
     $("#months").html(months.toString());
     const S46 = table.getCell("S46").numeric();
     const S44 = table.getCell("S44").numeric();
+    const S69 = table.getCell("S69").numeric();
+    const T103 = table.getCell("T103").numeric();
+    const S104 = table.getCell("S104").numeric();
 
     if (style == "cozy") {
       letter = "I";
@@ -193,6 +196,7 @@ fetch(
         1.1 *
         1.5) /
         2,
+      700 * 3 * S46,
       (space / amountOfRooms < 50
         ? (space <= 50 ? 1000 * space : 990 * space) * 1.77
         : Math.sqrt(space) * 4 * 3 * 600) * S46,
@@ -225,8 +229,19 @@ fetch(
         2 *
         (style == "japandi" || style == "fusion" ? 1 : 0),
     ];
-    const workAmountArray = [1, 1, amountOfBathrooms, 1, 1, 1, 1, 1, 1];
-    const workAdressesArray = [50, 51, 52, 55, 56, 57, flooringNum, 63, 64];
+    const workAmountArray = [
+      1,
+      1,
+      amountOfBathrooms,
+      amountOfBathrooms + amountOfRooms,
+      1,
+      1,
+      1,
+      1,
+      style !== "japandi" && style !== "fusion" ? 1 : 0,
+      style === "japandi" || style === "fusion" ? 1 : 0,
+    ];
+    const workAdressesArray = [50, 51, 52, 53, 55, 56, 57, flooringNum, 63, 64];
 
     workSum += water;
     textObject = returnObject(
@@ -709,8 +724,7 @@ fetch(
       const optionsPriceArray: number[] = [
         table.getCell(`${letter}103`).numeric() * space,
         table.getCell(`${letter}104`).numeric(),
-        ((space <= 60 ? 440 : 410) * S46 * 2 * space * S44) /
-          table.getCell("S104").numeric(),
+        ((space <= 60 ? 440 : 410) * S46 * 2 * space * S44) / S104,
         table.getCell(`${letter}106`).numeric(),
         ((space <= 60
           ? 90.02
@@ -731,10 +745,17 @@ fetch(
             ? 66.24
             : 0)) *
           space *
-          table.getCell("T103").numeric(),
-        table.getCell(`${letter}108`).numeric() / 1.23,
-        table.getCell(`${letter}109`).numeric() / 1.23,
-        table.getCell(`${letter}110`).numeric() / 1.23,
+          T103,
+        table.getCell(`${letter}108`).numeric() / (style === "cozy" ? 1.23 : 1),
+        ((table.getCell(`${letter}109`).numeric() /
+          (style === "cozy" ? 1.23 : 1)) *
+          S69) /
+          S104,
+        ((table.getCell(`${letter}110`).numeric() /
+          (style === "cozy" ? 1.23 : 1)) *
+          S69) /
+          S104,
+        table.getCell(`${letter}112`).numeric() * space,
       ];
       const optionsAmountArray: number[] = [
         demontage ? 1 : 0,
@@ -745,9 +766,10 @@ fetch(
         entranceDoors ? 1 : 0,
         builtinFurniture ? 1 : 0,
         builtinFurniture ? 1 : 0,
+        conditioning,
       ];
       const optionsAdressesArray: number[] = [
-        103, 104, 105, 106, 107, 108, 109, 110,
+        103, 104, 105, 106, 107, 108, 109, 110, 112,
       ];
 
       for (let i = 0; i < optionsAdressesArray.length; i++) {
@@ -776,8 +798,7 @@ fetch(
             table.getCell(`${letter}113`).numeric() *
             (1 + table.getCell("S113").numeric() / 100)) /
           table.getCell("E5").numeric();
-        const conditioningDelivery =
-          conditioningAppl * 0.05 * table.getCell("T103").numeric();
+        const conditioningDelivery = conditioningAppl * 0.05 * T103;
 
         appendObject(
           $work,
@@ -806,7 +827,7 @@ fetch(
       appendObject(
         $("#workList .list-option-container").last(),
         `<span class=\'name summary\'>Total for renovation:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
-          workSum
+          workSum / 1.23
         )} €</span>`
       );
     }
