@@ -64,6 +64,7 @@ fetch(
       flooring: string = storage.get("flooring"),
       workSum = 0,
       furnitureSum = 0,
+      transportationExpenses = storage.get("transportation_expenses"),
       $furniture = $("#furnitureList");
 
     let months =
@@ -390,10 +391,7 @@ fetch(
     $("#workList").append(textObject);
 
     const casualtiesPriceArray = [
-      ((41000 * Math.ceil((table.getCell("G18").numeric() + 1 + 1) / 5)) /
-        1.35 /
-        2 /
-        1.5 +
+      ((41000 * Math.ceil((transportationExpenses + 2) / 5)) / 1.35 / 2 / 1.5 +
         100 * space) *
         S44 *
         S46,
@@ -401,11 +399,12 @@ fetch(
       (months * 2 * 1200 + 3000 + space * 220) * S44 * S46,
     ];
     const casualtiesAdressesArray = [95, 96, 97];
+    textObject = "";
 
     for (let i = 0; i < casualtiesAdressesArray.length; i++) {
       const price = casualtiesPriceArray[i];
       workSum += price;
-      textObject = `<div class=\"option-block\">
+      textObject += `<div class=\"option-block\">
         <div class=\"division-block pricelist\"></div>
         <div class=\"list-option-container\">
           <span class=\'name\'>${table
@@ -417,8 +416,18 @@ fetch(
           <span class=\'list-text\'>${Formatter.formatCurrency(price)} €</span>
         </div>
       </div>`;
-      $("#workList").append(textObject);
     }
+    $("#workList").append(textObject);
+    appendObject(
+      $("#workList"),
+      '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
+    );
+    appendObject(
+      $("#workList .list-option-container").last(),
+      `<span class=\'name summary\'>Total for construction:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+        workSum
+      )} €</span>`
+    );
 
     if (furnitureBool) {
       $("#furnitureList").append(
@@ -801,7 +810,7 @@ fetch(
     );
     appendObject(
       $("#workList .list-option-container").last(),
-      `<span class=\'name summary\'>Total for construction:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+      `<span class=\'name summary\'>Total for renovation:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
         workSum
       )} €</span>`
     );
