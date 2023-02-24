@@ -1,31 +1,24 @@
-/*!****************************!*\
-  !*** ./src/models/Cell.ts ***!
-  \****************************/
+/*!
+ * Sizzle CSS Selector Engine v2.3.9
+ * https://sizzlejs.com/
+ *
+ * Copyright JS Foundation and other contributors
+ * Released under the MIT license
+ * https://js.foundation/
+ *
+ * Date: 2022-12-19
+ */
 
-/*!****************************!*\
-  !*** ./src/utils/Utils.ts ***!
-  \****************************/
-
-/*!*****************************!*\
-  !*** ./src/models/Style.ts ***!
-  \*****************************/
-
-/*!*****************************!*\
-  !*** ./src/models/Table.ts ***!
-  \*****************************/
-
-/*!******************************!*\
-  !*** ./src/calculator_24.ts ***!
-  \******************************/
-
-/*!********************************!*\
-  !*** ./src/utils/Formatter.ts ***!
-  \********************************/
-
-/*!******************************************!*\
-  !*** ./src/utils/LocalStorageHandler.ts ***!
-  \******************************************/
-
-/*!********************************************!*\
-  !*** ./node_modules/jquery/dist/jquery.js ***!
-  \********************************************/
+/*!
+ * jQuery JavaScript Library v3.6.3
+ * https://jquery.com/
+ *
+ * Includes Sizzle.js
+ * https://sizzlejs.com/
+ *
+ * Copyright OpenJS Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.org/license
+ *
+ * Date: 2022-12-20T21:28Z
+ */
