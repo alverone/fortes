@@ -52,6 +52,7 @@ class LocalStorageHandler {
     this.set("furniture_bool", false);
     this.set("appliances_bool_total", false);
     this.set("appliances", "gorenje");
+    this.set("transportation_expenses", 5);
   }
 
   storageToRequestBody(storage: Storage): string {

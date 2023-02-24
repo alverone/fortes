@@ -680,7 +680,7 @@ fetch(
       );
     }
 
-    if (
+    const hasOptions =
       builtinFurniture ||
       cementScreed ||
       finishingMaterials ||
@@ -689,8 +689,9 @@ fetch(
       heatedFlooring > 0 ||
       denoising ||
       entranceDoors ||
-      conditioning
-    ) {
+      conditioning;
+
+    if (hasOptions) {
       $("#workList").append(
         '</div><div class="list-option-container margined"></div>'
       );
@@ -795,6 +796,17 @@ fetch(
 
         workSum += conditioningDelivery + conditioningAppl;
       }
+
+      appendObject(
+        $("#workList"),
+        '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
+      );
+      appendObject(
+        $("#workList .list-option-container").last(),
+        `<span class=\'name summary\'>Total for renovation:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+          workSum
+        )} €</span>`
+      );
     }
 
     if (!appliancesBoolTotal) {
@@ -803,17 +815,6 @@ fetch(
     if (!furnitureBool) {
       $("#furnitureList").toggle(false);
     }
-
-    appendObject(
-      $("#workList"),
-      '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
-    );
-    appendObject(
-      $("#workList .list-option-container").last(),
-      `<span class=\'name summary\'>Total for renovation:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
-        workSum
-      )} €</span>`
-    );
 
     function appendFurnitureOption(
       name: string,

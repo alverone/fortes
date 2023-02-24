@@ -230,5 +230,6 @@ $(function () {
     storage.set("denoising", $("#noise").is(":checked"));
     storage.set("entrance_doors", $("#doors").is(":checked"));
     storage.set("flooring", $(":radio[name='flooring']:checked").val());
+    storage.set("transportation_expenses", $("#distance").val());
   }
 });
