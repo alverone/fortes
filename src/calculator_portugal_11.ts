@@ -80,9 +80,7 @@ $(function () {
       return;
     }
 
-    if (!input.is("#distance")) {
-      debounceCalculate();
-    }
+    debounceCalculate();
   });
 
   $(".calculator-tab, .tab-new").on("click", function () {
