@@ -917,11 +917,11 @@ fetch(
       let appliancesListTotalString = "";
 
       for (let i = 0; i < appliancesTuple[1]; i++) {
-        appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>${table
+        appliancesListString += `<div class="option-block"><div class="division-block"></div><div class="list-option-container appliances"><span class=\'name\'>${table
           .getCell("F" + (appliancesTuple[0] + i))
           .value()} ${table
           .getCell("E" + (appliancesTuple[0] + i))
-          .value()}</span><span class=\'list-text white\'>${Formatter.formatCurrency(
+          .value()}</span><span class=\'list-text\'>${Formatter.formatCurrency(
           table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9
         )} €</span></div></div>`;
 
@@ -951,13 +951,13 @@ fetch(
         applianceSum * 0.2
       )} €</span></div></div>`;
 
-      appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>Appliances delivery</span><span class=\'list-text white\'>${Formatter.formatCurrency(
+      appliancesListString += `<div class="option-block"><div class="division-block"></div><div class="list-option-container appliances"><span class=\'name\'>Appliances delivery</span><span class=\'list-text\'>${Formatter.formatCurrency(
         ((appliancesTuple[1] * g35) / e5) * 0.9
       )} €</span></div></div>`;
 
-      appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>${table
+      appliancesListString += `<div class="option-block"><div class="division-block"></div><div class="list-option-container appliances"><span class=\'name\'>${table
         .getCell("F164")
-        .value()}</span><span class=\'list-text white\'>${Formatter.formatCurrency(
+        .value()}</span><span class=\'list-text\'>${Formatter.formatCurrency(
         applianceSum * 0.2
       )} €</span></div></div>`;
 
@@ -1010,12 +1010,12 @@ fetch(
       Formatter.formatCurrency(kitchenDelivery) + " €"
     );
     $("#kitchenTotal").html(Formatter.formatCurrency(kitchenTotal) + " €");
-    $("#kitchenTotalPrice").html(Formatter.formatCurrency(applianceSum) + " €");
+    $("#appliancesPrice").html(Formatter.formatCurrency(applianceSum) + " €");
     if (furnitureBool) {
       furnitureSum = 0;
     }
 
-    if (Math.abs(storage.get("summedPrice") / workSum) <= 0.06) {
+    if (1 - Math.abs(storage.get("summedPrice") / workSum) <= 0.06) {
       $("#totalPriceTotal").html(
         Formatter.formatCurrency(workSum / 1.23) + " € *"
       );
