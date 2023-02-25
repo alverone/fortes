@@ -161,6 +161,8 @@ fetch(
       S44;
 
     const workPriceArray = [
+      table.getCell(`J47`).numeric() / S44,
+      table.getCell(`J48`).numeric() / S44,
       space / amountOfRooms <= 50
         ? space *
           (space <= 60
@@ -230,6 +232,8 @@ fetch(
         (style == "japandi" || style == "fusion" ? 1 : 0),
     ];
     const workAmountArray = [
+      shower ? amountOfBathrooms : 0,
+      bath ? amountOfBathrooms : 0,
       1,
       1,
       amountOfBathrooms,
@@ -241,7 +245,20 @@ fetch(
       style !== "japandi" && style !== "fusion" ? 1 : 0,
       style === "japandi" || style === "fusion" ? 1 : 0,
     ];
-    const workAdressesArray = [50, 51, 52, 53, 55, 56, 57, flooringNum, 63, 64];
+    const workAdressesArray = [
+      47,
+      48,
+      50,
+      51,
+      52,
+      53,
+      55,
+      56,
+      57,
+      flooringNum,
+      63,
+      64,
+    ];
 
     workSum += water;
     textObject = returnObject(
@@ -787,7 +804,7 @@ fetch(
           returnObject(
             table.getCell("F" + optionsAdressesArray[i])?.value(),
             "",
-            Formatter.formatCurrency(price) + "€"
+            Formatter.formatCurrency(price) + " €"
           )
         );
       }
@@ -805,7 +822,7 @@ fetch(
           returnObject(
             table.getCell("F113")?.value(),
             "",
-            Formatter.formatCurrency(conditioningAppl) + "€"
+            Formatter.formatCurrency(conditioningAppl) + " €"
           )
         );
         appendObject(
@@ -813,7 +830,7 @@ fetch(
           returnObject(
             table.getCell("F114")?.value(),
             "",
-            Formatter.formatCurrency(conditioningDelivery) + "€"
+            Formatter.formatCurrency(conditioningDelivery) + " €"
           )
         );
 
@@ -997,9 +1014,8 @@ fetch(
     if (furnitureBool) {
       furnitureSum = 0;
     }
-    //$("#kitchenTotalPriceDiscount").html(Formatter.formatCurrency(applianceSum * 0.9));
 
-    if (storage.get("summedPrice") < workSum) {
+    if (Math.abs(storage.get("summedPrice") / workSum) <= 0.06) {
       $("#totalPriceTotal").html(
         Formatter.formatCurrency(workSum / 1.23) + " € *"
       );

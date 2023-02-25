@@ -1,7 +1,7 @@
 abstract class Formatter {
-  public static formatCurrency(num: number, maximumFractionDigits?: number) {
+  public static formatCurrency(num: number) {
     return Intl.NumberFormat("uk-UA", {
-      maximumFractionDigits: maximumFractionDigits ?? 2,
+      maximumFractionDigits: 2,
     }).format(num);
   }
 }
