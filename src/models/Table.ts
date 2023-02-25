@@ -7,13 +7,13 @@ export class Table {
     this.cells = cells;
   }
 
-  getCell(address: string): Cell | null {
+  getCell(address: string): Cell {
     const result: Cell[] = this.cells.filter(
       (item) => item.address === address
     );
 
     if (result.length == 0) {
-      return null;
+      return new Cell(address, "0");
     } else {
       return result[0];
     }

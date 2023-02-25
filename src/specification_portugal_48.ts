@@ -116,19 +116,19 @@ fetch(
     if (flooring == "vynil") {
       flooringNum = "60";
       flooringNum2 = "86";
-      flooringPrice = space * (space <= 70 ? 220.33 : 161.8) * S46 * 2;
+      flooringPrice = space * (space < 70 ? 220.33 : 161.8) * S46 * 3;
     } else if (flooring == "parket") {
       flooringNum = "61";
       flooringNum2 = "87";
-      flooringPrice = space * (space <= 80 ? 369.96 : 240.31) * S46 * 2;
+      flooringPrice = space * (space < 80 ? 369.96 : 240.31) * S46 * 2;
     } else {
       //laminat
       flooringNum = "59";
       flooringNum2 = "85";
-      flooringPrice = space * (space <= 70 ? 201.26 : 198.81) * S46 * 2;
+      flooringPrice = space * (space < 70 ? 201.26 : 198.81) * S46 * 2;
     }
 
-    let $work = $("#workList");
+    const $work = $("#workList");
     let textObject = "";
     let water =
       2523 *
@@ -858,7 +858,7 @@ fetch(
       if (manufacturer === null) {
         appendObject(
           $("#materialsList .option-block .list-option-container").last(),
-          `<span class=\'name\'>${name}</span><span class=\'list-text\'>${amount} ${dim} </span>`
+          `<span class=\'name\'>${name}</span><span class=\'list-text\'>${amount} ${dim}</span>`
         );
         return;
       }
@@ -875,7 +875,7 @@ fetch(
     );
     appendObject(
       $("#materialsList .list-option-container").last(),
-      `<span class=\'name summary\'>Всього по будівельній частині:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+      `<span class=\'name summary\'>Total for construction works:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
         workSum
       )} €</span>`
     );
@@ -896,8 +896,8 @@ fetch(
     }
 
     if (appliancesBoolTotal) {
-      let appliancesListString: string = "";
-      let appliancesListTotalString: string = "";
+      let appliancesListString = "";
+      let appliancesListTotalString = "";
 
       for (let i = 0; i < appliancesTuple[1]; i++) {
         appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>${table
@@ -924,7 +924,7 @@ fetch(
       const e5 = table.getCell("E5").numeric();
       applianceSum += ((appliancesTuple[1] * g35) / e5) * 0.9;
 
-      appliancesListTotalString += `<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"><span class=\'name\'>Доставка техніки</span><span class=\'list-text amount\'></span><span class=\'list-text\'>${Formatter.formatCurrency(
+      appliancesListTotalString += `<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"><span class=\'name\'>Appliances delivery</span><span class=\'list-text amount\'></span><span class=\'list-text\'>${Formatter.formatCurrency(
         ((appliancesTuple[1] * g35) / e5) * 0.9
       )} €</span></div></div>`;
 
@@ -934,7 +934,7 @@ fetch(
         applianceSum * 0.2
       )} €</span></div></div>`;
 
-      appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>Доставка техніки</span><span class=\'list-text white\'>${Formatter.formatCurrency(
+      appliancesListString += `<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"><span class=\'name white\'>Appliances delivery</span><span class=\'list-text white\'>${Formatter.formatCurrency(
         ((appliancesTuple[1] * g35) / e5) * 0.9
       )} €</span></div></div>`;
 
@@ -946,7 +946,7 @@ fetch(
 
       applianceSum *= 1.2;
 
-      appliancesListTotalString += `<div class="division-block pricelist"></div><div class="list-option-container summary"><span class=\'name summary\'>Всього по техніці:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+      appliancesListTotalString += `<div class="division-block pricelist"></div><div class="list-option-container summary"><span class=\'name summary\'>Total for appliances:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
         applianceSum
       )} €</span></div>`;
 
