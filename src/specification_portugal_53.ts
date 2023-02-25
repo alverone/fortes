@@ -922,7 +922,7 @@ fetch(
           .value()} ${table
           .getCell("E" + (appliancesTuple[0] + i))
           .value()}</span><span class=\'list-text\'>${Formatter.formatCurrency(
-          table.getCell("D" + (appliancesTuple[0] + i)).numeric()
+          table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9
         )} €</span></div></div>`;
 
         appliancesListTotalString += `<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"><span class=\'name\'>${table
@@ -930,10 +930,11 @@ fetch(
           .value()} ${table
           .getCell("E" + (appliancesTuple[0] + i))
           .value()}</span><span class=\'list-text amount\'>1 piece</span><span class=\'list-text\'>${Formatter.formatCurrency(
-          table.getCell("D" + (appliancesTuple[0] + i)).numeric()
+          table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9
         )}€</span></div></div>`;
 
-        applianceSum += table.getCell("D" + (appliancesTuple[0] + i)).numeric();
+        applianceSum +=
+          table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9;
       }
 
       const g35 = table.getCell("G35").numeric();
@@ -945,7 +946,7 @@ fetch(
       )} €</span></div></div>`;
 
       appliancesListTotalString += `<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"><span class=\'name\'>${table
-        .getCell("F164")
+        .getCell("F165")
         .value()}</span><span class=\'list-text amount\'></span><span class=\'list-text\'>${Formatter.formatCurrency(
         applianceSum * 0.2
       )} €</span></div></div>`;
@@ -955,7 +956,7 @@ fetch(
       )} €</span></div></div>`;
 
       appliancesListString += `<div class="option-block"><div class="division-block"></div><div class="list-option-container appliances"><span class=\'name\'>${table
-        .getCell("F164")
+        .getCell("F165")
         .value()}</span><span class=\'list-text\'>${Formatter.formatCurrency(
         applianceSum * 0.2
       )} €</span></div></div>`;
