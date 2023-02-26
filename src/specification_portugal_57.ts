@@ -384,9 +384,9 @@ $(function () {
           78,
           79,
           80,
+          81,
           82,
-          83,
-          84,
+
           flooringNum2,
         ];
 
@@ -409,6 +409,17 @@ $(function () {
           );
 
           $("#workList").append(textObject);
+
+          appendObject(
+            $work,
+            '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
+          );
+          appendObject(
+            $("#workList .list-option-container").last(),
+            `<span class=\'pricelist-header small no-padding\'>Total for construction with components and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+              workSum
+            )} €</span>`
+          );
         }
       }
 
@@ -419,7 +430,7 @@ $(function () {
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\">${table
-            .getCell("F93")
+            .getCell("F92")
             .value()}</h4>
         <span class=\'notation amount\'>${StringConsts.kAmount}</span>
         <span class=\'notation\'>${StringConsts.kCost}</span>`
@@ -427,7 +438,7 @@ $(function () {
       textObject = `<div class=\"option-block\">
       <div class=\"division-block pricelist\"></div>
       <div class=\"list-option-container\">
-        <span class=\'name\'>${table.getCell("F94").value()}</span>
+        <span class=\'name\'>${table.getCell("F93").value()}</span>
         <span class=\'list-text amount\'>${months} months</span>
         <span class=\'list-text\'> </span>
       </div>
@@ -469,7 +480,7 @@ $(function () {
       );
       appendObject(
         $("#workList .list-option-container").last(),
-        `<span class=\'name summary\'>Total for construction:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+        `<span class=\'pricelist-header small no-padding\'>Total for construction:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
           workSum
         )} €</span>`
       );
@@ -719,7 +730,7 @@ $(function () {
         );
         appendObject(
           $("#furnitureList .list-option-container").last(),
-          `<span class=\'name summary\'>Total for renovation, construction works and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+          `<span class=\'pricelist-header small no-padding\'>Total for renovation, construction works and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
             furnitureSum
           )} €</span>`
         );
@@ -749,6 +760,7 @@ $(function () {
               StringConsts.kCost
             }</span>`
           );
+        let optionsSum = 0;
 
         const optionsPriceArray: number[] = [
           table.getCell(`${letter}103`).numeric() * space,
@@ -811,7 +823,7 @@ $(function () {
             continue;
           }
 
-          workSum += price;
+          optionsSum += price;
           appendObject(
             $work,
             returnObject(
@@ -847,7 +859,7 @@ $(function () {
             )
           );
 
-          workSum += conditioningDelivery + conditioningAppl;
+          optionsSum += conditioningDelivery + conditioningAppl;
         }
 
         appendObject(
@@ -856,10 +868,12 @@ $(function () {
         );
         appendObject(
           $("#workList .list-option-container").last(),
-          `<span class=\'name summary\'>Total for renovation:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
-            workSum
+          `<span class=\'pricelist-header small no-padding\'>Total for options:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+            optionsSum
           )} €</span>`
         );
+
+        workSum += optionsSum;
       }
 
       if (!appliancesBoolTotal) {
@@ -905,7 +919,7 @@ $(function () {
       );
       appendObject(
         $("#materialsList .list-option-container").last(),
-        `<span class=\'name summary\'>Total for construction works:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+        `<span class=\'pricelist-header small no-padding\'>Total for construction with components and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
           workSum
         )} €</span>`
       );
@@ -964,7 +978,7 @@ $(function () {
 
         applianceSum *= 1.2;
 
-        appliancesListTotalString += `<div class="division-block pricelist"></div><div class="list-option-container summary"><span class=\'name summary\'>Total for appliances:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+        appliancesListTotalString += `<div class="division-block pricelist"></div><div class="list-option-container summary"><span class=\'pricelist-header small no-padding\'>Total for appliances:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
           applianceSum
         )} €</span></div>`;
 
@@ -974,22 +988,14 @@ $(function () {
         $appliancesListTotal.style.display = "none";
       }
 
-      const kitchenPrice = table.getCell(`${styleLetter}121`).numeric();
-      const kitchenMontage = table.getCell(`${styleLetter}122`).numeric();
-      const kitchenDelivery = table.getCell(`${styleLetter}123`).numeric();
-      const kitchenTotal = kitchenMontage + kitchenPrice + kitchenDelivery;
+      if (builtinFurniture) {
+        const kitchenPrice =
+          table.getCell(`${styleLetter}109`).numeric() /
+          (style === "cozy" ? 1.23 : 1);
 
-      $("#kitchenPrice").html(Formatter.formatCurrency(kitchenPrice) + " €");
-      $("#kitchenMontage").html(
-        Formatter.formatCurrency(kitchenMontage) + " €"
-      );
-      $("#kitchenDelivery").html(
-        Formatter.formatCurrency(kitchenDelivery) + " €"
-      );
-      $("#kitchenTotal").html(Formatter.formatCurrency(kitchenTotal) + " €");
-      $("#appliancesPrice").html(Formatter.formatCurrency(applianceSum) + " €");
-      if (furnitureBool) {
-        furnitureSum = 0;
+        $("#kitchenPrice").html(
+          Formatter.formatCurrency(kitchenPrice * S69) + " €"
+        );
       }
 
       workSum += applianceSum;
