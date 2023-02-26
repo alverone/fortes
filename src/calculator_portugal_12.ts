@@ -178,15 +178,14 @@ $(function () {
 
     const json = await result.json();
     const cost = parseFloat(json.cost_per_meter);
-    const costVAT = cost * 1.23;
 
-    storage.set("costPerMetre", costVAT);
-    storage.set("summedPrice", costVAT * storage.get("space"));
+    storage.set("costPerMetre", cost);
+    storage.set("summedPrice", cost * storage.get("space") * 1.23);
 
-    $total.html(Formatter.formatCurrency(costVAT));
+    $total.html(Formatter.formatCurrency(cost));
     $totalWhole.html(Formatter.formatCurrency(cost * storage.get("space")));
     $("#totalWholeVAT").html(
-      Formatter.formatCurrency(costVAT * storage.get("space"))
+      Formatter.formatCurrency(cost * storage.get("space") * 1.23)
     );
 
     return;
