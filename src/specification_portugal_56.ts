@@ -58,7 +58,7 @@ $(function () {
 
   $("#months").html(months.toString());
   $("#total").html(Formatter.formatCurrency(summedPrice));
-  $("#space").html(localStorage.getItem("space"));
+  $("#space").html(space.toString());
   $("#pricePerMetre").html(Formatter.formatCurrency(costPerMetre));
 
   fetch(
@@ -136,7 +136,7 @@ $(function () {
 
       const $work = $("#workList");
       let textObject = "";
-      let water =
+      const water =
         2523 *
           ((amountOfRooms > 0 ? 6 : 0) +
             (bath ? 2 : 0) +
@@ -150,7 +150,7 @@ $(function () {
         (950 * S46) / 41 +
         (shower ? 1 : 0) * 4000 * amountOfBathrooms * 2 * S44 * S46 -
         (800 * S46) / 41;
-      let canalisation =
+      const canalisation =
         1974 *
         ((amountOfRooms > 0 ? 3 : 0) +
           (bath ? 1 : 0) +
@@ -911,7 +911,6 @@ $(function () {
       );
       let applianceSum = 0;
 
-      const $appliancesList = document.getElementById("appliancesList");
       const $appliancesListTotal = document.getElementById(
         "appliancesListTotal"
       );
@@ -928,28 +927,25 @@ $(function () {
       }
 
       if (appliancesBoolTotal) {
-        let appliancesListString = "";
         let appliancesListTotalString = "";
 
         for (let i = 0; i < appliancesTuple[1]; i++) {
-          appliancesListString += `<div class="option-block"><div class="division-block"></div><div class="list-option-container appliances"><span class=\'name\'>${table
-            .getCell("F" + (appliancesTuple[0] + i))
-            .value()} ${table
-            .getCell("E" + (appliancesTuple[0] + i))
-            .value()}</span><span class=\'list-text\'>${Formatter.formatCurrency(
-            table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9
-          )} €</span></div></div>`;
-
-          appliancesListTotalString += `<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"><span class=\'name\'>${table
-            .getCell("F" + (appliancesTuple[0] + i))
-            .value()} ${table
-            .getCell("E" + (appliancesTuple[0] + i))
-            .value()}</span><span class=\'list-text amount\'>1 piece</span><span class=\'list-text\'>${Formatter.formatCurrency(
-            table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9
-          )}€</span></div></div>`;
-
-          applianceSum +=
+          const price =
             table.getCell("D" + (appliancesTuple[0] + i)).numeric() * 0.9;
+
+          appliancesListTotalString += `<div class="option-block">
+          <div class="division-block pricelist"></div>
+          <div class="list-option-container"><span class=\'name\'>${table
+            .getCell("F" + (appliancesTuple[0] + i))
+            .value()} ${table
+            .getCell("E" + (appliancesTuple[0] + i))
+            .value()}</span>
+            <span class=\'list-text amount\'>1 piece</span>
+            <span class=\'list-text\'>${Formatter.formatCurrency(price)}€</span>
+            </div>
+            </div>`;
+
+          applianceSum += price;
         }
 
         const g35 = table.getCell("G35").numeric();
@@ -966,24 +962,14 @@ $(function () {
           applianceSum * 0.2
         )} €</span></div></div>`;
 
-        appliancesListString += `<div class="option-block"><div class="division-block"></div><div class="list-option-container appliances"><span class=\'name\'>Appliances delivery</span><span class=\'list-text\'>${Formatter.formatCurrency(
-          (appliancesTuple[1] * g35) / e5
-        )} €</span></div></div>`;
-
-        appliancesListString += `<div class="option-block"><div class="division-block"></div><div class="list-option-container appliances"><span class=\'name\'>${table
-          .getCell("F165")
-          .value()}</span><span class=\'list-text\'>${Formatter.formatCurrency(
-          applianceSum * 0.2
-        )} €</span></div></div>`;
-
         applianceSum *= 1.2;
 
         appliancesListTotalString += `<div class="division-block pricelist"></div><div class="list-option-container summary"><span class=\'name summary\'>Total for appliances:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
           applianceSum
         )} €</span></div>`;
 
-        $appliancesList.innerHTML = appliancesListString;
-        $appliancesListTotal.innerHTML = appliancesListTotalString;
+        $appliancesListTotal.innerHTML =
+          $appliancesListTotal.innerHTML + appliancesListTotalString;
       } else {
         $appliancesListTotal.style.display = "none";
       }
