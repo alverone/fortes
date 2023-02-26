@@ -344,7 +344,6 @@ $(function () {
           table.getCell(`${letter}72`).numeric(),
           table.getCell(`${letter}73`).numeric(),
           table.getCell(`${letter}74`).numeric(),
-
           table.getCell(`${letter}76`).numeric(),
           table.getCell(`${letter}77`).numeric(),
           table.getCell(`${letter}78`).numeric(),
@@ -409,32 +408,19 @@ $(function () {
           );
 
           $("#workList").append(textObject);
-
-          appendObject(
-            $work,
-            '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
-          );
-          appendObject(
-            $("#workList .list-option-container").last(),
-            `<span class=\'pricelist-header small no-padding\'>Total for construction with components and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
-              workSum
-            )} €</span>`
-          );
         }
+        appendObject(
+          $work,
+          '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
+        );
+        appendObject(
+          $("#workList .list-option-container").last(),
+          `<span class=\'pricelist-header small no-padding\'>Total for construction with components and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+            workSum
+          )} €</span>`
+        );
       }
 
-      $("#workList").append(
-        '</div><div class="list-option-container margined"></div>'
-      );
-      $("#workList .list-option-container")
-        .last()
-        .append(
-          `<h4 class=\"pricelist-header small no-padding\">${table
-            .getCell("F92")
-            .value()}</h4>
-        <span class=\'notation amount\'>${StringConsts.kAmount}</span>
-        <span class=\'notation\'>${StringConsts.kCost}</span>`
-        );
       textObject = `<div class=\"option-block\">
       <div class=\"division-block pricelist\"></div>
       <div class=\"list-option-container\">
@@ -474,15 +460,11 @@ $(function () {
       </div>`;
       }
       $("#workList").append(textObject);
-      appendObject(
-        $("#workList"),
-        '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
-      );
-      appendObject(
-        $("#workList .list-option-container").last(),
-        `<span class=\'pricelist-header small no-padding\'>Total for construction:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+      textObject = "";
+      $work.append(
+        `<div class="division-block pricelist"></div><div class="list-option-container summary"><span class=\'pricelist-header small no-padding\'>Total for construction:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
           workSum
-        )} €</span>`
+        )} €</span></div>`
       );
 
       if (furnitureBool) {
@@ -730,7 +712,7 @@ $(function () {
         );
         appendObject(
           $("#furnitureList .list-option-container").last(),
-          `<span class=\'pricelist-header small no-padding\'>Total for renovation, construction works and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+          `<span class=\'pricelist-header small no-padding\'>Total for furniture:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
             furnitureSum
           )} €</span>`
         );
