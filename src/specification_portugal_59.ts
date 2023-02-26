@@ -409,16 +409,6 @@ $(function () {
 
           $("#workList").append(textObject);
         }
-        appendObject(
-          $work,
-          '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
-        );
-        appendObject(
-          $("#workList .list-option-container").last(),
-          `<span class=\'pricelist-header small no-padding\'>Total for construction with components and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
-            workSum
-          )} €</span>`
-        );
       }
 
       textObject = `<div class=\"option-block\">
@@ -461,10 +451,16 @@ $(function () {
       }
       $("#workList").append(textObject);
       textObject = "";
-      $work.append(
-        `<div class="division-block pricelist"></div><div class="list-option-container summary"><span class=\'pricelist-header small no-padding\'>Total for construction:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
+
+      appendObject(
+        $work,
+        '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
+      );
+      appendObject(
+        $("#workList .list-option-container").last(),
+        `<span class=\'pricelist-header small no-padding\'>Total for construction with components and finishing materials:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
           workSum
-        )} €</span></div>`
+        )} €</span>`
       );
 
       if (furnitureBool) {
@@ -769,16 +765,9 @@ $(function () {
               : 0)) *
             space *
             T103,
-          table.getCell(`${letter}108`).numeric() /
-            (style === "cozy" ? 1.23 : 1),
-          ((table.getCell(`${letter}109`).numeric() /
-            (style === "cozy" ? 1.23 : 1)) *
-            S69) /
-            S104,
-          ((table.getCell(`${letter}110`).numeric() /
-            (style === "cozy" ? 1.23 : 1)) *
-            S69) /
-            S104,
+          table.getCell(`${letter}108`).numeric() / 1.23,
+          (table.getCell(`${letter}109`).numeric() * S69) / S104,
+          (table.getCell(`${letter}110`).numeric() * S69) / S104,
           table.getCell(`${letter}112`).numeric() * space,
         ];
         const optionsAmountArray: number[] = [
@@ -971,13 +960,13 @@ $(function () {
       }
 
       if (builtinFurniture) {
-        const kitchenPrice =
-          table.getCell(`${styleLetter}109`).numeric() /
-          (style === "cozy" ? 1.23 : 1);
+        const kitchenPrice = table.getCell(`${letter}109`).numeric();
 
         $("#kitchenPrice").html(
           Formatter.formatCurrency(kitchenPrice * S69) + " €"
         );
+      } else {
+        $("#kitchenSection").toggle(false);
       }
 
       workSum += applianceSum;
