@@ -1018,7 +1018,6 @@ $(function () {
 
   $("#wf-form-specification").on("submit", async function (e) {
     e.preventDefault();
-    e.stopImmediatePropagation();
 
     if (!$("#agreementCheckbox").is(":checked")) {
       $(".warning.agreementcheckbox.specification").toggle(true);
@@ -1050,12 +1049,17 @@ $(function () {
     }
 
     if (!$(".warning.specification").is(":visible")) {
-      DataCollectionHandler.collectPortugalSpecificationData(
-        new FormData(
-          <HTMLFormElement>document.getElementById("wf-form-specification")
-        )
-      );
-      submit();
+      submit().finally(() => {
+        DataCollectionHandler.collectPortugalSpecificationData(
+          new FormData(
+            <HTMLFormElement>document.getElementById("wf-form-specification")
+          )
+        );
+        window.location.assign("/sdyakuiemo");
+      });
+    } else {
+      e.stopImmediatePropagation();
+      return false;
     }
   });
 
@@ -1083,7 +1087,7 @@ $(function () {
       "We sent your estimation to your email address. If you don't see it, check Spam folder or wait a few minutes."
     );
 
-    fetch("https://api.fortes.agency/mail", {
+    return fetch("https://api.fortes.agency/mail", {
       method: "POST",
       body: JSON.stringify({
         fileId: id,
@@ -1093,7 +1097,7 @@ $(function () {
       headers: {
         "Content-Type": "application/json",
       },
-    }).finally(() => window.location.assign("/sdyakuiemo"));
+    });
   }
 
   $("img").each(function () {
