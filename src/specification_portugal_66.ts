@@ -1013,7 +1013,6 @@ $(function () {
           <HTMLFormElement>document.getElementById("wf-form-consult")
         )
       );
-      submit();
     }
   });
 
@@ -1061,7 +1060,7 @@ $(function () {
   });
 
   async function submit() {
-    $(".modal-note").html("Please wait...");
+    $(".modal-note.specification").html("Please wait...");
 
     const pageContent = $("html").clone().find("script").remove().end().html();
     const fileString =
@@ -1080,7 +1079,7 @@ $(function () {
     const result = await response.json();
     const id = result.success ? result.id : "";
 
-    $(".modal-note").html(
+    $(".modal-note.specification").html(
       "We sent your estimation to your email address. If you don't see it, check Spam folder or wait a few minutes."
     );
 
