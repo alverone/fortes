@@ -1,5 +1,4 @@
 import Splide from "@splidejs/splide";
-import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { DesignStyle } from "./models/Style";
 
 $(function () {
@@ -20,7 +19,6 @@ $(function () {
       },
     },
   };
-  const storage: LocalStorageHandler = new LocalStorageHandler();
 
   const splideCalc = new Splide(".slider-container.splide", splideOptions);
 
@@ -217,6 +215,7 @@ $(function () {
 
       const fd = new FormData($("#wf-form-consult").get(0) as HTMLFormElement);
 
+      //https://script.google.com/macros/s/AKfycbwB8mb3PvzvRTn19rCeo6wG9wX8mrNLQ8luReOk9mgaMVO7Ynzbq06GznYq2HwQbShDFQ/exec
       //заявки на консультацию
       fetch(
         "https://script.google.com/macros/s/AKfycbxaZQTrmT0wZsVWErYh9k8yxgTqUn1v9NfBTXyZCv01dFmRsp-4/exec",

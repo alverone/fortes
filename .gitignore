@@ -63,4 +63,5 @@ web_modules/
 .webpack/
 .svelte-kit
 
-test.js
+**/test.js
+build/*

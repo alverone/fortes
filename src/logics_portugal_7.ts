@@ -212,30 +212,22 @@ $(function () {
       return false;
     } else {
       e.preventDefault();
-      let oldBtnName = $("#submitBtn").html();
+      const oldBtnName = $("#submitBtn").html();
       $("#submitBtn").html("Зачекайте...");
 
       const fd = new FormData($("#wf-form-consult").get(0) as HTMLFormElement);
 
       //заявки на консультацию
       fetch(
-        "https://script.google.com/macros/s/AKfycbxaZQTrmT0wZsVWErYh9k8yxgTqUn1v9NfBTXyZCv01dFmRsp-4/exec",
+        "https://script.google.com/macros/s/AKfycbwB8mb3PvzvRTn19rCeo6wG9wX8mrNLQ8luReOk9mgaMVO7Ynzbq06GznYq2HwQbShDFQ/exec",
         {
           method: "POST",
           body: fd,
         }
       )
-        .then(() => {
-          $("#submitBtn").html(oldBtnName);
-        })
+        .then(() => $("#submitBtn").html(oldBtnName))
         .catch((error) => console.error("Error!", error.message))
-        .finally(() => {
-          if (window.location.href.includes("/ru")) {
-            window.location.assign("/ru/kdyakuiemo");
-          } else {
-            window.location.assign("/kdyakuiemo");
-          }
-        });
+        .finally(() => window.location.assign("/kdyakuiemo"));
     }
   });
 
