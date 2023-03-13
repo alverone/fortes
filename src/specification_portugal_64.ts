@@ -8,6 +8,8 @@ import { StringConsts } from "./utils/StringConsts";
 import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 
 $(function () {
+  const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const storage = new LocalStorageHandler();
 
   const style: string = storage.get("style");
@@ -983,32 +985,75 @@ $(function () {
       }
     });
 
-  $("#wf-form-consult").on("submit", async function (e) {
+  $("#wf-form-consult").on("submit", function (e) {
     e.preventDefault();
 
     if (!$("#agreementCheckbox").is(":checked")) {
-      $(".warning.agreementcheckbox").toggle(true);
+      $(".warning.agreementcheckbox:not(.specification)").toggle(true);
     } else {
-      $(".warning.agreementcheckbox").toggle(false);
+      $(".warning.agreementcheckbox:not(.specification)").toggle(false);
     }
     if (!$("#phone").val()) {
-      $(".warning.inputs.phone").toggle(true);
+      $(".warning.phone:not(.specification)").toggle(true);
     } else {
-      $(".warning.inputs.phone").toggle(false);
+      $(".warning.phone:not(.specification)").toggle(false);
     }
     if (!$("#name").val()) {
-      $(".warning.inputs.name").toggle(true);
+      $(".warning.name:not(.specification)").toggle(true);
     } else {
-      $(".warning.inputs.name").toggle(false);
+      $(".warning.name:not(.specification)").toggle(false);
     }
 
-    if ($(".warning").is(":visible")) {
+    if ($(".warning:not(.specification)").is(":visible")) {
       e.preventDefault();
       return false;
     } else {
       DataCollectionHandler.collectPortugalClientData(
         new FormData(
           <HTMLFormElement>document.getElementById("wf-form-consult")
+        )
+      );
+      submit();
+    }
+  });
+
+  $("#wf-form-specification").on("submit", async function (e) {
+    e.preventDefault();
+
+    if (!$("#agreementCheckbox").is(":checked")) {
+      $(".warning.agreementcheckbox.specification").toggle(true);
+    } else {
+      $(".warning.agreementcheckbox.specification").toggle(false);
+    }
+    if (!$("#sPhone").val() && !$("#sEmail").val()) {
+      $(".warning.phone.specification").toggle(true);
+    } else {
+      $(".warning.phone.specification").toggle(false);
+    }
+    if (!$("#sName").val()) {
+      $(".warning.name.specification").toggle(true);
+    } else {
+      $(".warning.name.specification").toggle(false);
+    }
+
+    if (($("#sEmail").val() as string).length == 0) {
+      $(".warning.wrongEmail.specification").toggle(false);
+      $(".warning.emptyEmail.specification").toggle(true);
+    } else if (!emailRegex.test(<string>$("#sEmail").val())) {
+      $(".warning.wrongEmail.specification").toggle(true);
+      $(".warning.emptyEmail.specification").toggle(false);
+    } else {
+      $(".warning.wrongEmail.specification").toggle(false);
+      $(".warning.emptyEmail.specification").toggle(false);
+    }
+
+    if ($(".warning.specification").is(":visible")) {
+      e.preventDefault();
+      return false;
+    } else {
+      DataCollectionHandler.collectPortugalSpecificationData(
+        new FormData(
+          <HTMLFormElement>document.getElementById("#wf-form-specification")
         )
       );
       submit();
