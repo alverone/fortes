@@ -56,6 +56,51 @@ $(function () {
       ? 8
       : 9) + (style == "modern" || style == "neoclassic" ? 1 : 0);
 
+  const dataCollectionFd = new FormData();
+  dataCollectionFd.append("Style", style);
+  dataCollectionFd.append("Total cost VAT", summedPrice.toString());
+  dataCollectionFd.append(
+    "Total cost",
+    Math.floor(summedPrice / 1.23).toString()
+  );
+  dataCollectionFd.append("Cost per metre", costPerMetre.toString());
+  dataCollectionFd.append(
+    "Cost per metre VAT",
+    Math.floor(costPerMetre * 1.23).toString()
+  );
+  dataCollectionFd.append("Area", space.toString());
+  dataCollectionFd.append("Number of bedrooms", amountOfRooms.toString());
+  dataCollectionFd.append("Number of bathrooms", amountOfBathrooms.toString());
+  dataCollectionFd.append("Bath", bath ? "1" : "0");
+  dataCollectionFd.append("Shower", shower ? "1" : "0");
+  dataCollectionFd.append(
+    "Distance from Lisbon",
+    transportationExpenses.toString()
+  );
+  dataCollectionFd.append("Flooring", flooring);
+  dataCollectionFd.append(
+    "Finishing materials",
+    finishingMaterials ? "1" : "0"
+  );
+  dataCollectionFd.append("Dismantling Works", demontage ? "1" : "0");
+  dataCollectionFd.append("Cement screed", cementScreed ? "1" : "0");
+  dataCollectionFd.append("Entrance doors", entranceDoors ? "1" : "0");
+  dataCollectionFd.append("Soundproofing", denoising ? "1" : "0");
+  dataCollectionFd.append("Built-in furniture", builtinFurniture ? "1" : "0");
+
+  dataCollectionFd.append("Underfloor heating", heatedFlooring.toString());
+  dataCollectionFd.append("Air conditioning", conditioning.toString());
+  dataCollectionFd.append("Window installation", windows.toString());
+
+  dataCollectionFd.append("Decorating", furnitureBool ? "1" : "0");
+  dataCollectionFd.append("Appliances", appliancesBoolTotal ? appliances : "");
+  dataCollectionFd.append("Construction term, months", months.toString());
+
+  fetch(
+    "https://script.google.com/macros/s/AKfycbwnwi3SZ8gK3zSYW2DEoc6BtY9HS1stpRSHPW6pATmX2UawetpC-74YPZ5LjjX282Ki/exec",
+    { method: "POST", body: dataCollectionFd }
+  ).catch((error) => console.error(`Failed to collect data, reason: ${error}`));
+
   $("#months").html(months.toString());
   $("#total").html(Formatter.formatCurrency(summedPrice));
   $("#space").html(space.toString());

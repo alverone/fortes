@@ -215,10 +215,9 @@ $(function () {
 
       const fd = new FormData($("#wf-form-consult").get(0) as HTMLFormElement);
 
-      //https://script.google.com/macros/s/AKfycbwB8mb3PvzvRTn19rCeo6wG9wX8mrNLQ8luReOk9mgaMVO7Ynzbq06GznYq2HwQbShDFQ/exec
-      //заявки на консультацию
+      //заявки на консультацію
       fetch(
-        "https://script.google.com/macros/s/AKfycbxaZQTrmT0wZsVWErYh9k8yxgTqUn1v9NfBTXyZCv01dFmRsp-4/exec",
+        "https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec",
         {
           method: "POST",
           body: fd,

@@ -5,6 +5,10 @@ import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
 
+//TODO: add form submission data collection via
+//https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec
+//macros
+
 fetch(
   "https://docs.google.com/spreadsheets/d/1KkkpKbytztt48mwP1RGgpVFpfke8-IqB0KLWA8Sn2FE/gviz/tq?tqx=out:json?tq=SELECT *"
 )

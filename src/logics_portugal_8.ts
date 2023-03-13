@@ -217,9 +217,9 @@ $(function () {
 
       const fd = new FormData($("#wf-form-consult").get(0) as HTMLFormElement);
 
-      //заявки на консультацию
+      //заявки на консультацію
       fetch(
-        "https://script.google.com/macros/s/AKfycbwB8mb3PvzvRTn19rCeo6wG9wX8mrNLQ8luReOk9mgaMVO7Ynzbq06GznYq2HwQbShDFQ/exec",
+        "https://script.google.com/macros/s/AKfycbxOsBq0xEPLGEPM11fnrBf3ZL-AUQy5esIlkmSx9T9tuLACst2Tfx8xGc2uUzFIcsxKrA/exec",
         {
           method: "POST",
           body: fd,
