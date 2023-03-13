@@ -64,4 +64,4 @@ web_modules/
 .svelte-kit
 
 **/test.js
-build/*
+build/
