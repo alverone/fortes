@@ -302,7 +302,7 @@ $(function () {
   $(".submit-container .button").on("click", function (e) {
     e.preventDefault();
 
-    DataCollectionHandler.collectPortugalCalcData().finally(() =>
+    DataCollectionHandler.collectPortugalCalcData().then(() =>
       window.open(
         $('.calculator-btn:not([style*="display: none"]) a').data("href"),
         "_blank"
