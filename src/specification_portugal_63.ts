@@ -5,10 +5,9 @@ import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
 import { StringConsts } from "./utils/StringConsts";
+import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 
 $(function () {
-  const emailRegex =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const storage = new LocalStorageHandler();
 
   const style: string = storage.get("style");
@@ -55,57 +54,6 @@ $(function () {
       : space <= 175
       ? 8
       : 9) + (style == "modern" || style == "neoclassic" ? 1 : 0);
-
-  const dataCollectionFd = new FormData();
-  dataCollectionFd.append("Style", style);
-  dataCollectionFd.append(
-    "Total cost VAT",
-    Formatter.formatCurrency(summedPrice)
-  );
-  dataCollectionFd.append(
-    "Total cost",
-    Formatter.formatCurrency(summedPrice / 1.23)
-  );
-  dataCollectionFd.append(
-    "Cost per metre",
-    Formatter.formatCurrency(costPerMetre)
-  );
-  dataCollectionFd.append(
-    "Cost per metre VAT",
-    Formatter.formatCurrency(costPerMetre * 1.23)
-  );
-  dataCollectionFd.append("Area", space.toString());
-  dataCollectionFd.append("Number of bedrooms", amountOfRooms.toString());
-  dataCollectionFd.append("Number of bathrooms", amountOfBathrooms.toString());
-  dataCollectionFd.append("Bath", bath ? "1" : "0");
-  dataCollectionFd.append("Shower", shower ? "1" : "0");
-  dataCollectionFd.append(
-    "Distance from Lisbon",
-    transportationExpenses.toString()
-  );
-  dataCollectionFd.append("Flooring", flooring);
-  dataCollectionFd.append(
-    "Finishing materials",
-    finishingMaterials ? "1" : "0"
-  );
-  dataCollectionFd.append("Dismantling works", demontage ? "1" : "0");
-  dataCollectionFd.append("Cement screed", cementScreed ? "1" : "0");
-  dataCollectionFd.append("Entrance doors", entranceDoors ? "1" : "0");
-  dataCollectionFd.append("Soundproofing", denoising ? "1" : "0");
-  dataCollectionFd.append("Built-in furniture", builtinFurniture ? "1" : "0");
-
-  dataCollectionFd.append("Underfloor heating", heatedFlooring.toString());
-  dataCollectionFd.append("Air conditioning", conditioning.toString());
-  dataCollectionFd.append("Window installation", windows.toString());
-
-  dataCollectionFd.append("Decorating", furnitureBool ? "1" : "0");
-  dataCollectionFd.append("Appliances", appliancesBoolTotal ? appliances : "");
-  dataCollectionFd.append("Construction term, months", months.toString());
-
-  fetch(
-    "https://script.google.com/macros/s/AKfycbwnwi3SZ8gK3zSYW2DEoc6BtY9HS1stpRSHPW6pATmX2UawetpC-74YPZ5LjjX282Ki/exec",
-    { method: "POST", body: dataCollectionFd }
-  ).catch((error) => console.error(`Failed to collect data, reason: ${error}`));
 
   $("#months").html(months.toString());
   $("#total").html(Formatter.formatCurrency(summedPrice));
@@ -1035,7 +983,7 @@ $(function () {
       }
     });
 
-  $(".form-2").on("submit", async function (e) {
+  $("#wf-form-consult").on("submit", async function (e) {
     e.preventDefault();
 
     if (!$("#agreementCheckbox").is(":checked")) {
@@ -1043,32 +991,26 @@ $(function () {
     } else {
       $(".warning.agreementcheckbox").toggle(false);
     }
-    if (!$("#sPhone").val() && !$("#sEmail").val()) {
+    if (!$("#phone").val()) {
       $(".warning.inputs.phone").toggle(true);
     } else {
       $(".warning.inputs.phone").toggle(false);
     }
-    if (!$("#sName").val()) {
+    if (!$("#name").val()) {
       $(".warning.inputs.name").toggle(true);
     } else {
       $(".warning.inputs.name").toggle(false);
-    }
-
-    if (($("#sEmail").val() as string).length == 0) {
-      $(".warning.inputs.wrongEmail").toggle(false);
-      $(".warning.inputs.emptyEmail").toggle(true);
-    } else if (!emailRegex.test($("#sEmail").val() as string)) {
-      $(".warning.inputs.wrongEmail").toggle(true);
-      $(".warning.inputs.emptyEmail").toggle(false);
-    } else {
-      $(".warning.inputs.wrongEmail").toggle(false);
-      $(".warning.inputs.emptyEmail").toggle(false);
     }
 
     if ($(".warning").is(":visible")) {
       e.preventDefault();
       return false;
     } else {
+      DataCollectionHandler.collectPortugalClientData(
+        new FormData(
+          <HTMLFormElement>document.getElementById("wf-form-consult")
+        )
+      );
       submit();
     }
   });
@@ -1107,11 +1049,7 @@ $(function () {
       headers: {
         "Content-Type": "application/json",
       },
-    }).finally(() =>
-      setTimeout(() => {
-        window.location.assign("/sdyakuiemo");
-      }, 5000)
-    );
+    }).finally(() => window.location.assign("/sdyakuiemo"));
   }
 
   $("img").each(function () {

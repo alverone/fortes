@@ -104,8 +104,6 @@ $(function () {
 
     $(".slick-btn-prev, .slick-btn-next").on("click", function () {
       let index: number = splide.index;
-      let textPrev: string = "";
-      let textNext: string = "";
 
       $(".slick-btn-prev, .slick-btn-next").removeClass("disabled");
 
@@ -120,6 +118,11 @@ $(function () {
           $(this).addClass("disabled");
         }
       }
+    });
+
+    splide.on("move", (index, prev, dest) => {
+      let textPrev: string = "";
+      let textNext: string = "";
 
       switch (index) {
         case 0:
@@ -213,7 +216,9 @@ $(function () {
       let oldBtnName = $("#submitBtn").html();
       $("#submitBtn").html("Зачекайте...");
 
-      const fd = new FormData($("#wf-form-consult").get(0) as HTMLFormElement);
+      const fd = new FormData(
+        document.getElementById("wf-form-consult") as HTMLFormElement
+      );
 
       //заявки на консультацію
       fetch(
@@ -395,7 +400,7 @@ $(function () {
       $(`.calculator-slider-option:eq(${splideCalc.index})`).addClass("active");
     });
 
-    $("form input").on("keydown", (e) => {
+    $(".calculator form").on("keydown", (e) => {
       if (e.key == "Enter") {
         e.preventDefault();
       }
@@ -424,22 +429,6 @@ $(function () {
         $(this).siblings(".image-price").removeClass("active");
       }
     });
-  }
-
-  function getData(obj: JQuery<HTMLElement>, dataVal: string): string | number {
-    if (isFinite(Number(obj.data(dataVal)))) {
-      return parseInt(obj.data(dataVal));
-    } else {
-      return obj.data(dataVal);
-    }
-  }
-
-  function val(object: JQuery<HTMLElement>): number | string | string[] {
-    if (isFinite(Number(object.val()))) {
-      return Number(object.val());
-    } else {
-      return object.val();
-    }
   }
 
   function isInViewport(element: HTMLElement): boolean {

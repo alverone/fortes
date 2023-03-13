@@ -25,19 +25,22 @@ $(function () {
       debounceCalculate();
     });
 
-  $("#space").on("focusout", function () {
+  $space.on("focusout", function () {
     $(this).val(
       $(this)
         .val()
         .toString()
         .match(/\d*\.?\d+/)
     );
+
     storage.set("space", $space.val());
+
     if (storage.get("space") === 0 || storage.get("amount_of_rooms") === 0) {
       $total.html("0");
       $totalWhole.html("0");
       return;
     }
+
     debounceCalculate();
   });
 

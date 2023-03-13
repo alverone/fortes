@@ -1,6 +1,7 @@
+import { Options } from "@splidejs/splide/dist/types/types/options";
 import Splide from "@splidejs/splide";
-import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { DesignStyle } from "./models/Style";
+import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 
 $(function () {
   const vw: number = $(window).width();
@@ -8,7 +9,15 @@ $(function () {
   $(".choiceactive.card").toggleClass("choiceActiveBorder");
   $("#laminat").prop("checked", true);
 
-  const splideOptions = {
+  const splideNext = document.getElementById("splideNext");
+  const splidePrev = document.getElementById("splidePrev");
+  const splideNextText = document.getElementById("splideNextText");
+  const splidePrevText = document.getElementById("splidePrevText");
+  const $consultationButton = <HTMLInputElement>(
+    document.getElementById("submitBtn")
+  );
+
+  const splideOptions: Options = {
     arrows: false,
     pagination: false,
     speed: 550,
@@ -20,7 +29,6 @@ $(function () {
       },
     },
   };
-  const storage: LocalStorageHandler = new LocalStorageHandler();
 
   const splideCalc = new Splide(".slider-container.splide", splideOptions);
 
@@ -47,7 +55,7 @@ $(function () {
         return;
       }
 
-      let index = $(this).index();
+      const index = $(this).index();
 
       $(".tab-new.active").removeClass("active");
       $(this).addClass("active");
@@ -104,29 +112,21 @@ $(function () {
       $(".splide__slide.is-active .active img").css("height")
     );
 
-    $(".slick-btn-prev, .slick-btn-next").on("click", function () {
-      let index: number = splide.index;
+    splideNext.addEventListener("click", () => splide.go(">"));
+    splidePrev.addEventListener("click", () => splide.go("<"));
+
+    splide.on("move", (index, _, __) => {
       let textPrev: string = "";
       let textNext: string = "";
 
-      $(".slick-btn-prev, .slick-btn-next").removeClass("disabled");
-
-      if ($(this).index() == 0) {
-        splide.go("<");
-        if (index-- - 1 == 0) {
-          $(this).addClass("disabled");
-        }
-      } else {
-        splide.go(">");
-        if (index++ + 1 == 4) {
-          $(this).addClass("disabled");
-        }
-      }
+      splidePrev.classList.remove("disabled");
+      splideNext.classList.remove("disabled");
 
       switch (index) {
         case 0:
           textPrev = "";
           textNext = "Bedroom";
+          splidePrev.classList.add("disabled");
           break;
         case 1:
           textPrev = "Living room";
@@ -143,13 +143,14 @@ $(function () {
         case 4:
           textPrev = "Shower";
           textNext = "";
+          splideNext.classList.add("disabled");
           break;
         default:
           return;
       }
 
-      $(".slick-prev-text").html(textPrev);
-      $(".slick-next-text").html(textNext);
+      splidePrevText.innerText = textPrev;
+      splideNextText.innerText = textNext;
     });
   }
 
@@ -212,23 +213,17 @@ $(function () {
       return false;
     } else {
       e.preventDefault();
-      const $button = $("#submitBtn");
-      const oldBtnName = $button.html();
 
-      $button.html("Зачекайте...");
+      const oldBtnName = $consultationButton.value;
 
-      const fd = new FormData($("#wf-form-consult").get(0) as HTMLFormElement);
+      $consultationButton.value = "Please wait...";
 
-      //заявки на консультацію
-      fetch(
-        "https://script.google.com/macros/s/AKfycbw8iA1vk33T5UIZo_SAFw2gvvI1-sMY9UEQ3i8sDTaNsB2yJ2MKGphRa8PkJmqhgxB51A/exec",
-        {
-          method: "POST",
-          body: fd,
-        }
-      )
-        .then(() => $button.html(oldBtnName))
-        .catch((error) => console.error("Error!", error.message))
+      const fd = new FormData(
+        <HTMLFormElement>document.getElementById("wf-form-consult")
+      );
+
+      DataCollectionHandler.collectPortugalClientData(fd)
+        .then(() => ($consultationButton.value = oldBtnName))
         .finally(() => window.location.assign("/kdyakuiemo"));
     }
   });
@@ -307,9 +302,11 @@ $(function () {
   $(".submit-container .button").on("click", function (e) {
     e.preventDefault();
 
-    window.open(
-      $('.calculator-btn:not([style*="display: none"]) a').data("href"),
-      "_blank"
+    DataCollectionHandler.collectPortugalCalcData().finally(() =>
+      window.open(
+        $('.calculator-btn:not([style*="display: none"]) a').data("href"),
+        "_blank"
+      )
     );
   });
 
@@ -392,7 +389,7 @@ $(function () {
       $(`.calculator-slider-option:eq(${splideCalc.index})`).addClass("active");
     });
 
-    $("form input").on("keydown", (e) => {
+    $(".calculator form").on("keydown", (e) => {
       if (e.key == "Enter") {
         e.preventDefault();
       }
