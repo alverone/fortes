@@ -1019,17 +1019,20 @@ $(function () {
 
   $("#wf-form-specification").on("submit", async function (e) {
     e.preventDefault();
+    e.stopImmediatePropagation();
 
     if (!$("#agreementCheckbox").is(":checked")) {
       $(".warning.agreementcheckbox.specification").toggle(true);
     } else {
       $(".warning.agreementcheckbox.specification").toggle(false);
     }
-    if (!$("#sPhone").val() && !$("#sEmail").val()) {
+
+    if (!$("#sPhone").val()) {
       $(".warning.phone.specification").toggle(true);
     } else {
       $(".warning.phone.specification").toggle(false);
     }
+
     if (!$("#sName").val()) {
       $(".warning.name.specification").toggle(true);
     } else {
@@ -1047,13 +1050,10 @@ $(function () {
       $(".warning.emptyEmail.specification").toggle(false);
     }
 
-    if ($(".warning.specification").is(":visible")) {
-      e.preventDefault();
-      return false;
-    } else {
+    if (!$(".warning.specification").is(":visible")) {
       DataCollectionHandler.collectPortugalSpecificationData(
         new FormData(
-          <HTMLFormElement>document.getElementById("#wf-form-specification")
+          <HTMLFormElement>document.getElementById("wf-form-specification")
         )
       );
       submit();
