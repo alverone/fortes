@@ -58,15 +58,21 @@ $(function () {
 
   const dataCollectionFd = new FormData();
   dataCollectionFd.append("Style", style);
-  dataCollectionFd.append("Total cost VAT", summedPrice.toString());
+  dataCollectionFd.append(
+    "Total cost VAT",
+    Formatter.formatCurrency(summedPrice)
+  );
   dataCollectionFd.append(
     "Total cost",
-    Math.floor(summedPrice / 1.23).toString()
+    Formatter.formatCurrency(summedPrice / 1.23)
   );
-  dataCollectionFd.append("Cost per metre", costPerMetre.toString());
+  dataCollectionFd.append(
+    "Cost per metre",
+    Formatter.formatCurrency(costPerMetre)
+  );
   dataCollectionFd.append(
     "Cost per metre VAT",
-    Math.floor(costPerMetre * 1.23).toString()
+    Formatter.formatCurrency(costPerMetre * 1.23)
   );
   dataCollectionFd.append("Area", space.toString());
   dataCollectionFd.append("Number of bedrooms", amountOfRooms.toString());
@@ -82,7 +88,7 @@ $(function () {
     "Finishing materials",
     finishingMaterials ? "1" : "0"
   );
-  dataCollectionFd.append("Dismantling Works", demontage ? "1" : "0");
+  dataCollectionFd.append("Dismantling works", demontage ? "1" : "0");
   dataCollectionFd.append("Cement screed", cementScreed ? "1" : "0");
   dataCollectionFd.append("Entrance doors", entranceDoors ? "1" : "0");
   dataCollectionFd.append("Soundproofing", denoising ? "1" : "0");
