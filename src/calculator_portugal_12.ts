@@ -3,8 +3,6 @@ import { Formatter } from "./utils/Formatter";
 import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 import { debounce } from "ts-debounce";
 
-import * as $ from "jquery";
-
 $(function () {
   const storage: LocalStorageHandler = new LocalStorageHandler();
 

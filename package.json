@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@splidejs/splide": "3.5.8",
-    "jquery": "^3.6.3",
     "ts-debounce": "^4.0.0"
   },
   "packageManager": "yarn@3.4.1"

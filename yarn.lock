@@ -1367,7 +1367,6 @@ __metadata:
     clean-webpack-plugin: ^4.0.0
     esbuild-loader: ^2.20.0
     fork-ts-checker-webpack-plugin: ^7.2.14
-    jquery: ^3.6.3
     string-replace-loader: ^3.1.0
     terser-webpack-plugin: ^5.3.6
     ts-debounce: ^4.0.0
@@ -1791,13 +1790,6 @@ __metadata:
   version: 3.1.1
   resolution: "joycon@npm:3.1.1"
   checksum: 8003c9c3fc79c5c7602b1c7e9f7a2df2e9916f046b0dbad862aa589be78c15734d11beb9fe846f5e06138df22cb2ad29961b6a986ba81c4920ce2b15a7f11067
-  languageName: node
-  linkType: hard
-
-"jquery@npm:^3.6.3":
-  version: 3.6.3
-  resolution: "jquery@npm:3.6.3"
-  checksum: 0fd366bdcaa0c84a7a8751ce20f8192290141913978b5059574426d9b01f4365daa675f95aab3eec94fd794d27b08d32078a2236bef404b8ba78073009988ce6
   languageName: node
   linkType: hard
 
