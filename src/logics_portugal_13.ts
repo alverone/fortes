@@ -1,23 +1,34 @@
-import { Options } from "@splidejs/splide/dist/types/types/options";
 import Splide from "@splidejs/splide";
 import { DesignStyle } from "./models/Style";
 import { DataCollectionHandler } from "./utils/DataCollectionHandler";
+import { LocalStorageHandler } from "./utils/LocalStorageHandler";
 
 $(function () {
-  const vw: number = $(window).width();
+  const vw = window.innerWidth || document.documentElement.clientWidth;
+  const vh = window.innerHeight || document.documentElement.clientHeight;
 
-  $(".choiceactive.card").toggleClass("choiceActiveBorder");
-  $("#laminat").prop("checked", true);
-
-  const splideNext = document.getElementById("splideNext");
-  const splidePrev = document.getElementById("splidePrev");
-  const splideNextText = document.getElementById("splideNextText");
-  const splidePrevText = document.getElementById("splidePrevText");
+  const $splideBody = document.getElementById("splideBody");
+  const $splideNext = document.getElementById("splideNext");
+  const $splidePrev = document.getElementById("splidePrev");
+  const $splideNextText = document.getElementById("splideNextText");
+  const $splidePrevText = document.getElementById("splidePrevText");
   const $consultationButton = <HTMLInputElement>(
     document.getElementById("submitBtn")
   );
 
-  const splideOptions: Options = {
+  const $nameInput = <HTMLInputElement>document.getElementById("name");
+  const $phoneInput = <HTMLInputElement>document.getElementById("phone");
+  const $consultCheckbox = <HTMLInputElement>(
+    document.getElementById("agreementCheckbox")
+  );
+  const $appliancesRadio = <HTMLInputElement>(
+    document.getElementById("appliancesBool")
+  );
+  const $consultForm = <HTMLFormElement>(
+    document.getElementById("wf-form-consult")
+  );
+
+  const splideOptions = {
     arrows: false,
     pagination: false,
     speed: 550,
@@ -30,12 +41,13 @@ $(function () {
     },
   };
 
+  const localStorageHandler = new LocalStorageHandler();
   const splideCalc = new Splide(".slider-container.splide", splideOptions);
 
   splideCalc.mount();
 
-  $("input").each(function () {
-    $(this).attr("name", $(this).data("name"));
+  document.querySelectorAll("input").forEach(function () {
+    this.name = this.dataset.name;
   });
 
   if ($(".slider-wrapper.splide").length) {
@@ -68,8 +80,9 @@ $(function () {
 
       const style = DesignStyle.fromNumber(index);
 
+      //, .wrap-border.calculator-btn
       $(
-        ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var, .wrap-border.calculator-btn"
+        ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
       ).toggle(false);
 
       $(
@@ -79,15 +92,13 @@ $(function () {
       $(".calculator-slide.splide__slide .calculator-slide")
         .eq(index)
         .toggle(true);
-      $(".calculator-tab.w--current").removeClass("w--current");
-      $(`.calculator-tab`).eq(index).addClass("w--current");
+      $(".calculator-tab.active").removeClass("active");
+      $(`.calculator-tab`).eq(index).addClass("active");
 
-      $(".color-tab.active, .slide-nav.active").removeClass("active");
-      $(".div-block-14 .color-tab").each(function () {
-        if ($(this).index() == 0) {
-          $(this).addClass("active");
-        }
-      });
+      document.querySelector(".color-tab.active").classList.remove("active");
+      document
+        .querySelector('.color-tab[data-color-index="1"]')
+        .classList.add("active");
 
       splideCalc.refresh();
     });
@@ -95,38 +106,18 @@ $(function () {
     const splide = new Splide(".slider-wrapper.splide", splideOptions);
     splide.mount();
 
-    splide.on("move", () =>
-      setTimeout(
-        () => {
-          $(".splide__list").css(
-            "height",
-            $(".splide__slide.is-active .active img").css("height")
-          );
-        },
-        vw > 480 ? 550 : 750
-      )
-    );
-
-    $(".splide__list").css(
-      "height",
-      $(".splide__slide.is-active .active img").css("height")
-    );
-
-    splideNext.addEventListener("click", () => splide.go(">"));
-    splidePrev.addEventListener("click", () => splide.go("<"));
-
-    splide.on("move", (index, _, __) => {
+    splide.on("move", (index, ..._) => {
       let textPrev: string = "";
       let textNext: string = "";
 
-      splidePrev.classList.remove("disabled");
-      splideNext.classList.remove("disabled");
+      $splidePrev.classList.remove("disabled");
+      $splideNext.classList.remove("disabled");
 
       switch (index) {
         case 0:
           textPrev = "";
           textNext = "Bedroom";
-          splidePrev.classList.add("disabled");
+          $splidePrev.classList.add("disabled");
           break;
         case 1:
           textPrev = "Living room";
@@ -143,45 +134,65 @@ $(function () {
         case 4:
           textPrev = "Shower";
           textNext = "";
-          splideNext.classList.add("disabled");
+          $splideNext.classList.add("disabled");
           break;
         default:
           return;
       }
 
-      splidePrevText.innerText = textPrev;
-      splideNextText.innerText = textNext;
+      $splidePrevText.innerText = textPrev;
+      $splideNextText.innerText = textNext;
+
+      setTimeout(
+        () =>
+          ($splideBody.style.height = $(
+            ".splide__slide.is-active .active img"
+          ).css("height")),
+        vw > 480 ? 550 : 750
+      );
     });
+
+    $splideBody.style.height = $(".splide__slide.is-active .active img").css(
+      "height"
+    );
+
+    $splideNext.addEventListener("click", () => splide.go(">"));
+    $splidePrev.addEventListener("click", () => splide.go("<"));
   }
 
-  $(".calculator-tab").on("click", function () {
-    const index: number = $(this).index();
-    const style = DesignStyle.fromNumber(index);
+  document.querySelectorAll(".calculator-tab").forEach((element) =>
+    element.addEventListener("click", (evt) => {
+      ///using currentTarget here to avoid bubbling to capture actual element that has the handler
+      const target = <HTMLElement>evt.currentTarget;
+      const index: number = parseInt(target.dataset.sliderIndex);
+      const style = DesignStyle.fromNumber(index);
 
-    $(
-      ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var, .wrap-border.calculator-btn"
-    ).toggle(false);
+      //, .wrap-border.calculator-btn
+      $(
+        ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
+      ).toggle(false);
 
-    $(
-      ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
-        `.${style}, .specification-${style}.color-1`
-    ).toggle(true);
-    $(".calculator-slide.splide__slide .calculator-slide")
-      .eq(index)
-      .toggle(true);
-    $(".calculator-tab.w--current").removeClass("w--current");
-    $(`.calculator-tab:eq(${index})`).addClass("w--current");
+      $(
+        ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
+          `.${style}, .specification-${style}.color-1`
+      ).toggle(true);
+      $(".calculator-slide.splide__slide .calculator-slide")
+        .eq(index)
+        .toggle(true);
 
-    $(".color-tab.active, .slide-nav.active").removeClass("active");
-    $(".tab-new").eq(index).trigger("click");
-    $(".div-block-14 .color-tab").each(function () {
-      if ($(this).index() == 0) {
-        $(this).addClass("active");
-      }
-    });
+      document
+        .querySelector(".calculator-tab.active")
+        .classList.remove("active");
+      target.classList.add("active");
 
-    splideCalc.refresh();
-  });
+      $(".tab-new").eq(index).trigger("click");
+      document
+        .querySelector('.color-tab[data-color-index="1"]')
+        .classList.add("active");
+
+      //splideCalc.refresh();
+    })
+  );
 
   $(".increment-field .increment").on("click", function () {
     if ($(this).siblings(".increment-input").length <= 0) {
@@ -189,20 +200,21 @@ $(function () {
     }
   });
 
-  $("#wf-form-consult").on("submit", (e) => {
-    if (!$("#agreementCheckbox").is(":checked")) {
+  $consultForm.addEventListener("submit", (e) => {
+    if (!$consultCheckbox.checked) {
       $(".warning.agreementcheckbox").toggle(true);
     } else {
       $(".warning.agreementcheckbox").toggle(false);
     }
 
-    if (!$("#phone").val()) {
+    //TODO: add correct checking
+    if ($phoneInput.value.length == 0) {
       $(".warning.inputs.phone").toggle(true);
     } else {
       $(".warning.inputs.phone").toggle(false);
     }
 
-    if (!$("#name").val()) {
+    if ($nameInput.value.length == 0) {
       $(".warning.inputs.name").toggle(true);
     } else {
       $(".warning.inputs.name").toggle(false);
@@ -215,12 +227,8 @@ $(function () {
       e.preventDefault();
 
       const oldBtnName = $consultationButton.value;
-
       $consultationButton.value = "Please wait...";
-
-      const fd = new FormData(
-        <HTMLFormElement>document.getElementById("wf-form-consult")
-      );
+      const fd = new FormData($consultForm);
 
       DataCollectionHandler.collectPortugalClientData(fd)
         .then(() => ($consultationButton.value = oldBtnName))
@@ -229,7 +237,7 @@ $(function () {
   });
 
   $(".choice").on("click", function (e) {
-    if (!$("#appliancesBool").is(":checked")) {
+    if (!$appliancesRadio.checked) {
       e.preventDefault();
 
       $(".choiceActive").toggleClass("choiceActive");
@@ -257,8 +265,8 @@ $(function () {
     }
   });
 
-  $("#appliancesBool").on("change", function () {
-    if ($(this).is(":checked") && !$(".choiceActiveBorder").length) {
+  $appliancesRadio.addEventListener("change", function () {
+    if (this.checked && !$(".choiceActiveBorder").length) {
       $(".choice").first().toggleClass("choiceActive");
       $(".choice").first().parent().toggleClass("choiceActiveBorder");
     }
@@ -302,11 +310,11 @@ $(function () {
   $(".submit-container .button").on("click", function (e) {
     e.preventDefault();
 
+    const style = localStorageHandler.get("style");
+    const color = localStorageHandler.get("color");
+
     DataCollectionHandler.collectPortugalCalcData();
-    window.open(
-      $('.calculator-btn:not([style*="display: none"]) a').data("href"),
-      "_blank"
-    );
+    window.open(`/specifications/${style - color}`, "_blank");
   });
 
   $(".closing-btn").on("click", function () {
@@ -346,36 +354,49 @@ $(function () {
       mouseleave: () => $(".small-hover.left").css("opacity", 0),
     });
 
-    $(".color-tab").on("click", function () {
-      let index = $(this).index();
-      let number = $(".calculator-tab.w--current").index();
-      const style = DesignStyle.fromNumber(number);
+    document.querySelectorAll(".color-tab").forEach((element) =>
+      element.addEventListener("click", (evt) => {
+        const target = <HTMLElement>evt.currentTarget;
+        const color = parseInt(target.dataset.colorIndex);
+        const previousColor = <number>localStorageHandler.get("color");
 
-      if ($(this).not(".active")) {
-        $(".color-tab.active").removeClass("active");
-        $(".div-block-14 .color-tab").each(function () {
-          if ($(this).index() == index) {
-            $(this).addClass("active");
-          }
-        });
+        const style = DesignStyle.fromString(
+          <string>localStorageHandler.get("style")
+        );
 
-        $(".color-var, .wrap-border.calculator-btn").toggle(false);
+        if (color != previousColor) {
+          document
+            .querySelector(`.color-tab[data-color-index='${color}']`)
+            .classList.remove("active");
+          target.classList.add("active");
 
-        $(
-          `.calculator-slide .color-${
-            index + 1
-          }, .wrap-border.calculator-btn.specification-${style}.color-${
-            index + 1
-          }`
-        ).toggle(true);
-      }
-    });
+          localStorageHandler.set("color", color);
 
-    $(".calculator-slider-option").on("click", function () {
-      $(".calculator-slider-option.active").removeClass("active");
-      $(this).addClass("active");
-      splideCalc.go(parseInt($(this).data("slider-index")));
-    });
+          $(".color-var").toggle(false);
+
+          /*$(
+            `.calculator-slide .color-${
+              color + 1
+            }, .wrap-border.calculator-btn.specification-${style}.color-${
+              color + 1
+            }`
+          ).toggle(true);*/
+        }
+      })
+    );
+
+    document.querySelectorAll(".calculator-slider-option").forEach((element) =>
+      element.addEventListener("click", function (evt) {
+        const target = <HTMLElement>evt.currentTarget;
+
+        document
+          .querySelector(".calculator-slider-option.active")
+          .classList.remove("active");
+        this.classList.add("active");
+
+        splideCalc.go(parseInt(target.dataset.sliderIndex));
+      })
+    );
 
     $(".calculator-arrow").on("click", function () {
       if ($(this).is(".arrow-right")) {
@@ -384,7 +405,9 @@ $(function () {
         splideCalc.go("<");
       }
 
-      $(".calculator-slider-option.active").removeClass("active");
+      document
+        .querySelector(".calculator-slider-option.active")
+        .classList.remove("active");
       $(`.calculator-slider-option:eq(${splideCalc.index})`).addClass("active");
     });
 
@@ -395,7 +418,8 @@ $(function () {
     });
   }
 
-  if (vw <= 767) {
+  ///removed due to these elements being hidden, may be brought back
+  /*if (vw <= 767) {
     $(".star").on("mouseleave", function () {
       $(this).removeClass("hidden");
       $(this).siblings(".image-price").removeClass("active");
@@ -417,16 +441,31 @@ $(function () {
         $(this).siblings(".image-price").addClass("active");
       }
     });
-  }
+  }*/
+
+  document
+    .querySelectorAll(".calculate")
+    .forEach((elem) =>
+      elem.addEventListener(
+        "click",
+        () => (document.location.hash = "calculate")
+      )
+    );
+
+  document.querySelectorAll(".crossbtn.calc").forEach((elem) =>
+    elem.addEventListener("click", () => {
+      history.pushState(
+        "",
+        document.title,
+        window.location.pathname + window.location.search
+      );
+    })
+  );
 
   function isInViewport(element: HTMLElement): boolean {
     const rect = element.getBoundingClientRect();
     return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      rect.top >= 0 && rect.left >= 0 && rect.bottom <= vh && rect.right <= vw
     );
   }
 });

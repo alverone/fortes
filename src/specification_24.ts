@@ -952,7 +952,13 @@ fetch(
       )} грн.</span>`
     );
 
-    function appendFurnitureOption(name, manufacturer, amount, price, dim) {
+    function appendFurnitureOption(
+      name: string,
+      manufacturer: string,
+      amount: number,
+      price: number,
+      dim: string
+    ) {
       if (!furnitureBool) {
         return;
       }
@@ -1098,11 +1104,11 @@ fetch(
       return `<div class=\"option-block\"><div class=\"division-block pricelist\"></div><div class=\"list-option-container\"><span class=\'name\'>${line1}</span><span class=\'list-text amount\'>${line2}</span><span class=\'list-text\'>${line3}</span></div></div>`;
     }
 
-    function appendObject(obj, text) {
+    function appendObject(obj: JQuery<HTMLElement>, text: string) {
       obj.append(text);
     }
 
-    function getRightStyleLetter(style) {
+    function getRightStyleLetter(style: string) {
       let styleLetter = "J";
 
       if (style == "cozy") {
