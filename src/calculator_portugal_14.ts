@@ -9,6 +9,7 @@ $(function () {
   const $space = $("#space");
   const $total = $("#total");
   const $totalWhole = $("#totalWhole");
+  const $totalWholeVat = $("#totalWholeVAT");
 
   const debounceCalculate = debounce(calculate, 300);
 
@@ -180,7 +181,7 @@ $(function () {
 
     $total.html(Formatter.formatCurrency(cost));
     $totalWhole.html(Formatter.formatCurrency(cost * storage.get("space")));
-    $("#totalWholeVAT").html(
+    $totalWholeVat.html(
       Formatter.formatCurrency(cost * storage.get("space") * 1.23)
     );
 
@@ -188,17 +189,9 @@ $(function () {
   }
 
   if ($(window).width() < 992) {
-    $(".calculator-tab.w--current, .slider-tab.w--current").toggleClass(
-      "w--current"
-    );
-    $(
-      ".slide, .calculator-slide, .header-cozy, .wrap-border.calculator-btn"
-    ).toggle(false);
-    $(
-      ".slide.main, .calculator-slide.main, .slide.japandi, .calculator-slide.japandi, .wrap-border.calculator-btn.specification-japandi.color-1"
-    ).toggle(true);
-    $(".calculator-tab:eq(1), .slider-tab:eq(1)").toggleClass("w--current");
-    $(".header-japandi").toggle(true);
+    document
+      .querySelector<HTMLElement>('div.calculator-tab[data-slider-index="1"]')
+      .click();
 
     storage.set("style", DesignStyle.Japandi);
     calculate();
