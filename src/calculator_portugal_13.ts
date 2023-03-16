@@ -42,11 +42,6 @@ $(function () {
     debounceCalculate();
   });
 
-  $(".slider-tab").on("click", function () {
-    storage.set("style", DesignStyle.fromNumber($(this).data("slider-index")));
-    debounceCalculate();
-  });
-
   $space.on("focusout", function () {
     if (parseInt($(this).val().toString()) < 30 || !$(this).val()) {
       $(this).val(30);

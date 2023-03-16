@@ -34,6 +34,7 @@ class LocalStorageHandler {
 
   initPortugal(): void {
     this.set("style", "cozy");
+    this.set("color", 1);
     this.set("space", 50);
     this.set("amount_of_rooms", 2);
     this.set("amount_of_bathrooms", 1);
