@@ -98,12 +98,12 @@ $(function () {
       $(".calculator-tab.active").removeClass("active");
       $(`.calculator-tab`).eq(index).addClass("active");
 
-      document.querySelector(".color-tab.active").classList.remove("active");
+      getCurrentColorTab().classList.remove("active");
       document
         .querySelector('.color-tab[data-color-index="1"]')
         .classList.add("active");
-      localStorageHandler.set("color", 1);
 
+      localStorageHandler.set("color", 1);
       splideCalc.refresh();
     });
 
@@ -190,6 +190,8 @@ $(function () {
       target.classList.add("active");
 
       $(".tab-new").eq(index).trigger("click");
+
+      getCurrentColorTab().classList.remove("active");
       document
         .querySelector('.color-tab[data-color-index="1"]')
         .classList.add("active");
@@ -366,9 +368,7 @@ $(function () {
         const previousColor = <number>localStorageHandler.get("color");
 
         if (color != previousColor) {
-          document
-            .querySelector(`.color-tab[data-color-index='${color}']`)
-            .classList.remove("active");
+          getCurrentColorTab().classList.remove("active");
           target.classList.add("active");
 
           localStorageHandler.set("color", color);
@@ -465,6 +465,12 @@ $(function () {
     const rect = element.getBoundingClientRect();
     return (
       rect.top >= 0 && rect.left >= 0 && rect.bottom <= vh && rect.right <= vw
+    );
+  }
+
+  function getCurrentColorTab(): HTMLElement {
+    return document.querySelector(
+      `.color-tab[data-color-index="${localStorageHandler.get("color")}"]`
     );
   }
 });
