@@ -188,15 +188,6 @@ $(function () {
     return;
   }
 
-  if ($(window).width() < 992) {
-    document
-      .querySelector<HTMLElement>('div.calculator-tab[data-slider-index="1"]')
-      .click();
-
-    storage.set("style", DesignStyle.Japandi);
-    calculate();
-  }
-
   function updateUserData() {
     storage.set("space", $space.val());
     storage.set("amount_of_rooms", $("#amountOfRooms").val());
