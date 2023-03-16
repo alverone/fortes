@@ -47,7 +47,9 @@ $(function () {
   splideCalc.mount();
 
   document.querySelectorAll("input").forEach(function () {
-    this.name = this.dataset.name;
+    try {
+      this.name = this.dataset.name;
+    } catch (_) {}
   });
 
   if ($(".slider-wrapper.splide").length) {
