@@ -425,12 +425,10 @@ $(function () {
         e.preventDefault();
       }
     });
-
-    if ($(window).width() < 992) {
-      document
-        .querySelector<HTMLElement>('div.calculator-tab[data-slider-index="1"]')
-        .click();
-    }
+  } else {
+    document
+      .querySelector<HTMLElement>('div.calculator-tab[data-slider-index="1"]')
+      .click();
   }
 
   ///removed due to these elements being hidden, may be brought back
