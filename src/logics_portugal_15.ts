@@ -15,6 +15,7 @@ $(function () {
   const $consultationButton = <HTMLInputElement>(
     document.getElementById("submitBtn")
   );
+  const $node = <HTMLInputElement>document.getElementById("node");
 
   const $nameInput = <HTMLInputElement>document.getElementById("name");
   const $phoneInput = <HTMLInputElement>document.getElementById("phone");
@@ -262,8 +263,8 @@ $(function () {
     }
   });
 
-  $("#node").on("change", function () {
-    if ($("#node").is(":checked") && $(".choiceActive").length) {
+  $node.addEventListener("change", function () {
+    if (this.checked && $(".choiceActive").length) {
       $(".choiceActive").toggleClass("choiceActive");
       $(".choiceActiveBorder").toggleClass("choiceActiveBorder");
     }
@@ -364,10 +365,6 @@ $(function () {
         const color = parseInt(target.dataset.colorIndex);
         const previousColor = <number>localStorageHandler.get("color");
 
-        const style = DesignStyle.fromString(
-          <string>localStorageHandler.get("style")
-        );
-
         if (color != previousColor) {
           document
             .querySelector(`.color-tab[data-color-index='${color}']`)
@@ -378,13 +375,11 @@ $(function () {
 
           $(".color-var").toggle(false);
 
-          /*$(
-            `.calculator-slide .color-${
+          //const style = DesignStyle.fromString(<string>localStorageHandler.get("style"));
+          /*, .wrap-border.calculator-btn.specification-${style}.color-${
               color + 1
-            }, .wrap-border.calculator-btn.specification-${style}.color-${
-              color + 1
-            }`
-          ).toggle(true);*/
+            }`*/
+          $(`.calculator-slide .color-${color}`).toggle(true);
         }
       })
     );
