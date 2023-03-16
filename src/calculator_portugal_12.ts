@@ -91,7 +91,7 @@ $(function () {
     debounceCalculate();
   });
 
-  $("#calculate").on("click", function () {
+  /*$("#calculate").on("click", function () {
     const slideNumber: number = parseInt(
       $(".slider-tab.w--current").data("slider-index")
     );
@@ -122,7 +122,7 @@ $(function () {
     $(".calculator-slide.main, .calculator-slide.cozy").toggle(true);
     $(".calculator-slider-option.active").removeClass("active");
     $(".calculator-slider-option:eq(0)").addClass("active");
-  });
+  });*/
 
   $(".choice").on("click", function () {
     if ($("#node").is(":checked")) {

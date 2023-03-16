@@ -99,6 +99,7 @@ $(function () {
       document
         .querySelector('.color-tab[data-color-index="1"]')
         .classList.add("active");
+      localStorageHandler.set("color", 1);
 
       splideCalc.refresh();
     });
@@ -189,6 +190,7 @@ $(function () {
       document
         .querySelector('.color-tab[data-color-index="1"]')
         .classList.add("active");
+      localStorageHandler.set("color", 1);
 
       //splideCalc.refresh();
     })
