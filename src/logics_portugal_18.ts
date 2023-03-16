@@ -331,7 +331,7 @@ $(function () {
     const color = localStorageHandler.get("color");
 
     DataCollectionHandler.collectPortugalCalcData();
-    window.open(`/specifications/${style - color}`, "_blank");
+    window.open(`/specifications/${style}-${color}`, "_blank");
   });
 
   $(".closing-btn").on("click", function () {
