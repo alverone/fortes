@@ -6,8 +6,8 @@ import {
 } from "./utils/LocalStorageHandler";
 
 $(function () {
-  const vw = window.innerHeight || document.documentElement.clientHeight;
-  const vh = window.innerWidth || document.documentElement.clientWidth;
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const vw = window.innerWidth || document.documentElement.clientWidth;
 
   $(".choiceactive.card").toggleClass("choiceActiveBorder");
 
