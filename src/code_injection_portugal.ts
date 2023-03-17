@@ -34,12 +34,12 @@ const scriptsP = document.location.href.includes("specifications")
       {
         async: false,
         defer: false,
-        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$calcP",
+        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$logP",
       },
       {
         async: false,
         defer: true,
-        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$logP",
+        src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$calcP",
       },
     ];
 
