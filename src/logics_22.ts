@@ -60,7 +60,9 @@ $(function () {
 
         const index = parseInt(this.dataset.sliderIndex);
 
-        this.classList.remove("active");
+        document
+          .querySelector(`div.tab-new.active]`)
+          .classList.remove("active");
         this.classList.add("active");
 
         $(".slider-image-new.active").removeClass("active");
@@ -70,7 +72,8 @@ $(function () {
           }
         });
 
-        //const style = DesignStyle.fromNumber(index);
+        const style = DesignStyle.fromNumber(index);
+        storage.set("style", style.toString());
 
         // $(
         //   ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
@@ -184,9 +187,10 @@ $(function () {
     $(".calculator-tab.active, .color-tab.active").removeClass("active");
     $(this).addClass("active");
 
-    $(".tab-new").eq(index).trigger("click");
     document
-      .querySelectorAll<HTMLInputElement>(`div.color-tab[data-color-index='1']`)
+      .querySelectorAll<HTMLInputElement>(
+        `div.color-tab[data-color-index='1'], .tab-new[data-slider-index="${index}"]`
+      )
       .forEach((element) => element.click());
 
     splideCalc.refresh();
@@ -366,7 +370,7 @@ $(function () {
     document.querySelectorAll("div.color-tab").forEach((element) =>
       element.addEventListener("click", function () {
         const color = parseInt(this.dataset.colorIndex);
-        const previousColor = storage.get("color");
+        const previousColor = parseInt(storage.get("color"));
 
         if (color == previousColor) {
           return;

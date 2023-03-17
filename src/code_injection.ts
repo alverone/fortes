@@ -29,6 +29,11 @@ const scripts = document.location.href.includes("specifications")
       {
         async: false,
         defer: false,
+        src: "https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js",
+      },
+      {
+        async: false,
+        defer: false,
         src: "https://cdn.jsdelivr.net/gh/alverone/fortes@main/dist/$log",
       },
       {
