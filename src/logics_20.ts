@@ -1,11 +1,20 @@
 import Splide from "@splidejs/splide";
 import { DesignStyle } from "./models/Style";
+import {
+  LocalStorageDestination,
+  LocalStorageHandler,
+} from "./utils/LocalStorageHandler";
 
 $(function () {
-  const vw: number = $(window).width();
+  const vw = window.innerHeight || document.documentElement.clientHeight;
+  const vh = window.innerWidth || document.documentElement.clientWidth;
 
   $(".choiceactive.card").toggleClass("choiceActiveBorder");
-  $("#laminat").prop("checked", true);
+
+  const $splideNext = document.getElementById("splideNext");
+  const $splidePrev = document.getElementById("splidePrev");
+  const $splideNextText = document.getElementById("splideNextText");
+  const $splidePrevText = document.getElementById("splidePrevText");
 
   const splideOptions = {
     arrows: false,
@@ -21,11 +30,14 @@ $(function () {
   };
 
   const splideCalc = new Splide(".slider-container.splide", splideOptions);
+  const storage = new LocalStorageHandler(LocalStorageDestination.en);
 
   splideCalc.mount();
 
-  $("input").each(function () {
-    $(this).attr("name", $(this).data("name"));
+  document.querySelectorAll("input").forEach(function () {
+    try {
+      this.name = this.dataset.name;
+    } catch (_) {}
   });
 
   if ($(".slider-wrapper.splide").length) {
@@ -40,87 +52,62 @@ $(function () {
       $(this).addClass("active");
     });
 
-    $(".tab-new").on("click", function () {
-      if ($(this).is(".active")) {
-        return;
-      }
-
-      let index = $(this).index();
-
-      $(".tab-new.active").removeClass("active");
-      $(this).addClass("active");
-      $(".slider-image-new").removeClass("active");
-      $(".slider-image-new").each(function () {
-        if ($(this).index() == index) {
-          $(this).addClass("active");
+    document.querySelectorAll("div.tab-new").forEach((elem) =>
+      elem.addEventListener("click", function () {
+        if (this.classList.contains("active")) {
+          return;
         }
-      });
 
-      const style = DesignStyle.fromNumber(index);
+        const index = parseInt(this.dataset.sliderIndex);
 
-      $(
-        ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var, .wrap-border.calculator-btn"
-      ).toggle(false);
+        this.classList.remove("active");
+        this.classList.add("active");
 
-      $(
-        ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
-          `.${style}, .specification-${style}.color-1`
-      ).toggle(true);
-      $(".calculator-slide.splide__slide .calculator-slide")
-        .eq(index)
-        .toggle(true);
-      $(".calculator-tab.w--current").removeClass("w--current");
-      $(`.calculator-tab`).eq(index).addClass("w--current");
+        $(".slider-image-new.active").removeClass("active");
+        $(".slider-image-new").each(function () {
+          if ($(this).index() == index) {
+            $(this).addClass("active");
+          }
+        });
 
-      $(".color-tab.active, .slide-nav.active").removeClass("active");
-      $(".div-block-14 .color-tab").each(function () {
-        if ($(this).index() == 0) {
-          $(this).addClass("active");
-        }
-      });
+        //const style = DesignStyle.fromNumber(index);
 
-      splideCalc.refresh();
-    });
+        // $(
+        //   ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
+        // ).toggle(false);
+
+        // $(
+        //   ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
+        //     `.${style}, .specification-${style}.color-1`
+        // ).toggle(true);
+        // $(".calculator-slide.splide__slide .calculator-slide")
+        //   .eq(index)
+        //   .toggle(true);
+
+        document
+          .querySelectorAll<HTMLInputElement>(
+            `div.calculator-tab[data-slider-index="${index}"], div.color-tab[data-color-index='1']`
+          )
+          .forEach((element) => element.click());
+      })
+    );
 
     const splide = new Splide(".slider-wrapper.splide", splideOptions);
     splide.mount();
 
-    splide.on("move", () =>
+    splide.on("move", (index, ..._) => {
       setTimeout(
-        () => {
+        () =>
           $(".splide__list").css(
             "height",
             $(".splide__slide.is-active .active img").css("height")
-          );
-        },
+          ),
         vw > 480 ? 550 : 750
-      )
-    );
+      );
 
-    $(".splide__list").css(
-      "height",
-      $(".splide__slide.is-active .active img").css("height")
-    );
+      $splidePrev.classList.remove("disabled");
+      $splideNext.classList.remove("disabled");
 
-    $(".slick-btn-prev, .slick-btn-next").on("click", function () {
-      let index: number = splide.index;
-
-      $(".slick-btn-prev, .slick-btn-next").removeClass("disabled");
-
-      if ($(this).index() == 0) {
-        splide.go("<");
-        if (index-- - 1 == 0) {
-          $(this).addClass("disabled");
-        }
-      } else {
-        splide.go(">");
-        if (index++ + 1 == 4) {
-          $(this).addClass("disabled");
-        }
-      }
-    });
-
-    splide.on("move", (index, prev, dest) => {
       let textPrev: string = "";
       let textNext: string = "";
 
@@ -128,6 +115,7 @@ $(function () {
         case 0:
           textPrev = "";
           textNext = "Дивитись спальню";
+          $splidePrev.classList.add("disabled");
           break;
         case 1:
           textPrev = "Дивитись вітальню";
@@ -144,13 +132,37 @@ $(function () {
         case 4:
           textPrev = "Дивитись душ";
           textNext = "";
+          $splideNext.classList.add("disabled");
           break;
         default:
           return;
       }
 
-      $(".slick-prev-text").html(textPrev);
-      $(".slick-next-text").html(textNext);
+      $splidePrevText.innerText = textPrev;
+      $splideNextText.innerText = textNext;
+    });
+
+    $(".splide__list").css(
+      "height",
+      $(".splide__slide.is-active .active img").css("height")
+    );
+
+    $(".splide-btn-prev, .slick-btn-next").on("click", function () {
+      let index: number = splide.index;
+
+      $(".slick-btn-prev, .slick-btn-next").removeClass("disabled");
+
+      if ($(this).index() == 0) {
+        splide.go("<");
+        if (index-- - 1 == 0) {
+          $(this).addClass("disabled");
+        }
+      } else {
+        splide.go(">");
+        if (index++ + 1 == 4) {
+          $(this).addClass("disabled");
+        }
+      }
     });
   }
 
@@ -159,7 +171,7 @@ $(function () {
     const style = DesignStyle.fromNumber(index);
 
     $(
-      ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var, .wrap-border.calculator-btn"
+      ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
     ).toggle(false);
 
     $(
@@ -169,16 +181,13 @@ $(function () {
     $(".calculator-slide.splide__slide .calculator-slide")
       .eq(index)
       .toggle(true);
-    $(".calculator-tab.w--current").removeClass("w--current");
-    $(`.calculator-tab:eq(${index})`).addClass("w--current");
+    $(".calculator-tab.active, .color-tab.active").removeClass("active");
+    $(this).addClass("active");
 
-    $(".color-tab.active, .slide-nav.active").removeClass("active");
     $(".tab-new").eq(index).trigger("click");
-    $(".div-block-14 .color-tab").each(function () {
-      if ($(this).index() == 0) {
-        $(this).addClass("active");
-      }
-    });
+    document
+      .querySelectorAll<HTMLInputElement>(`div.color-tab[data-color-index='1']`)
+      .forEach((element) => element.click());
 
     splideCalc.refresh();
   });
@@ -313,13 +322,13 @@ $(function () {
     }
   });
 
-  $(".submit-container .button").on("click", function (e) {
+  document.getElementById("submit").addEventListener("click", function (e) {
     e.preventDefault();
 
-    window.open(
-      $('.calculator-btn:not([style*="display: none"]) a').data("href"),
-      "_blank"
-    );
+    const style = storage.get("style");
+    const color = storage.get("color");
+
+    window.open(`/specifications/${style}-${color}`, "_blank");
   });
 
   $(".closing-btn").on("click", function () {
@@ -335,10 +344,6 @@ $(function () {
       }
     );
   });
-
-  if (vw <= 480) {
-    $(".tab-new").eq(1).trigger("click");
-  }
 
   if (vw >= 992) {
     $(".preview-image, .blackbg-text").on({
@@ -358,46 +363,43 @@ $(function () {
       mouseleave: () => $(".small-hover.left").css("opacity", 0),
     });
 
-    $(".color-tab").on("click", function () {
-      let index = $(this).index();
-      let number = $(".calculator-tab.w--current").index();
-      const style = DesignStyle.fromNumber(number);
+    document.querySelectorAll("div.color-tab").forEach((element) =>
+      element.addEventListener("click", function () {
+        const color = parseInt(this.dataset.colorIndex);
+        const previousColor = storage.get("color");
 
-      if ($(this).not(".active")) {
-        $(".color-tab.active").removeClass("active");
-        $(".div-block-14 .color-tab").each(function () {
-          if ($(this).index() == index) {
-            $(this).addClass("active");
-          }
-        });
+        if (color == previousColor) {
+          return;
+        }
 
-        $(".color-var, .wrap-border.calculator-btn").toggle(false);
+        document
+          .querySelector(`div.color-tab[data-color-index="${previousColor}"]`)
+          .classList.remove("active");
+        this.classList.add("active");
+        storage.set("color", color);
 
-        $(
-          `.calculator-slide .color-${
-            index + 1
-          }, .wrap-border.calculator-btn.specification-${style}.color-${
-            index + 1
-          }`
-        ).toggle(true);
-      }
-    });
+        $(".color-var").toggle(false);
+        $(`.calculator-slide .color-${color}`).toggle(true);
+      })
+    );
 
-    $(".calculator-slider-option").on("click", function () {
-      $(".calculator-slider-option.active").removeClass("active");
-      $(this).addClass("active");
-      splideCalc.go(parseInt($(this).data("slider-index")));
-    });
+    document
+      .getElementById("calcSplideNext")
+      .addEventListener("click", () => splideCalc.go(">"));
 
-    $(".calculator-arrow").on("click", function () {
-      if ($(this).is(".arrow-right")) {
-        splideCalc.go(">");
-      } else {
-        splideCalc.go("<");
-      }
+    document
+      .getElementById("calcSplidePrev")
+      .addEventListener("click", () => splideCalc.go("<"));
 
-      $(".calculator-slider-option.active").removeClass("active");
-      $(`.calculator-slider-option:eq(${splideCalc.index})`).addClass("active");
+    splideCalc.on("move", function (index, ..._) {
+      document
+        .querySelector("div.calculator-slider-option.active")
+        .classList.remove("active");
+      document
+        .querySelector(
+          `div.calculator-slider-option[data-slider-index="${index}"]`
+        )
+        .classList.add("active");
     });
 
     $(".calculator form").on("keydown", (e) => {
@@ -407,7 +409,8 @@ $(function () {
     });
   }
 
-  if (vw <= 767) {
+  ///commented due to these elements being hidden
+  /*if (vw <= 767) {
     $(".star").on("mouseleave", function () {
       $(this).removeClass("hidden");
       $(this).siblings(".image-price").removeClass("active");
@@ -429,16 +432,31 @@ $(function () {
         $(this).siblings(".image-price").removeClass("active");
       }
     });
-  }
+  }*/
+
+  document
+    .querySelectorAll(".calculate")
+    .forEach((elem) =>
+      elem.addEventListener(
+        "click",
+        () => (document.location.hash = "calculate")
+      )
+    );
+
+  document.querySelectorAll(".crossbtn.calc").forEach((elem) =>
+    elem.addEventListener("click", () => {
+      history.pushState(
+        "",
+        document.title,
+        window.location.pathname + window.location.search
+      );
+    })
+  );
 
   function isInViewport(element: HTMLElement): boolean {
     const rect = element.getBoundingClientRect();
     return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      rect.top >= 0 && rect.left >= 0 && rect.bottom <= vh && rect.right <= vw
     );
   }
 });

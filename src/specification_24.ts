@@ -1,7 +1,10 @@
 import { Cell } from "./models/Cell";
 import { Table } from "./models/Table";
 import { ResponseRow } from "./models/interfaces/Row";
-import { LocalStorageHandler } from "./utils/LocalStorageHandler";
+import {
+  LocalStorageDestination,
+  LocalStorageHandler,
+} from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
 
@@ -45,7 +48,7 @@ fetch(
     const gorenje: [number, number] = [168, 9];
     const bosch: [number, number] = [182, 10];
     const miele: [number, number] = [197, 9];
-    const storage = new LocalStorageHandler();
+    const storage = new LocalStorageHandler(LocalStorageDestination.uk, true);
     let appliances = storage.get("appliances");
 
     const hrnCourse = table.getCell("G7").numeric();

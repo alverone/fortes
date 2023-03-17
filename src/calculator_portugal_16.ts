@@ -1,10 +1,16 @@
 import { DesignStyle } from "./models/Style";
 import { Formatter } from "./utils/Formatter";
-import { LocalStorageHandler } from "./utils/LocalStorageHandler";
+import {
+  LocalStorageDestination,
+  LocalStorageHandler,
+} from "./utils/LocalStorageHandler";
 import { debounce } from "ts-debounce";
 
 $(function () {
-  const storage: LocalStorageHandler = new LocalStorageHandler();
+  const storage: LocalStorageHandler = new LocalStorageHandler(
+    LocalStorageDestination.en,
+    false
+  );
 
   const $space = $("#space");
   const $total = $("#total");
@@ -14,7 +20,6 @@ $(function () {
   const debounceCalculate = debounce(calculate, 300);
 
   $space.val(50);
-  storage.initPortugal();
   debounceCalculate();
 
   $(".calculator input")

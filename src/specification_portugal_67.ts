@@ -1,7 +1,10 @@
 import { Cell } from "./models/Cell";
 import { Table } from "./models/Table";
 import { ResponseRow } from "./models/interfaces/Row";
-import { LocalStorageHandler } from "./utils/LocalStorageHandler";
+import {
+  LocalStorageDestination,
+  LocalStorageHandler,
+} from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
 import { StringConsts } from "./utils/StringConsts";
@@ -10,7 +13,8 @@ import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 $(function () {
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const storage = new LocalStorageHandler();
+  const storage = new LocalStorageHandler(LocalStorageDestination.en, true);
+  const dataHandler = new DataCollectionHandler(storage);
 
   const style: string = storage.get("style");
   const styleLetter = getRightStyleLetter(style);
@@ -1008,7 +1012,7 @@ $(function () {
       e.preventDefault();
       return false;
     } else {
-      DataCollectionHandler.collectPortugalClientData(
+      dataHandler.collectPortugalClientData(
         new FormData(
           <HTMLFormElement>document.getElementById("wf-form-consult")
         )
@@ -1050,7 +1054,7 @@ $(function () {
 
     if (!$(".warning.specification").is(":visible")) {
       submit().finally(() => {
-        DataCollectionHandler.collectPortugalSpecificationData(
+        dataHandler.collectPortugalSpecificationData(
           new FormData(
             <HTMLFormElement>document.getElementById("wf-form-specification")
           )

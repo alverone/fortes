@@ -1,7 +1,10 @@
 import Splide from "@splidejs/splide";
 import { DesignStyle } from "./models/Style";
 import { DataCollectionHandler } from "./utils/DataCollectionHandler";
-import { LocalStorageHandler } from "./utils/LocalStorageHandler";
+import {
+  LocalStorageDestination,
+  LocalStorageHandler,
+} from "./utils/LocalStorageHandler";
 
 $(function () {
   const vw = window.innerWidth || document.documentElement.clientWidth;
@@ -42,7 +45,11 @@ $(function () {
     },
   };
 
-  const localStorageHandler = new LocalStorageHandler();
+  const localStorageHandler = new LocalStorageHandler(
+    LocalStorageDestination.uk,
+    false
+  );
+  const dataHandler = new DataCollectionHandler(localStorageHandler);
   const splideCalc = new Splide(".slider-container.splide", splideOptions);
 
   splideCalc.mount();
@@ -121,6 +128,14 @@ $(function () {
     splide.mount();
 
     splide.on("move", (index, ..._) => {
+      setTimeout(
+        () =>
+          ($splideBody.style.height = $(
+            ".splide__slide.is-active .active img"
+          ).css("height")),
+        vw > 480 ? 550 : 750
+      );
+
       let textPrev: string = "";
       let textNext: string = "";
 
@@ -156,14 +171,6 @@ $(function () {
 
       $splidePrevText.innerText = textPrev;
       $splideNextText.innerText = textNext;
-
-      setTimeout(
-        () =>
-          ($splideBody.style.height = $(
-            ".splide__slide.is-active .active img"
-          ).css("height")),
-        vw > 480 ? 550 : 750
-      );
     });
 
     $splideBody.style.height = $(".splide__slide.is-active .active img").css(
@@ -247,7 +254,8 @@ $(function () {
       $consultationButton.value = "Please wait...";
       const fd = new FormData($consultForm);
 
-      DataCollectionHandler.collectPortugalClientData(fd)
+      dataHandler
+        .collectPortugalClientData(fd)
         .then(() => ($consultationButton.value = oldBtnName))
         .finally(() => window.location.assign("/kdyakuiemo"));
     }
@@ -330,7 +338,7 @@ $(function () {
     const style = localStorageHandler.get("style");
     const color = localStorageHandler.get("color");
 
-    DataCollectionHandler.collectPortugalCalcData();
+    dataHandler.collectPortugalCalcData();
     window.open(`/specifications/${style}-${color}`, "_blank");
   });
 
@@ -349,7 +357,6 @@ $(function () {
   });
 
   if (vw <= 480) {
-    $(".tab-new").eq(1).trigger("click");
     $(".image-75").removeAttr("sizes");
   }
 

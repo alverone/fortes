@@ -1,10 +1,14 @@
 import { Formatter } from "./Formatter";
 import { LocalStorageHandler } from "./LocalStorageHandler";
 
-export abstract class DataCollectionHandler {
-  static async collectPortugalClientData(
-    fd: FormData
-  ): Promise<void | Response> {
+export class DataCollectionHandler {
+  private _storage: LocalStorageHandler;
+
+  constructor(storage: LocalStorageHandler) {
+    this._storage = storage;
+  }
+
+  async collectPortugalClientData(fd: FormData): Promise<void | Response> {
     return fetch(
       "https://script.google.com/macros/s/AKfycbw8iA1vk33T5UIZo_SAFw2gvvI1-sMY9UEQ3i8sDTaNsB2yJ2MKGphRa8PkJmqhgxB51A/exec",
       {
@@ -14,31 +18,35 @@ export abstract class DataCollectionHandler {
     ).catch((error) => console.error("Error!", error.message));
   }
 
-  static async collectPortugalCalcData(): Promise<void | Response> {
-    const storage = new LocalStorageHandler();
-
-    const style: string = storage.get("style"),
-      appliancesBoolTotal = Boolean(storage.get("appliances_bool_total")),
-      furnitureBool: boolean = Boolean(storage.get("furniture_bool")),
-      space: number = storage.get("space"),
-      bath: boolean = Boolean(storage.get("bath")),
-      shower: boolean = Boolean(storage.get("shower")),
-      amountOfRooms: number = storage.get("amount_of_rooms"),
-      amountOfBathrooms: number = storage.get("amount_of_bathrooms"),
-      demontage: boolean = Boolean(storage.get("demontage")),
-      windows: number = storage.get("windows_installation"),
-      finishingMaterials: boolean = Boolean(storage.get("finishing_materials")),
-      cementScreed: boolean = Boolean(storage.get("cement_screed")),
-      builtinFurniture: boolean = Boolean(storage.get("builtin_furiture")),
-      heatedFlooring: number = storage.get("heated_flooring"),
-      denoising: boolean = Boolean(storage.get("denoising")),
-      entranceDoors: boolean = Boolean(storage.get("entrance_doors")),
-      conditioning: number = storage.get("conditioning"),
-      flooring: string = storage.get("flooring"),
-      transportationExpenses: number = storage.get("transportation_expenses"),
-      appliances: string = storage.get("appliances"),
-      summedPrice: number = storage.get("summedPrice"),
-      costPerMetre: number = storage.get("costPerMetre"),
+  async collectPortugalCalcData(): Promise<void | Response> {
+    const style: string = this._storage.get("style"),
+      appliancesBoolTotal = Boolean(this._storage.get("appliances_bool_total")),
+      furnitureBool: boolean = Boolean(this._storage.get("furniture_bool")),
+      space: number = this._storage.get("space"),
+      bath: boolean = Boolean(this._storage.get("bath")),
+      shower: boolean = Boolean(this._storage.get("shower")),
+      amountOfRooms: number = this._storage.get("amount_of_rooms"),
+      amountOfBathrooms: number = this._storage.get("amount_of_bathrooms"),
+      demontage: boolean = Boolean(this._storage.get("demontage")),
+      windows: number = this._storage.get("windows_installation"),
+      finishingMaterials: boolean = Boolean(
+        this._storage.get("finishing_materials")
+      ),
+      cementScreed: boolean = Boolean(this._storage.get("cement_screed")),
+      builtinFurniture: boolean = Boolean(
+        this._storage.get("builtin_furiture")
+      ),
+      heatedFlooring: number = this._storage.get("heated_flooring"),
+      denoising: boolean = Boolean(this._storage.get("denoising")),
+      entranceDoors: boolean = Boolean(this._storage.get("entrance_doors")),
+      conditioning: number = this._storage.get("conditioning"),
+      flooring: string = this._storage.get("flooring"),
+      transportationExpenses: number = this._storage.get(
+        "transportation_expenses"
+      ),
+      appliances: string = this._storage.get("appliances"),
+      summedPrice: number = this._storage.get("summedPrice"),
+      costPerMetre: number = this._storage.get("costPerMetre"),
       months =
         (space <= 40
           ? 3
@@ -112,33 +120,37 @@ export abstract class DataCollectionHandler {
     ).catch((error) => console.error(error));
   }
 
-  static async collectPortugalSpecificationData(
+  async collectPortugalSpecificationData(
     fd: FormData
   ): Promise<void | Response> {
-    const storage = new LocalStorageHandler();
-
-    const style: string = storage.get("style"),
-      appliancesBoolTotal = Boolean(storage.get("appliances_bool_total")),
-      furnitureBool: boolean = Boolean(storage.get("furniture_bool")),
-      space: number = storage.get("space"),
-      bath: boolean = Boolean(storage.get("bath")),
-      shower: boolean = Boolean(storage.get("shower")),
-      amountOfRooms: number = storage.get("amount_of_rooms"),
-      amountOfBathrooms: number = storage.get("amount_of_bathrooms"),
-      demontage: boolean = Boolean(storage.get("demontage")),
-      windows: number = storage.get("windows_installation"),
-      finishingMaterials: boolean = Boolean(storage.get("finishing_materials")),
-      cementScreed: boolean = Boolean(storage.get("cement_screed")),
-      builtinFurniture: boolean = Boolean(storage.get("builtin_furiture")),
-      heatedFlooring: number = storage.get("heated_flooring"),
-      denoising: boolean = Boolean(storage.get("denoising")),
-      entranceDoors: boolean = Boolean(storage.get("entrance_doors")),
-      conditioning: number = storage.get("conditioning"),
-      flooring: string = storage.get("flooring"),
-      transportationExpenses: number = storage.get("transportation_expenses"),
-      appliances: string = storage.get("appliances"),
-      summedPrice: number = storage.get("summedPrice"),
-      costPerMetre: number = storage.get("costPerMetre"),
+    const style: string = this._storage.get("style"),
+      appliancesBoolTotal = Boolean(this._storage.get("appliances_bool_total")),
+      furnitureBool: boolean = Boolean(this._storage.get("furniture_bool")),
+      space: number = this._storage.get("space"),
+      bath: boolean = Boolean(this._storage.get("bath")),
+      shower: boolean = Boolean(this._storage.get("shower")),
+      amountOfRooms: number = this._storage.get("amount_of_rooms"),
+      amountOfBathrooms: number = this._storage.get("amount_of_bathrooms"),
+      demontage: boolean = Boolean(this._storage.get("demontage")),
+      windows: number = this._storage.get("windows_installation"),
+      finishingMaterials: boolean = Boolean(
+        this._storage.get("finishing_materials")
+      ),
+      cementScreed: boolean = Boolean(this._storage.get("cement_screed")),
+      builtinFurniture: boolean = Boolean(
+        this._storage.get("builtin_furiture")
+      ),
+      heatedFlooring: number = this._storage.get("heated_flooring"),
+      denoising: boolean = Boolean(this._storage.get("denoising")),
+      entranceDoors: boolean = Boolean(this._storage.get("entrance_doors")),
+      conditioning: number = this._storage.get("conditioning"),
+      flooring: string = this._storage.get("flooring"),
+      transportationExpenses: number = this._storage.get(
+        "transportation_expenses"
+      ),
+      appliances: string = this._storage.get("appliances"),
+      summedPrice: number = this._storage.get("summedPrice"),
+      costPerMetre: number = this._storage.get("costPerMetre"),
       months =
         (space <= 40
           ? 3

@@ -3,8 +3,10 @@ import { ResponseRow } from "./models/interfaces/Row";
 import { Table } from "./models/Table";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
-import { LocalStorageHandler } from "./utils/LocalStorageHandler";
-import { DesignStyle } from "./models/Style";
+import {
+  LocalStorageDestination,
+  LocalStorageHandler,
+} from "./utils/LocalStorageHandler";
 
 $(function () {
   fetch(
@@ -39,12 +41,23 @@ $(function () {
           .reduce((pv, cv) => [...pv, ...cv])
       );
 
-      $("#dollarCourse").html(table.getCell("G7").formattedNumerical());
+      document.getElementById("#dollarCourse").innerText = table
+        .getCell("G7")
+        .formattedNumerical();
     });
 
-  const storage: LocalStorageHandler = new LocalStorageHandler();
-  $("#space").val(50);
-  storage.init();
+  const vw = window.innerWidth || document.documentElement.clientWidth;
+
+  const $total = document.getElementById("total");
+  const $totalWhole = document.getElementById("totalWhole");
+  const $space = <HTMLInputElement>document.getElementById("space");
+  const storage: LocalStorageHandler = new LocalStorageHandler(
+    LocalStorageDestination.uk,
+    true
+  );
+
+  $space.value = "50";
+
   calculate();
 
   $(".calculator input")
@@ -61,11 +74,11 @@ $(function () {
         .toString()
         .match(/\d*\.?\d+/)
     );
-    storage.set("space", $("#space").val());
+    storage.set("space", $space.value);
 
     if (storage.get("space") === 0 || storage.get("amount_of_rooms") === 0) {
-      $("#total").html("0");
-      $("#totalWhole").html("0");
+      $total.innerText = "0";
+      $totalWhole.innerText = "0";
 
       return;
     }
@@ -73,16 +86,14 @@ $(function () {
     calculate();
   });
 
-  $(".slider-tab").on("click", function () {
-    getUserStyle($(this).data("slider-index"));
-    calculate();
-  });
-
-  $("#space").on("focusout", function () {
-    if (parseInt($(this).val().toString()) < 30 || !$(this).val()) {
-      $(this).val(30);
-      storage.set("space", $("#space").val());
-
+  $space.addEventListener("focusout", function () {
+    if (
+      this.value.length == 0 ||
+      isNaN(parseInt(this.value)) ||
+      parseInt(this.value) < 30
+    ) {
+      $space.value = "30";
+      storage.set("space", 30);
       calculate();
     }
   });
@@ -104,28 +115,25 @@ $(function () {
         $(this).toggleClass("disabled");
       }
     } else if (
-      parseInt($(this).siblings(".increment-input").val() as string) > 0
+      parseInt(<string>$(this).siblings(".increment-input").val()) > 0
     ) {
       $(this).siblings(".disabled").toggleClass("disabled");
     }
 
     if (storage.get("amount_of_rooms") == 0) {
-      $("#total").html("0");
-      $("#totalWhole").html("0");
+      $total.innerText = "0";
+      $totalWhole.innerText = "0";
       return;
     }
 
     calculate();
   });
 
-  $(".calculator-tab, .tab-new").on("click", function () {
-    const num: number = parseInt($(this).data("slider-index"));
-    getUserStyle(num);
+  document
+    .querySelectorAll(".calculator-tab, .tab-new")
+    .forEach((elem) => elem.addEventListener("click", calculate));
 
-    calculate();
-  });
-
-  $("#calculate").on("click", function () {
+  /*$("#calculate").on("click", function () {
     const slideNumber: number = parseInt(
       $(".slider-tab.w--current").data("slider-index")
     );
@@ -140,23 +148,7 @@ $(function () {
     $(".calculator-slide." + storage.get("style")).toggle(true);
     $(".calculator-slider-option.active").removeClass("active");
     $(".calculator-slider-option:eq(0)").addClass("active");
-  });
-
-  $(".calculatecozy").on("click", function () {
-    storage.set("style", DesignStyle.Cozy);
-    $("calculator-tab.w--current").removeClass("w--current");
-    $(".wrap-border.calculator-tab .custom-style").css("color", "black");
-    $(".wrap-border.calculator-tab .custom-style").css("background", "white");
-    $("calculator-tab:eq(0)").addClass("w--current");
-    $(".calculator-tab").removeClass("w--current");
-    $(".calculator-tab:eq(0)").addClass("w--current");
-    calculate();
-
-    $(".calculator-slide").toggle(false);
-    $(".calculator-slide.main, .calculator-slide.cozy").toggle(true);
-    $(".calculator-slider-option.active").removeClass("active");
-    $(".calculator-slider-option:eq(0)").addClass("active");
-  });
+  });*/
 
   $(".choice").on("click", function () {
     if ($("#node").is(":checked")) {
@@ -198,7 +190,7 @@ $(function () {
     }
   });
 
-  function calculate() {
+  async function calculate(): Promise<void> {
     updateUserData();
 
     return fetch("https://api.fortes.agency/calc", {
@@ -215,32 +207,15 @@ $(function () {
         storage.set("costPerMetre", cost);
         storage.set("summedPrice", json.cost_per_meter * storage.get("space"));
 
-        $("#total").html(Formatter.formatCurrency(cost));
-        $("#totalWhole").html(
-          Formatter.formatCurrency(cost * storage.get("space"))
+        $total.innerText = Formatter.formatCurrency(cost);
+        $totalWhole.innerText = Formatter.formatCurrency(
+          cost * storage.get("space")
         );
       });
   }
 
-  if ($(window).width() < 992) {
-    $(".calculator-tab.w--current, .slider-tab.w--current").toggleClass(
-      "w--current"
-    );
-    $(
-      ".slide, .calculator-slide, .header-cozy, .wrap-border.calculator-btn"
-    ).toggle(false);
-    $(
-      ".slide.main, .calculator-slide.main, .slide.japandi, .calculator-slide.japandi, .wrap-border.calculator-btn.specification-japandi.color-1"
-    ).toggle(true);
-    $(".calculator-tab:eq(1), .slider-tab:eq(1)").toggleClass("w--current");
-    $(".header-japandi").toggle(true);
-
-    storage.set("style", DesignStyle.Japandi);
-    calculate();
-  }
-
   function updateUserData() {
-    storage.set("space", $("#space").val());
+    storage.set("space", $space.value);
     storage.set("amount_of_rooms", $("#amountOfRooms").val());
     storage.set("amount_of_bathrooms", $("#amountOfBathrooms").val());
     storage.set("heated_flooring", $("#heatedFlooring").val());
@@ -256,20 +231,5 @@ $(function () {
     storage.set("entrance_doors", $("#doors").is(":checked"));
     storage.set("ceiling", $(":radio[name='ceiling']:checked").val());
     storage.set("flooring", $(":radio[name='flooring']:checked").val());
-    storage.set("color", $(".div-block-14 .color-tab.active").index());
-  }
-
-  function getUserStyle(num: number) {
-    if (num == 0) {
-      storage.set("style", "cozy");
-    } else if (num == 2) {
-      storage.set("style", "fusion");
-    } else if (num == 1) {
-      storage.set("style", "japandi");
-    } else if (num == 3) {
-      storage.set("style", "modern");
-    } else if (num == 4) {
-      storage.set("style", "neoclassic");
-    }
   }
 });
