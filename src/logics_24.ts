@@ -15,6 +15,7 @@ $(function () {
   const $splidePrev = document.getElementById("splidePrev");
   const $splideNextText = document.getElementById("splideNextText");
   const $splidePrevText = document.getElementById("splidePrevText");
+  const storage = new LocalStorageHandler(LocalStorageDestination.en);
 
   const splideOptions = {
     arrows: false,
@@ -30,8 +31,8 @@ $(function () {
   };
 
   const splideCalc = new Splide(".slider-container.splide", splideOptions);
-  const storage = new LocalStorageHandler(LocalStorageDestination.en);
-
+  const splide = new Splide(".slider-wrapper.splide", splideOptions);
+  splide.mount();
   splideCalc.mount();
 
   document.querySelectorAll("input").forEach(function () {
@@ -40,132 +41,126 @@ $(function () {
     } catch (_) {}
   });
 
-  if ($(".slider-wrapper.splide").length) {
-    $(".fact-link").on("click", function () {
-      if ($(this).is(".active")) {
+  $(".fact-link").on("click", function () {
+    if ($(this).is(".active")) {
+      return;
+    }
+
+    $(".fact-container.active").removeClass("active");
+    $(".fact-container").eq($(this).index()).addClass("active");
+    $(".fact-link.active").removeClass("active");
+    $(this).addClass("active");
+  });
+
+  document.querySelectorAll("div.tab-new").forEach((elem) =>
+    elem.addEventListener("click", function () {
+      if (this.classList.contains("active")) {
         return;
       }
 
-      $(".fact-container.active").removeClass("active");
-      $(".fact-container").eq($(this).index()).addClass("active");
-      $(".fact-link.active").removeClass("active");
-      $(this).addClass("active");
-    });
+      const index = parseInt(this.dataset.sliderIndex);
 
-    document.querySelectorAll("div.tab-new").forEach((elem) =>
-      elem.addEventListener("click", function () {
-        if (this.classList.contains("active")) {
-          return;
+      document.querySelector(`div.tab-new.active`).classList.remove("active");
+      this.classList.add("active");
+
+      $(".slider-image-new.active").removeClass("active");
+      $(".slider-image-new").each(function () {
+        if ($(this).index() == index) {
+          $(this).addClass("active");
         }
+      });
 
-        const index = parseInt(this.dataset.sliderIndex);
+      const style = DesignStyle.fromNumber(index);
+      storage.set("style", style.toString());
 
-        document.querySelector(`div.tab-new.active`).classList.remove("active");
-        this.classList.add("active");
+      // $(
+      //   ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
+      // ).toggle(false);
 
-        $(".slider-image-new.active").removeClass("active");
-        $(".slider-image-new").each(function () {
-          if ($(this).index() == index) {
-            $(this).addClass("active");
-          }
-        });
+      // $(
+      //   ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
+      //     `.${style}, .specification-${style}.color-1`
+      // ).toggle(true);
+      // $(".calculator-slide.splide__slide .calculator-slide")
+      //   .eq(index)
+      //   .toggle(true);
 
-        const style = DesignStyle.fromNumber(index);
-        storage.set("style", style.toString());
+      document
+        .querySelectorAll<HTMLInputElement>(
+          `div.calculator-tab[data-slider-index="${index}"], div.color-tab[data-color-index='1']`
+        )
+        .forEach((element) => element.click());
 
-        // $(
-        //   ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
-        // ).toggle(false);
+      splide.refresh();
+    })
+  );
 
-        // $(
-        //   ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
-        //     `.${style}, .specification-${style}.color-1`
-        // ).toggle(true);
-        // $(".calculator-slide.splide__slide .calculator-slide")
-        //   .eq(index)
-        //   .toggle(true);
-
-        document
-          .querySelectorAll<HTMLInputElement>(
-            `div.calculator-tab[data-slider-index="${index}"], div.color-tab[data-color-index='1']`
-          )
-          .forEach((element) => element.click());
-      })
+  splide.on("moved", (index, ..._) => {
+    setTimeout(
+      () =>
+        $(".splide__list").css(
+          "height",
+          $(".splide__slide.is-active .active img").css("height")
+        ),
+      vw > 480 ? 550 : 750
     );
 
-    const splide = new Splide(".slider-wrapper.splide", splideOptions);
-    splide.mount();
+    $splidePrev.classList.remove("disabled");
+    $splideNext.classList.remove("disabled");
 
-    splide.on("move", (index, ..._) => {
-      setTimeout(
-        () =>
-          $(".splide__list").css(
-            "height",
-            $(".splide__slide.is-active .active img").css("height")
-          ),
-        vw > 480 ? 550 : 750
-      );
+    let textPrev: string = "";
+    let textNext: string = "";
 
-      $splidePrev.classList.remove("disabled");
-      $splideNext.classList.remove("disabled");
+    switch (index) {
+      case 0:
+        textPrev = "";
+        textNext = "Дивитись спальню";
+        $splidePrev.classList.add("disabled");
+        break;
+      case 1:
+        textPrev = "Дивитись вітальню";
+        textNext = "Дивитись кухню";
+        break;
+      case 2:
+        textPrev = "Дивитись спальню";
+        textNext = "Дивитись душ";
+        break;
+      case 3:
+        textPrev = "Дивитись кухню";
+        textNext = "Дивитись ванну";
+        break;
+      case 4:
+        textPrev = "Дивитись душ";
+        textNext = "";
+        $splideNext.classList.add("disabled");
+        break;
+      default:
+        return;
+    }
 
-      let textPrev: string = "";
-      let textNext: string = "";
+    $splidePrevText.innerText = textPrev;
+    $splideNextText.innerText = textNext;
+  });
 
-      switch (index) {
-        case 0:
-          textPrev = "";
-          textNext = "Дивитись спальню";
-          $splidePrev.classList.add("disabled");
-          break;
-        case 1:
-          textPrev = "Дивитись вітальню";
-          textNext = "Дивитись кухню";
-          break;
-        case 2:
-          textPrev = "Дивитись спальню";
-          textNext = "Дивитись душ";
-          break;
-        case 3:
-          textPrev = "Дивитись кухню";
-          textNext = "Дивитись ванну";
-          break;
-        case 4:
-          textPrev = "Дивитись душ";
-          textNext = "";
-          $splideNext.classList.add("disabled");
-          break;
-        default:
-          return;
+  splide.refresh();
+
+  $(".splide-btn-prev, .slick-btn-next").on("click", function () {
+    let index: number = splide.index;
+
+    $(".slick-btn-prev, .slick-btn-next").removeClass("disabled");
+
+    if ($(this).index() == 0) {
+      splide.go("<");
+      if (index-- - 1 == 0) {
+        $(this).addClass("disabled");
       }
-
-      $splidePrevText.innerText = textPrev;
-      $splideNextText.innerText = textNext;
-    });
-
-    $(".splide__list").css(
-      "height",
-      $(".splide__slide.is-active .active img").css("height")
-    );
-
-    $(".splide-btn-prev, .slick-btn-next").on("click", function () {
-      let index: number = splide.index;
-
-      $(".slick-btn-prev, .slick-btn-next").removeClass("disabled");
-
-      if ($(this).index() == 0) {
-        splide.go("<");
-        if (index-- - 1 == 0) {
-          $(this).addClass("disabled");
-        }
-      } else {
-        splide.go(">");
-        if (index++ + 1 == 4) {
-          $(this).addClass("disabled");
-        }
+    } else {
+      splide.go(">");
+      if (index++ + 1 == 4) {
+        $(this).addClass("disabled");
       }
-    });
-  }
+    }
+  });
 
   $(".calculator-tab").on("click", function () {
     const index: number = $(this).index();
@@ -347,6 +342,24 @@ $(function () {
     );
   });
 
+  document.querySelectorAll("div.color-tab").forEach((element) =>
+    element.addEventListener("click", function () {
+      const color = parseInt(this.dataset.colorIndex);
+      const previousColor = parseInt(storage.get("color"));
+
+      if (color == previousColor) {
+        return;
+      }
+
+      document.querySelector(`div.color-tab.active`).classList.remove("active");
+      this.classList.add("active");
+      storage.set("color", color);
+
+      $(".color-var").toggle(false);
+      $(`.calculator-slide .color-${color}`).toggle(true);
+    })
+  );
+
   if (vw >= 992) {
     $(".preview-image, .blackbg-text").on({
       mouseenter: () => $(".video-cursor").css("opacity", 1),
@@ -364,26 +377,6 @@ $(function () {
       mouseenter: () => $(".small-hover.left").css("opacity", 1),
       mouseleave: () => $(".small-hover.left").css("opacity", 0),
     });
-
-    document.querySelectorAll("div.color-tab").forEach((element) =>
-      element.addEventListener("click", function () {
-        const color = parseInt(this.dataset.colorIndex);
-        const previousColor = parseInt(storage.get("color"));
-
-        if (color == previousColor) {
-          return;
-        }
-
-        document
-          .querySelector(`div.color-tab[data-color-index="${previousColor}"]`)
-          .classList.remove("active");
-        this.classList.add("active");
-        storage.set("color", color);
-
-        $(".color-var").toggle(false);
-        $(`.calculator-slide .color-${color}`).toggle(true);
-      })
-    );
 
     document
       .getElementById("calcSplideNext")
@@ -403,6 +396,16 @@ $(function () {
         )
         .classList.add("active");
     });
+
+    document
+      .querySelectorAll("div.calculator-slider-option")
+      .forEach((element) =>
+        element.addEventListener("click", (evt) =>
+          splideCalc.go(
+            parseInt((<HTMLElement>evt.currentTarget).dataset.sliderIndex)
+          )
+        )
+      );
 
     $(".calculator form").on("keydown", (e) => {
       if (e.key == "Enter") {
