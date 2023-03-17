@@ -41,7 +41,7 @@ $(function () {
           .reduce((pv, cv) => [...pv, ...cv])
       );
 
-      document.getElementById("#dollarCourse").innerText = table
+      document.getElementById("dollarCourse").innerText = table
         .getCell("G7")
         .formattedNumerical();
     });
