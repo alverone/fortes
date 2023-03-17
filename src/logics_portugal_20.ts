@@ -73,25 +73,22 @@ $(function () {
     });
 
     document.querySelectorAll("div.tab-new").forEach((element) =>
-      element.addEventListener("click", (evt) => {
-        const target = <HTMLElement>evt.currentTarget;
-
-        if (target.classList.contains("active")) {
+      element.addEventListener("click", function () {
+        if (this.classList.contains("active")) {
           return;
         }
 
-        const index: number = parseInt(target.dataset.sliderIndex);
+        const index: number = parseInt(this.dataset.sliderIndex);
         const style = DesignStyle.fromNumber(index);
 
         document.querySelector("div.tab-new.active").classList.remove("active");
-        target.classList.add("active");
+        this.classList.add("active");
 
         document
-          .querySelector("div.calculator-tab.active")
-          .classList.remove("active");
-        document
-          .querySelector(`div.calculator-tab[data-slider-index="${index}"]`)
-          .classList.add("active");
+          .querySelector<HTMLInputElement>(
+            `div.calculator-tab[data-slider-index="${index}"]`
+          )
+          .click();
 
         $(".slider-image-new").removeClass("active");
         $(".slider-image-new").each(function () {
@@ -112,15 +109,6 @@ $(function () {
         $(".calculator-slide.splide__slide .calculator-slide")
           .eq(index)
           .toggle(true);
-
-        getCurrentColorTab().classList.remove("active");
-        document
-          .querySelector('.color-tab[data-color-index="1"]')
-          .classList.add("active");
-
-        localStorageHandler.set("color", 1);
-
-        //splideCalc.refresh();
       })
     );
 

@@ -16,6 +16,7 @@ $(function () {
   const $splideNextText = document.getElementById("splideNextText");
   const $splidePrevText = document.getElementById("splidePrevText");
   const storage = new LocalStorageHandler(LocalStorageDestination.en);
+  const $splideBody = $(".splide__list");
 
   const splideOptions = {
     arrows: false,
@@ -30,10 +31,8 @@ $(function () {
     },
   };
 
-  const splideCalc = new Splide(".slider-container.splide", splideOptions);
   const splide = new Splide(".slider-wrapper.splide", splideOptions);
   splide.mount();
-  splideCalc.mount();
 
   document.querySelectorAll("input").forEach(function () {
     try {
@@ -52,53 +51,10 @@ $(function () {
     $(this).addClass("active");
   });
 
-  document.querySelectorAll("div.tab-new").forEach((elem) =>
-    elem.addEventListener("click", function () {
-      if (this.classList.contains("active")) {
-        return;
-      }
-
-      const index = parseInt(this.dataset.sliderIndex);
-
-      document.querySelector(`div.tab-new.active`).classList.remove("active");
-      this.classList.add("active");
-
-      $(".slider-image-new.active").removeClass("active");
-      $(".slider-image-new").each(function () {
-        if ($(this).index() == index) {
-          $(this).addClass("active");
-        }
-      });
-
-      const style = DesignStyle.fromNumber(index);
-      storage.set("style", style.toString());
-
-      // $(
-      //   ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
-      // ).toggle(false);
-
-      // $(
-      //   ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
-      //     `.${style}, .specification-${style}.color-1`
-      // ).toggle(true);
-      // $(".calculator-slide.splide__slide .calculator-slide")
-      //   .eq(index)
-      //   .toggle(true);
-
-      document
-        .querySelectorAll<HTMLInputElement>(
-          `div.calculator-tab[data-slider-index="${index}"], div.color-tab[data-color-index='1']`
-        )
-        .forEach((element) => element.click());
-
-      splide.refresh();
-    })
-  );
-
-  splide.on("moved", (index, ..._) => {
+  splide.on("move", (index, ..._) => {
     setTimeout(
       () =>
-        $(".splide__list").css(
+        $splideBody.css(
           "height",
           $(".splide__slide.is-active .active img").css("height")
         ),
@@ -142,109 +98,74 @@ $(function () {
     $splideNextText.innerText = textNext;
   });
 
-  splide.refresh();
+  $splideNext.addEventListener("click", () => splide.go(">"));
+  $splidePrev.addEventListener("click", () => splide.go("<"));
 
-  $(".splide-btn-prev, .slick-btn-next").on("click", function () {
-    let index: number = splide.index;
+  //calculator slider tab
+  document.querySelectorAll("div.calculator-tab").forEach((element) =>
+    element.addEventListener("click", function () {
+      const index: number = $(this).index();
+      const style = DesignStyle.fromNumber(index);
 
-    $(".slick-btn-prev, .slick-btn-next").removeClass("disabled");
+      $(
+        ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
+      ).toggle(false);
 
-    if ($(this).index() == 0) {
-      splide.go("<");
-      if (index-- - 1 == 0) {
-        $(this).addClass("disabled");
+      $(
+        ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
+          `.${style}, .specification-${style}.color-1`
+      ).toggle(true);
+      $(".calculator-slide.splide__slide .calculator-slide")
+        .eq(index)
+        .toggle(true);
+      $(".calculator-tab.active").removeClass("active");
+      $(this).addClass("active");
+
+      document
+        .querySelectorAll<HTMLInputElement>(
+          `div.color-tab[data-color-index='1'], .tab-new[data-slider-index="${index}"]`
+        )
+        .forEach((element) => element.click());
+
+      //splideCalc.refresh();
+    })
+  );
+
+  //slider tab
+  document.querySelectorAll("div.tab-new").forEach((elem) =>
+    elem.addEventListener("click", function () {
+      if (this.classList.contains("active")) {
+        return;
       }
-    } else {
-      splide.go(">");
-      if (index++ + 1 == 4) {
-        $(this).addClass("disabled");
-      }
-    }
-  });
 
-  $(".calculator-tab").on("click", function () {
-    const index: number = $(this).index();
-    const style = DesignStyle.fromNumber(index);
+      const index = parseInt(this.dataset.sliderIndex);
 
-    $(
-      ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
-    ).toggle(false);
+      document.querySelector(`div.tab-new.active`).classList.remove("active");
+      this.classList.add("active");
 
-    $(
-      ".calculator-slide.splide__slide .calculator-slide .color-1, .calculator-slide" +
-        `.${style}, .specification-${style}.color-1`
-    ).toggle(true);
-    $(".calculator-slide.splide__slide .calculator-slide")
-      .eq(index)
-      .toggle(true);
-    $(".calculator-tab.active, .color-tab.active").removeClass("active");
-    $(this).addClass("active");
+      $(".slider-image-new.active").removeClass("active");
+      $(".slider-image-new").each(function () {
+        if ($(this).index() == index) {
+          $(this).addClass("active");
+        }
+      });
 
-    document
-      .querySelectorAll<HTMLInputElement>(
-        `div.color-tab[data-color-index='1'], .tab-new[data-slider-index="${index}"]`
-      )
-      .forEach((element) => element.click());
+      const style = DesignStyle.fromNumber(index);
+      storage.set("style", style.toString());
 
-    splideCalc.refresh();
-  });
+      document
+        .querySelectorAll<HTMLInputElement>(
+          `div.calculator-tab[data-slider-index="${index}"], div.color-tab[data-color-index='1']`
+        )
+        .forEach((element) => element.click());
+
+      splide.refresh();
+    })
+  );
 
   $(".increment-field .increment").on("click", function () {
     if ($(this).siblings(".increment-input").length <= 0) {
       $(this).siblings(".increment-input").val(0);
-    }
-  });
-
-  $("#wf-form-consult").on("submit", (e) => {
-    if (!$("#agreementCheckbox").is(":checked")) {
-      $(".warning.agreementcheckbox").toggle(true);
-    } else {
-      $(".warning.agreementcheckbox").toggle(false);
-    }
-
-    if (!$("#phone").val()) {
-      $(".warning.inputs.phone").toggle(true);
-    } else {
-      $(".warning.inputs.phone").toggle(false);
-    }
-
-    if (!$("#name").val()) {
-      $(".warning.inputs.name").toggle(true);
-    } else {
-      $(".warning.inputs.name").toggle(false);
-    }
-
-    if ($(".warning").is(":visible")) {
-      e.preventDefault();
-      return false;
-    } else {
-      e.preventDefault();
-      let oldBtnName = $("#submitBtn").html();
-      $("#submitBtn").html("Зачекайте...");
-
-      const fd = new FormData(
-        document.getElementById("wf-form-consult") as HTMLFormElement
-      );
-
-      //заявки на консультацію
-      fetch(
-        "https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec",
-        {
-          method: "POST",
-          body: fd,
-        }
-      )
-        .then(() => {
-          $("#submitBtn").html(oldBtnName);
-        })
-        .catch((error) => console.error("Error!", error.message))
-        .finally(() => {
-          if (window.location.href.includes("/ru")) {
-            window.location.assign("/ru/kdyakuiemo");
-          } else {
-            window.location.assign("/kdyakuiemo");
-          }
-        });
     }
   });
 
@@ -319,8 +240,9 @@ $(function () {
     }
   });
 
-  document.getElementById("submit").addEventListener("click", function (e) {
-    e.preventDefault();
+  document.getElementById("submit").addEventListener("click", function (evt) {
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
 
     const style = storage.get("style");
     const color = storage.get("color");
@@ -342,24 +264,6 @@ $(function () {
     );
   });
 
-  document.querySelectorAll("div.color-tab").forEach((element) =>
-    element.addEventListener("click", function () {
-      const color = parseInt(this.dataset.colorIndex);
-      const previousColor = parseInt(storage.get("color"));
-
-      if (color == previousColor) {
-        return;
-      }
-
-      document.querySelector(`div.color-tab.active`).classList.remove("active");
-      this.classList.add("active");
-      storage.set("color", color);
-
-      $(".color-var").toggle(false);
-      $(`.calculator-slide .color-${color}`).toggle(true);
-    })
-  );
-
   if (vw >= 992) {
     $(".preview-image, .blackbg-text").on({
       mouseenter: () => $(".video-cursor").css("opacity", 1),
@@ -377,6 +281,29 @@ $(function () {
       mouseenter: () => $(".small-hover.left").css("opacity", 1),
       mouseleave: () => $(".small-hover.left").css("opacity", 0),
     });
+
+    const splideCalc = new Splide(".slider-container.splide", splideOptions);
+    splideCalc.mount();
+
+    document.querySelectorAll("div.color-tab").forEach((element) =>
+      element.addEventListener("click", function () {
+        const color = parseInt(this.dataset.colorIndex);
+        const previousColor = parseInt(storage.get("color"));
+
+        if (color == previousColor) {
+          return;
+        }
+
+        document
+          .querySelector(`div.color-tab.active`)
+          .classList.remove("active");
+        this.classList.add("active");
+        storage.set("color", color);
+
+        $(".color-var").toggle(false);
+        $(`.calculator-slide .color-${color}`).toggle(true);
+      })
+    );
 
     document
       .getElementById("calcSplideNext")
@@ -414,8 +341,88 @@ $(function () {
     });
   }
 
-  ///commented due to these elements being hidden
-  /*if (vw <= 767) {
+  document
+    .querySelectorAll(".calculate")
+    .forEach((elem) =>
+      elem.addEventListener(
+        "click",
+        () => (document.location.hash = "calculate")
+      )
+    );
+
+  document.querySelectorAll(".crossbtn.calc").forEach((elem) =>
+    elem.addEventListener("click", () => {
+      history.pushState(
+        "",
+        document.title,
+        window.location.pathname + window.location.search
+      );
+    })
+  );
+
+  $("#wf-form-consult").on("submit", (e) => {
+    if (!$("#agreementCheckbox").is(":checked")) {
+      $(".warning.agreementcheckbox").toggle(true);
+    } else {
+      $(".warning.agreementcheckbox").toggle(false);
+    }
+
+    if (!$("#phone").val()) {
+      $(".warning.inputs.phone").toggle(true);
+    } else {
+      $(".warning.inputs.phone").toggle(false);
+    }
+
+    if (!$("#name").val()) {
+      $(".warning.inputs.name").toggle(true);
+    } else {
+      $(".warning.inputs.name").toggle(false);
+    }
+
+    if ($(".warning").is(":visible")) {
+      e.preventDefault();
+      return false;
+    } else {
+      e.preventDefault();
+      let oldBtnName = $("#submitBtn").html();
+      $("#submitBtn").html("Зачекайте...");
+
+      const fd = new FormData(
+        document.getElementById("wf-form-consult") as HTMLFormElement
+      );
+
+      //заявки на консультацію
+      fetch(
+        "https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec",
+        {
+          method: "POST",
+          body: fd,
+        }
+      )
+        .then(() => {
+          $("#submitBtn").html(oldBtnName);
+        })
+        .catch((error) => console.error("Error!", error.message))
+        .finally(() => {
+          if (window.location.href.includes("/ru")) {
+            window.location.assign("/ru/kdyakuiemo");
+          } else {
+            window.location.assign("/kdyakuiemo");
+          }
+        });
+    }
+  });
+
+  function isInViewport(element: HTMLElement): boolean {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top >= 0 && rect.left >= 0 && rect.bottom <= vh && rect.right <= vw
+    );
+  }
+});
+
+///commented due to these elements being hidden
+/*if (vw <= 767) {
     $(".star").on("mouseleave", function () {
       $(this).removeClass("hidden");
       $(this).siblings(".image-price").removeClass("active");
@@ -438,30 +445,3 @@ $(function () {
       }
     });
   }*/
-
-  document
-    .querySelectorAll(".calculate")
-    .forEach((elem) =>
-      elem.addEventListener(
-        "click",
-        () => (document.location.hash = "calculate")
-      )
-    );
-
-  document.querySelectorAll(".crossbtn.calc").forEach((elem) =>
-    elem.addEventListener("click", () => {
-      history.pushState(
-        "",
-        document.title,
-        window.location.pathname + window.location.search
-      );
-    })
-  );
-
-  function isInViewport(element: HTMLElement): boolean {
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.top >= 0 && rect.left >= 0 && rect.bottom <= vh && rect.right <= vw
-    );
-  }
-});

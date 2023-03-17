@@ -44,6 +44,13 @@ fetch(
         .reduce((pv, cv) => [...pv, ...cv])
     );
 
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    $("img").each(function () {
+      $(this).attr("loading", "eager");
+    });
+
     //first cell of furniture price column + amount of items to count
     const gorenje: [number, number] = [168, 9];
     const bosch: [number, number] = [182, 10];
@@ -75,7 +82,13 @@ fetch(
       flooring = storage.get("flooring"),
       workSum = 0,
       furnitureSum = 0,
+      summedPrice: number = storage.get("summedPrice"),
+      costPerMetre: number = storage.get("costPerMetre"),
       $furniture = $("#furnitureList");
+
+    $("#total").html(Formatter.formatCurrency(summedPrice));
+    $("#space").html(space.toString());
+    $("#pricePerMetre").html(Formatter.formatCurrency(costPerMetre));
 
     const furnitureRate = 1 + table.getCell("S164").numeric() / 100;
     const conditionerRate = 1 + table.getCell("S120").numeric() / 100;
@@ -1156,13 +1169,98 @@ fetch(
     //$("#totalPriceTotal").html(Formatter.formatCurrency(Math.round(workSum) + " грн. *"));
     //} else {
 
-    if (storage.get("summedPrice") * hrnCourse < workSum) {
+    if (summedPrice * hrnCourse < workSum) {
       $("#totalPriceTotal").html(Formatter.formatCurrency(workSum) + " грн. *");
     } else {
       $("#totalPriceTotal").html(
-        Formatter.formatCurrency(storage.get("summedPrice") * hrnCourse) +
-          " грн. *"
+        Formatter.formatCurrency(summedPrice * hrnCourse) + " грн. *"
       );
     }
     //}
+
+    $("#wf-form-client-info").on("submit", async function (e) {
+      e.preventDefault();
+
+      if (!$("#agreementCheckbox").is(":checked")) {
+        $(".warning.agreementcheckbox").toggle(true);
+      } else {
+        $(".warning.agreementcheckbox").toggle(false);
+      }
+      if (!$("#sPhone").val() && !$("#sEmail").val()) {
+        $(".warning.inputs.phone").toggle(true);
+      } else {
+        $(".warning.inputs.phone").toggle(false);
+      }
+      if (!$("#sName").val()) {
+        $(".warning.inputs.name").toggle(true);
+      } else {
+        $(".warning.inputs.name").toggle(false);
+      }
+
+      if ((<string>$("#sEmail").val()).length == 0) {
+        $(".warning.inputs.wrongEmail").toggle(false);
+        $(".warning.inputs.emptyEmail").toggle(true);
+      } else if (!emailRegex.test(<string>$("#sEmail").val())) {
+        $(".warning.inputs.wrongEmail").toggle(true);
+        $(".warning.inputs.emptyEmail").toggle(false);
+      } else {
+        $(".warning.inputs.wrongEmail").toggle(false);
+        $(".warning.inputs.emptyEmail").toggle(false);
+      }
+
+      if ($(".warning").is(":visible")) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+      } else {
+        await submit();
+        return false;
+      }
+    });
+
+    async function submit() {
+      $(".modal-note").html("Зачекайте...");
+
+      const pageContent = $("html")
+        .clone()
+        .find("script")
+        .remove()
+        .end()
+        .html();
+      const fileString =
+        `<!DOCTYPE html><html lang="uk">` + pageContent + `</html>`;
+      const file = new File([fileString], "source.html", {
+        type: "text/html",
+      });
+
+      const body = new FormData();
+      body.append("file", file, "source.html");
+
+      const response = await fetch("https://api.fortes.agency/convert", {
+        method: "POST",
+        body: body,
+      });
+      const result = await response.json();
+      const id = result.success ? result.id : "";
+
+      $(".modal-note").html(
+        "Ми надіслали вам лист на електронну пошту. Якщо ви не бачите його у списку, перевірте папку Спам або зачекайте декілька хвилин."
+      );
+
+      fetch("https://api.fortes.agency/mail", {
+        method: "POST",
+        body: JSON.stringify({
+          fileId: id,
+          fileName: localStorage.getItem("style"),
+          recipientMail: $("#sEmail").val(),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).finally(() => {
+        setTimeout(() => {
+          window.location.assign("/sdyakuiemo");
+        }, 2000);
+      });
+    }
   });
