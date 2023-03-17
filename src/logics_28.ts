@@ -16,7 +16,7 @@ $(function () {
   const $splideNextText = document.getElementById("splideNextText");
   const $splidePrevText = document.getElementById("splidePrevText");
   const storage = new LocalStorageHandler(LocalStorageDestination.en);
-  const $node = <HTMLInputElement>document.getElementById("#node");
+  const $node = <HTMLInputElement>document.getElementById("node");
   const $splideBody = $(".splide__list");
 
   const splideOptions = {
