@@ -16,6 +16,7 @@ $(function () {
   const $splideNextText = document.getElementById("splideNextText");
   const $splidePrevText = document.getElementById("splidePrevText");
   const storage = new LocalStorageHandler(LocalStorageDestination.en);
+  const $node = <HTMLInputElement>document.getElementById("#node");
   const $splideBody = $(".splide__list");
 
   const splideOptions = {
@@ -191,8 +192,8 @@ $(function () {
     }
   });
 
-  $("#node").on("change", function () {
-    if ($("#node").is(":checked") && $(".choiceActive").length) {
+  $node.addEventListener("change", function () {
+    if (this.checked && $(".choiceActive").length) {
       $(".choiceActive").toggleClass("choiceActive");
       $(".choiceActiveBorder").toggleClass("choiceActiveBorder");
     }
@@ -263,6 +264,12 @@ $(function () {
       }
     );
   });
+
+  if (vw <= 479) {
+    document
+      .querySelector<HTMLInputElement>('div.tab-new[data-slider-index="1"]')
+      .click();
+  }
 
   if (vw >= 992) {
     $(".preview-image, .blackbg-text").on({
