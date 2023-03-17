@@ -60,9 +60,7 @@ $(function () {
 
         const index = parseInt(this.dataset.sliderIndex);
 
-        document
-          .querySelector(`div.tab-new.active]`)
-          .classList.remove("active");
+        document.querySelector(`div.tab-new.active`).classList.remove("active");
         this.classList.add("active");
 
         $(".slider-image-new.active").removeClass("active");
