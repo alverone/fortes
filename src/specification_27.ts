@@ -1186,7 +1186,7 @@ fetch(
       } else {
         $(".warning.agreementcheckbox").toggle(false);
       }
-      if (!$("#sPhone").val() && !$("#sEmail").val()) {
+      if (!$("#sPhone").val()) {
         $(".warning.inputs.phone").toggle(true);
       } else {
         $(".warning.inputs.phone").toggle(false);
