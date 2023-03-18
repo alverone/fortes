@@ -1097,6 +1097,7 @@ $(function () {
         fileId: id,
         fileName: localStorage.getItem("style"),
         recipientMail: $("#sEmail").val(),
+        lang: "eng",
       }),
       headers: {
         "Content-Type": "application/json",
