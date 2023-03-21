@@ -320,13 +320,27 @@ $(function () {
     }
   });
 
-  $(".submit-container .button").on("click", function (e) {
+  $("div.submit-container .button").on("click", function (e) {
     e.preventDefault();
 
-    const style = localStorageHandler.get("style");
-    const color = localStorageHandler.get("color");
+    let style = localStorageHandler.get("style");
+    let color = localStorageHandler.get("color");
 
     dataHandler.collectPortugalCalcData();
+
+    if (style == null || color == null) {
+      style = DesignStyle.fromNumber(
+        parseInt(
+          document.querySelector<HTMLElement>("div.calculator-tab.active")
+            .dataset.sliderIndex
+        )
+      ).toString();
+      color = parseInt(
+        document.querySelector<HTMLElement>("div.color-tab.active").dataset
+          .colorIndex
+      );
+    }
+
     window.open(`/specifications/${style}-${color}`, "_blank");
   });
 
