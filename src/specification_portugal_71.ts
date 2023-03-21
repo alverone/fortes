@@ -232,7 +232,7 @@ $(function () {
           S46,
         140 *
           (space <= 60
-            ? table.getCell(`${letter}55`).numeric()
+            ? table.getCell(`${letter}57`).numeric()
             : space <= 80
             ? 50
             : space <= 120
