@@ -13,7 +13,7 @@ import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 $(function () {
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const storage = new LocalStorageHandler(LocalStorageDestination.en, true);
+  const storage = new LocalStorageHandler(LocalStorageDestination.en, false);
   const dataHandler = new DataCollectionHandler(storage);
 
   const style: string = storage.get("style");
