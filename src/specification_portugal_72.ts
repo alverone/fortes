@@ -232,7 +232,7 @@ $(function () {
           S46,
         140 *
           (space <= 60
-            ? table.getCell(`${letter}57`).numeric()
+            ? 40
             : space <= 80
             ? 50
             : space <= 120
@@ -240,7 +240,9 @@ $(function () {
             : space <= 180
             ? 114
             : 162) *
-          (style == "modern" || style == "neoclassic" ? 1 : 0),
+          (style == "modern" || style == "neoclassic" ? 1 : 0) *
+          1.77 *
+          S46,
         flooringPrice,
         space * (space <= 70 ? 114.47 : 86.84) * S46 * 2,
         space *
