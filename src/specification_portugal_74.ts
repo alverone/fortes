@@ -11,6 +11,8 @@ import { StringConsts } from "./utils/StringConsts";
 import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 
 $(function () {
+  const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const storage = new LocalStorageHandler(LocalStorageDestination.en, false);
   const dataHandler = new DataCollectionHandler(storage);
 
@@ -842,7 +844,6 @@ $(function () {
           $("#workList"),
           '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
         );
-
         appendObject(
           $("#workList .list-option-container").last(),
           `<span class=\'pricelist-header small no-padding\'>Total for options:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
@@ -1010,6 +1011,7 @@ $(function () {
     }
 
     if ($(".warning:not(.specification)").is(":visible")) {
+      e.preventDefault();
       return false;
     } else {
       dataHandler.collectPortugalClientData(
@@ -1029,16 +1031,21 @@ $(function () {
       $(".warning.agreementcheckbox.specification").toggle(false);
     }
 
-    if (!$("#sPhone").val()) {
-      $(".warning.phone.specification").toggle(true);
-    } else {
-      $(".warning.phone.specification").toggle(false);
-    }
-
     if (!$("#sName").val()) {
       $(".warning.name.specification").toggle(true);
     } else {
       $(".warning.name.specification").toggle(false);
+    }
+
+    if (($("#sEmail").val() as string).length == 0) {
+      $(".warning.wrongEmail.specification").toggle(false);
+      $(".warning.emptyEmail.specification").toggle(true);
+    } else if (!emailRegex.test(<string>$("#sEmail").val())) {
+      $(".warning.wrongEmail.specification").toggle(true);
+      $(".warning.emptyEmail.specification").toggle(false);
+    } else {
+      $(".warning.wrongEmail.specification").toggle(false);
+      $(".warning.emptyEmail.specification").toggle(false);
     }
 
     if (!$(".warning.specification").is(":visible")) {
