@@ -213,6 +213,8 @@ $(function () {
   });
 
   $consultForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
     if (!$consultCheckbox.checked) {
       $(".warning.agreementcheckbox").toggle(true);
     } else {
@@ -233,11 +235,9 @@ $(function () {
     }
 
     if ($(".warning").is(":visible")) {
-      e.preventDefault();
+      e.stopImmediatePropagation();
       return false;
     } else {
-      e.preventDefault();
-
       const oldBtnName = $consultationButton.value;
       $consultationButton.value = "Please wait...";
       const fd = new FormData($consultForm);
