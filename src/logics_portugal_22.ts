@@ -323,10 +323,8 @@ $(function () {
   $("div.submit-container .button").on("click", function (e) {
     e.preventDefault();
 
-    let style = localStorageHandler.get("style");
+    let style: string = localStorageHandler.get("style");
     let color = localStorageHandler.get("color");
-
-    dataHandler.collectPortugalCalcData();
 
     if (style == null || color == null) {
       style = DesignStyle.fromNumber(
@@ -339,7 +337,12 @@ $(function () {
         document.querySelector<HTMLElement>("div.color-tab.active").dataset
           .colorIndex
       );
+
+      localStorageHandler.set("style", style);
+      localStorageHandler.set("color", color);
     }
+
+    dataHandler.collectPortugalCalcData(style as string);
 
     window.open(`/specifications/${style}-${color}`, "_blank");
   });
@@ -359,7 +362,9 @@ $(function () {
   });
 
   if (vw <= 480) {
-    $(".image-75").removeAttr("sizes");
+    document
+      .querySelectorAll("img.image-75")
+      .forEach((elem) => elem.removeAttribute("sizes"));
   }
 
   if (vw >= 992) {

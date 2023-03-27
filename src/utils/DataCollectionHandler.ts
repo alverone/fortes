@@ -18,9 +18,10 @@ export class DataCollectionHandler {
     ).catch((error) => console.error("Error!", error.message));
   }
 
-  async collectPortugalCalcData(): Promise<void | Response> {
-    const style: string = this._storage.get("style"),
-      appliancesBoolTotal = Boolean(this._storage.get("appliances_bool_total")),
+  async collectPortugalCalcData(style: string): Promise<void | Response> {
+    const appliancesBoolTotal = Boolean(
+        this._storage.get("appliances_bool_total")
+      ),
       furnitureBool: boolean = Boolean(this._storage.get("furniture_bool")),
       space: number = this._storage.get("space"),
       bath: boolean = Boolean(this._storage.get("bath")),

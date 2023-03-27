@@ -1022,8 +1022,17 @@ $(function () {
     }
   });
 
+  const $specificationNameInput = <HTMLInputElement>(
+    document.getElementById("sName")
+  );
+  const $specificationEmailInput = <HTMLInputElement>(
+    document.getElementById("email")
+  );
+
   $("#wf-form-specification").on("submit", async function (e) {
     e.preventDefault();
+
+    const email = $specificationEmailInput.value;
 
     if (!$("#agreementCheckbox").is(":checked")) {
       $(".warning.agreementcheckbox.specification").toggle(true);
@@ -1031,16 +1040,16 @@ $(function () {
       $(".warning.agreementcheckbox.specification").toggle(false);
     }
 
-    if (!$("#sName").val()) {
+    if ($specificationNameInput.value.length < 2) {
       $(".warning.name.specification").toggle(true);
     } else {
       $(".warning.name.specification").toggle(false);
     }
 
-    if (($("#sEmail").val() as string).length == 0) {
+    if (email.length == 0) {
       $(".warning.wrongEmail.specification").toggle(false);
       $(".warning.emptyEmail.specification").toggle(true);
-    } else if (!emailRegex.test(<string>$("#sEmail").val())) {
+    } else if (!emailRegex.test(email)) {
       $(".warning.wrongEmail.specification").toggle(true);
       $(".warning.emptyEmail.specification").toggle(false);
     } else {
@@ -1088,14 +1097,22 @@ $(function () {
       "We sent your estimation to your email address. If you don't see it, check Spam folder or wait a few minutes."
     );
 
+    const name = $specificationNameInput.value;
+    const email = $specificationEmailInput.value;
+    const date = new Intl.DateTimeFormat("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+    }).format(new Date());
+
     return fetch("https://api.fortes.agency/mail", {
       method: "POST",
       body: JSON.stringify({
         fileId: id,
-        fileName: localStorage.getItem("style"),
-        recipientMail: $("#sEmail").val(),
+        fileName: `${name} ${date}`,
+        recipientMail: email,
         lang: "eng",
-        name: $("#sName").val(),
+        name: name,
       }),
       headers: {
         "Content-Type": "application/json",
