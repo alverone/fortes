@@ -1103,7 +1103,9 @@ $(function () {
       month: "2-digit",
       day: "2-digit",
       year: "numeric",
-    }).format(new Date());
+    })
+      .format(new Date())
+      .replace(/\//g, "-");
 
     return fetch("https://api.fortes.agency/mail", {
       method: "POST",
