@@ -1026,7 +1026,7 @@ $(function () {
     document.getElementById("sName")
   );
   const $specificationEmailInput = <HTMLInputElement>(
-    document.getElementById("email")
+    document.getElementById("sEmail")
   );
 
   $("#wf-form-specification").on("submit", async function (e) {
