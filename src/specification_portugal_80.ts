@@ -1122,6 +1122,10 @@ $(function () {
     });
   }
 
+  (<HTMLInputElement>(
+    document.querySelector('input[name="Phone-Number"]')
+  )).name = "Phone Number";
+
   $("img").each(function () {
     $(this).attr("loading", "eager");
   });

@@ -1367,6 +1367,7 @@ __metadata:
     clean-webpack-plugin: ^4.0.0
     esbuild-loader: ^2.20.0
     fork-ts-checker-webpack-plugin: ^7.2.14
+    imask: ^6.5.1-alpha.1
     string-replace-loader: ^3.1.0
     terser-webpack-plugin: ^5.3.6
     ts-debounce: ^4.0.0
@@ -1588,6 +1589,13 @@ __metadata:
   dependencies:
     safer-buffer: ">= 2.1.2 < 3.0.0"
   checksum: 3f60d47a5c8fc3313317edfd29a00a692cc87a19cac0159e2ce711d0ebc9019064108323b5e493625e25594f11c6236647d8e256fbe7a58f4a3b33b89e6d30bf
+  languageName: node
+  linkType: hard
+
+"imask@npm:^6.5.1-alpha.1":
+  version: 6.5.1-alpha.1
+  resolution: "imask@npm:6.5.1-alpha.1"
+  checksum: 51b906f007d40d8467fab471eeb2322ea6d0964a83043bec50041cb4a70d40d6ad081afdfd11f3e8033af30baa1706b795da19281c8b31f79d31e75defac7845
   languageName: node
   linkType: hard
 

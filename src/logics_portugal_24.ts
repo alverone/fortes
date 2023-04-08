@@ -5,6 +5,7 @@ import {
   LocalStorageDestination,
   LocalStorageHandler,
 } from "./utils/LocalStorageHandler";
+import IMask from "imask";
 
 $(function () {
   const vw = window.innerWidth || document.documentElement.clientWidth;
@@ -31,6 +32,13 @@ $(function () {
   const $consultForm = <HTMLFormElement>(
     document.getElementById("wf-form-consult")
   );
+
+  const phoneMask = IMask(document.getElementById("phone"), {
+    mask: "+{351} (000) 000 000",
+  });
+  (<HTMLInputElement>(
+    document.querySelector('input[name="Phone-Number"]')
+  )).name = "Phone Number";
 
   const splideOptions = {
     arrows: false,
@@ -241,6 +249,7 @@ $(function () {
       const oldBtnName = $consultationButton.value;
       $consultationButton.value = "Please wait...";
       const fd = new FormData($consultForm);
+      fd.set("Phone-Number", phoneMask.unmaskedValue);
 
       dataHandler
         .collectPortugalClientData(fd)

@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@splidejs/splide": "3.5.8",
+    "imask": "^6.5.1-alpha.1",
     "ts-debounce": "^4.0.0"
   },
   "packageManager": "yarn@3.4.1"
