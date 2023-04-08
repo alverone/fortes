@@ -33,9 +33,10 @@ $(function () {
     document.getElementById("wf-form-consult")
   );
 
-  const phoneMask = IMask(document.getElementById("phone"), {
-    mask: "+{351} (000) 000 000",
-  });
+  // const phoneMask = IMask(document.getElementById("phone"), {
+  //   mask: "+{351} (000) 000 000",
+  //   lazy: false,
+  // });
   (<HTMLInputElement>(
     document.querySelector('input[name="Phone-Number"]')
   )).name = "Phone Number";
@@ -249,7 +250,6 @@ $(function () {
       const oldBtnName = $consultationButton.value;
       $consultationButton.value = "Please wait...";
       const fd = new FormData($consultForm);
-      fd.set("Phone-Number", phoneMask.unmaskedValue);
 
       dataHandler
         .collectPortugalClientData(fd)
