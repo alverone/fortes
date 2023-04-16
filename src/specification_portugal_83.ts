@@ -978,16 +978,11 @@ $(function () {
 
       workSum += applianceSum;
 
-      if (parseFloat(storage.get("summedPrice")) != workSum) {
+      if (parseFloat(storage.get("summedPrice")) == workSum) {
         $("#totalPriceTotal").html(Formatter.formatCurrency(workSum) + " € *");
         $("#totalVAT").html(Formatter.formatCurrency(workSum * 1.23) + " € *");
       } else {
-        $("#totalPriceTotal").html(
-          Formatter.formatCurrency(storage.get("summedPrice") / 1.23)
-        );
-        $("#totalVAT").html(
-          Formatter.formatCurrency(storage.get("summedPrice"))
-        );
+        $("#total").html("€" + Formatter.formatCurrency(workSum * 1.23));
       }
     });
 
