@@ -10,7 +10,7 @@ export class DataCollectionHandler {
 
   async collectPortugalClientData(fd: FormData): Promise<void | Response> {
     return fetch(
-      "https://script.google.com/macros/s/AKfycbw8iA1vk33T5UIZo_SAFw2gvvI1-sMY9UEQ3i8sDTaNsB2yJ2MKGphRa8PkJmqhgxB51A/exec",
+      "https://script.google.com/macros/s/AKfycbzyzzY4bi4yQoHdsTeVmm8BxGQ-bGW_-rK_erhrFA0zKak6rQ27p-k9Mx3HWk6vKEIatw/exec",
       {
         method: "POST",
         body: fd,

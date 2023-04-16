@@ -978,7 +978,7 @@ $(function () {
 
       workSum += applianceSum;
 
-      if (1 - Math.abs(storage.get("summedPrice") / workSum) <= 0.06) {
+      if (parseFloat(storage.get("summedPrice")) != workSum) {
         $("#totalPriceTotal").html(Formatter.formatCurrency(workSum) + " € *");
         $("#totalVAT").html(Formatter.formatCurrency(workSum * 1.23) + " € *");
       } else {
