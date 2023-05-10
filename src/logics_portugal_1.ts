@@ -464,7 +464,7 @@ $(function () {
     .forEach((element) =>
       element.addEventListener("click", () => {
         $modalContainer.classList.add("shown");
-        setSearchHash("consultation");
+        //setSearchHash("consultation");
       })
     );
 
@@ -476,7 +476,7 @@ $(function () {
 
   function hideConsultModal() {
     $modalContainer.classList.remove("shown");
-    clearSearchHash();
+    //clearSearchHash();
   }
 
   document
@@ -528,7 +528,7 @@ $(function () {
     });
   }*/
 
-  document
+  /*document
     .querySelectorAll(".calculate")
     .forEach((elem) =>
       elem.addEventListener("click", () => setSearchHash("calculate"))
@@ -548,7 +548,7 @@ $(function () {
 
   function setSearchHash(hash: string) {
     document.location.hash = hash;
-  }
+  }*/
 
   function isInViewport(element: HTMLElement): boolean {
     const rect = element.getBoundingClientRect();
