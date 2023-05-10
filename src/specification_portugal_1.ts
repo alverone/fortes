@@ -1119,6 +1119,65 @@ $(function () {
     document.querySelector('input[name="Phone-Number"]')
   )).name = "Phone Number";
 
+  const $consultModalContainer = document.querySelector<HTMLElement>(
+    "div.modal-container.consult"
+  );
+  const $specificationModalContainer = document.querySelector<HTMLElement>(
+    "div.modal-container.specification-final"
+  );
+
+  ///consultation modal logic
+  document
+    .querySelectorAll('.gradientrevamped[data-click-action="consultation"]')
+    .forEach((element) =>
+      element.addEventListener("click", () => {
+        $consultModalContainer.classList.add("shown");
+        //setSearchHash("consultation");
+      })
+    );
+
+  document
+    .querySelector("div.consult-modal .cross-button")
+    .addEventListener("click", () =>
+      $consultModalContainer.classList.remove("shown")
+    );
+
+  $consultModalContainer.addEventListener("click", () =>
+    $consultModalContainer.classList.remove("shown")
+  );
+
+  ///specification modal logic
+  document
+    .querySelectorAll('.gradientrevamped[data-click-action="specification"]')
+    .forEach((element) =>
+      element.addEventListener("click", () => {
+        $specificationModalContainer.classList.add("shown");
+        //setSearchHash("consultation");
+      })
+    );
+
+  document
+    .querySelector("div.specification-modal .cross-button")
+    .addEventListener("click", () =>
+      $specificationModalContainer.classList.remove("shown")
+    );
+
+  $specificationModalContainer.addEventListener("click", () =>
+    $specificationModalContainer.classList.remove("shown")
+  );
+
+  document
+    .querySelector("div.consult-modal")
+    .addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+
+  document
+    .querySelector("div.specification-modal")
+    .addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+
   $("img").each(function () {
     $(this).attr("loading", "eager");
   });
