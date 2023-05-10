@@ -258,39 +258,29 @@ $(function () {
     }
   });
 
-  $(".choice").on("click", function (e) {
-    if (!$appliancesRadio.checked) {
-      e.preventDefault();
-
-      $(".choiceActive").toggleClass("choiceActive");
-      $(".choiceActiveBorder").toggleClass("choiceActiveBorder");
-
-      return;
-    }
-
+  $(".choice").on("click", function () {
     if (!$(this).hasClass("choiceActive")) {
-      $(".choiceActive").removeClass("choiceActive");
-      $(".choiceActiveBorder").removeClass("choiceActiveBorder");
-      $(this).addClass("choiceActive");
-      $(this).parent().addClass("choiceActiveBorder");
-
-      if ($("#node").is(":checked")) {
-        $("#appliances").prop("checked", "checked");
+      if ($appliancesRadio.checked) {
+        $(".choiceActive").removeClass("choiceActive");
+        $(".choice-gradient.gradientrevamped").removeClass("gradientrevamped");
       }
+
+      $(this).addClass("choiceActive");
+      $(this).parent().addClass("gradientrevamped");
     }
   });
 
   $node.addEventListener("change", function () {
     if (this.checked && $(".choiceActive").length) {
-      $(".choiceActive").toggleClass("choiceActive");
-      $(".choiceActiveBorder").toggleClass("choiceActiveBorder");
+      $(".choiceActive").removeClass("choiceActive");
+      $(".choice-gradient.gradientrevamped").removeClass("gradientrevamped");
     }
   });
 
   $appliancesRadio.addEventListener("change", function () {
-    if (this.checked && !$(".choiceActiveBorder").length) {
-      $(".choice").first().toggleClass("choiceActive");
-      $(".choice").first().parent().toggleClass("choiceActiveBorder");
+    if (this.checked && !$(".choiceActive").length) {
+      $(".choice").first().addClass("choiceActive");
+      $(".choice-gradient").first().addClass("gradientrevamped");
     }
   });
 
@@ -454,6 +444,65 @@ $(function () {
       .click();
   }
 
+  const $modalContainer = document.querySelector<HTMLElement>(
+    "div.modal-container"
+  );
+  const $mobileNavMenu = document.querySelector<HTMLElement>(
+    "nav.nav-menu.w-nav-menu"
+  );
+  const $dim = document.querySelector<HTMLElement>("div.dim");
+  const $mobileNavMenuCloseButton = document.querySelector<HTMLElement>(
+    "a.mobile-nav-button[data-click-action='navigation-close']"
+  );
+  const $mobileNavMenuOpenButton = document.querySelector<HTMLElement>(
+    "a.mobile-nav-button[data-click-action='navigation-open']"
+  );
+
+  ///consultation modal logic
+  document
+    .querySelectorAll('.gradientrevamped[data-click-action="consultation"]')
+    .forEach((element) =>
+      element.addEventListener("click", () => {
+        $modalContainer.classList.add("shown");
+        setSearchHash("consultation");
+      })
+    );
+
+  document
+    .querySelector(".cross-button.modal")
+    .addEventListener("click", hideConsultModal);
+
+  $modalContainer.addEventListener("click", hideConsultModal);
+
+  function hideConsultModal() {
+    $modalContainer.classList.remove("shown");
+    clearSearchHash();
+  }
+
+  document
+    .querySelector("div.consult-modal")
+    .addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+
+  ///mobile navigation modal
+
+  $mobileNavMenuOpenButton.addEventListener("click", function () {
+    $mobileNavMenu.classList.add("shown");
+    $dim.classList.add("shown");
+    this.classList.remove("shown");
+    $mobileNavMenuCloseButton.classList.add("shown");
+  });
+
+  $mobileNavMenuCloseButton.addEventListener("click", function () {
+    $mobileNavMenu.classList.remove("shown");
+    $dim.classList.remove("shown");
+    this.classList.remove("shown");
+    $mobileNavMenuOpenButton.classList.add("shown");
+  });
+
+  $dim.addEventListener("click", () => $mobileNavMenuCloseButton.click());
+
   ///removed due to these elements being hidden, may be brought back
   /*if (vw <= 767) {
     $(".star").on("mouseleave", function () {
@@ -482,21 +531,24 @@ $(function () {
   document
     .querySelectorAll(".calculate")
     .forEach((elem) =>
-      elem.addEventListener(
-        "click",
-        () => (document.location.hash = "calculate")
-      )
+      elem.addEventListener("click", () => setSearchHash("calculate"))
     );
 
-  document.querySelectorAll(".crossbtn.calc").forEach((elem) =>
-    elem.addEventListener("click", () => {
-      history.pushState(
-        "",
-        document.title,
-        window.location.pathname + window.location.search
-      );
-    })
-  );
+  document
+    .querySelectorAll(".crossbtn.calc")
+    .forEach((elem) => elem.addEventListener("click", clearSearchHash));
+
+  function clearSearchHash() {
+    history.pushState(
+      "",
+      document.title,
+      window.location.pathname + window.location.search
+    );
+  }
+
+  function setSearchHash(hash: string) {
+    document.location.hash = hash;
+  }
 
   function isInViewport(element: HTMLElement): boolean {
     const rect = element.getBoundingClientRect();

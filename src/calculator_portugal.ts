@@ -126,14 +126,6 @@ $(function () {
   });*/
 
   $(".choice").on("click", function () {
-    if ($("#node").is(":checked")) {
-      $(".choiceActiveBorder").removeClass("choiceActiveBorder");
-      $(this).parent().toggleClass("choiceActiveBorder");
-      $("#appliancesBool").prop("checked", true);
-      $("#node").siblings("div").removeClass("w--redirected-checked");
-      $("#appliancesBool").siblings("div").addClass("w--redirected-checked");
-    }
-
     storage.set("appliances_bool_total", true);
     storage.set("appliances", $(this).data("appliances"));
     debounceCalculate();
@@ -149,7 +141,7 @@ $(function () {
     if (!$(this).is(":checked")) {
       return;
     }
-    if (!document.querySelector(".choiceActiveBorder")) {
+    if (!document.querySelector(".choice-gradient.gradientrevamped")) {
       storage.set("appliances_bool_total", 1);
       storage.set("appliances", "gorenje");
 

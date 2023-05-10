@@ -56,7 +56,7 @@ module.exports = [
     target: "node",
     entry: entriesProd,
     output: {
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "distv2"),
       filename: "[name].js",
       clean: true,
     },
