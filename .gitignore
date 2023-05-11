@@ -65,4 +65,4 @@ web_modules/
 
 **/test.js
 .DS_Store
-build/**
+**/build/

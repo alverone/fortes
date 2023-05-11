@@ -15,7 +15,21 @@ export class DataCollectionHandler {
         method: "POST",
         body: fd,
       }
-    ).catch((error) => console.error("Error!", error.message));
+    ).catch((error) =>
+      console.error("Failed to collect consultation data!", error.message)
+    );
+  }
+
+  async collectClientData(fd: FormData): Promise<void | Response> {
+    return fetch(
+      "https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec",
+      {
+        method: "POST",
+        body: fd,
+      }
+    ).catch((error) =>
+      console.error("Failed to collect consultation data!", error.message)
+    );
   }
 
   async collectPortugalCalcData(style: string): Promise<void | Response> {

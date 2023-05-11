@@ -63,24 +63,13 @@ $(function () {
 
   splideCalc.mount();
 
-  document.querySelectorAll("input").forEach(function () {
+  document.querySelectorAll("input").forEach(function (element) {
     try {
-      this.name = this.dataset.name;
+      element.name = element.dataset.name;
     } catch (_) {}
   });
 
   if ($(".slider-wrapper.splide").length) {
-    $(".fact-link").on("click", function () {
-      if ($(this).is(".active")) {
-        return;
-      }
-
-      $(".fact-container.active").removeClass("active");
-      $(".fact-container").eq($(this).index()).addClass("active");
-      $(".fact-link.active").removeClass("active");
-      $(this).addClass("active");
-    });
-
     document.querySelectorAll("div.tab-new").forEach((element) =>
       element.addEventListener("click", function () {
         if (this.classList.contains("active")) {
@@ -106,7 +95,6 @@ $(function () {
           }
         });
 
-        //, .wrap-border.calculator-btn
         $(
           ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
         ).toggle(false);
@@ -179,13 +167,12 @@ $(function () {
   }
 
   document.querySelectorAll(".calculator-tab").forEach((element) =>
-    element.addEventListener("click", (evt) => {
+    element.addEventListener("click", function (evt) {
       ///using currentTarget here to avoid bubbling to capture actual element that has the handler
-      const target = <HTMLElement>evt.currentTarget;
-      const index: number = parseInt(target.dataset.sliderIndex);
+      //const target = <HTMLElement>evt.currentTarget;
+      const index: number = parseInt(this.dataset.sliderIndex);
       const style = DesignStyle.fromNumber(index);
 
-      //, .wrap-border.calculator-btn
       $(
         ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
       ).toggle(false);
@@ -201,7 +188,7 @@ $(function () {
       document
         .querySelector(".calculator-tab.active")
         .classList.remove("active");
-      target.classList.add("active");
+      this.classList.add("active");
 
       $(".tab-new").eq(index).trigger("click");
 
@@ -210,8 +197,6 @@ $(function () {
         .querySelector('.color-tab[data-color-index="1"]')
         .classList.add("active");
       localStorageHandler.set("color", 1);
-
-      //splideCalc.refresh();
     })
   );
 
@@ -341,7 +326,7 @@ $(function () {
       localStorageHandler.set("color", color);
     }
 
-    dataHandler.collectPortugalCalcData(style as string);
+    dataHandler.collectPortugalCalcData(style);
 
     window.open(`/specifications/${style}-${color}`, "_blank");
   });

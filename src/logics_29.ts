@@ -35,9 +35,9 @@ $(function () {
   const splide = new Splide(".slider-wrapper.splide", splideOptions);
   splide.mount();
 
-  document.querySelectorAll("input").forEach(function () {
+  document.querySelectorAll("input").forEach(function (element) {
     try {
-      this.name = this.dataset.name;
+      element.name = element.dataset.name;
     } catch (_) {}
   });
 
