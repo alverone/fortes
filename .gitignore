@@ -64,5 +64,5 @@ web_modules/
 .svelte-kit
 
 **/test.js
-build/
 .DS_Store
+build/**
