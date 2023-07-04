@@ -69,8 +69,8 @@ export class DataCollectionHandler {
     fd.append("Площа", space);
     fd.append("Кількість кімнат", this._storage.get("amount_of_rooms"));
     fd.append("Кількість санвузлів", this._storage.get("amount_of_bathrooms"));
-    fd.append("Ванна", this._storage.get("bath"));
-    fd.append("Душ", this._storage.get("shower"));
+    fd.append("Ванна", this._storage.get("bath") ? "1" : "0");
+    fd.append("Душ", this._storage.get("shower") ? "1" : "0");
 
     const ceilingVal = this._storage.get("ceiling");
     const flooringVal = this._storage.get("flooring");
