@@ -64,10 +64,10 @@ module.exports = [
     module: {
       rules: [
         {
-          test: /\.(js|jsx|ts|tsx)?$/,
+          test: /\.(js|ts)?$/,
           loader: "esbuild-loader",
           options: {
-            loader: "tsx",
+            loader: "ts",
             target: "es2015",
           },
           exclude: /node_modules/,
@@ -86,8 +86,7 @@ module.exports = [
       extensions: [".ts", ".js", ".json"],
     },
     optimization: {
-      minimize: true,
-      minimizer: [new TerserPlugin()],
+      minimizer: [new TerserPlugin({ extractComments: false })],
     },
   },
   {
@@ -104,10 +103,10 @@ module.exports = [
     module: {
       rules: [
         {
-          test: /\.(js|jsx|ts|tsx)?$/,
+          test: /\.(js|ts)?$/,
           loader: "esbuild-loader",
           options: {
-            loader: "tsx",
+            loader: "ts",
             target: "es2015",
           },
           exclude: /node_modules/,
@@ -119,7 +118,6 @@ module.exports = [
       extensions: [".ts", ".js", ".json"],
     },
     optimization: {
-      minimize: true,
       minimizer: [new TerserPlugin({ extractComments: false })],
     },
   },

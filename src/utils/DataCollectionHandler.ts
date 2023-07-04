@@ -32,6 +32,91 @@ export class DataCollectionHandler {
     );
   }
 
+  async collectCalcData(): Promise<void | Response> {
+    const fd = new FormData();
+
+    const style = this._storage.get("style");
+    const ukrStyle =
+      style === "cozy"
+        ? "Козі"
+        : style === "japandi"
+        ? "Джапанді"
+        : style === "fusion"
+        ? "Фьюжн"
+        : style === "modern"
+        ? "Модерн"
+        : "Нео Класика";
+
+    const space = this._storage.get("space");
+    const months =
+      (space <= 40
+        ? 3
+        : space <= 80
+        ? 4
+        : space <= 100
+        ? 5
+        : space <= 130
+        ? 6
+        : space <= 150
+        ? 7
+        : space <= 175
+        ? 8
+        : 9) + (style == "modern" || style == "neoclassic" ? 1 : 0);
+
+    fd.append("Стиль", ukrStyle);
+    fd.append("Ціна за метр", this._storage.get("costPerMetre"));
+    fd.append("Загальна ціна", this._storage.get("summedPrice"));
+    fd.append("Площа", space);
+    fd.append("Кількість кімнат", this._storage.get("amount_of_rooms"));
+    fd.append("Кількість санвузлів", this._storage.get("amount_of_bathrooms"));
+    fd.append("Ванна", this._storage.get("bath"));
+    fd.append("Душ", this._storage.get("shower"));
+
+    const ceilingVal = this._storage.get("ceiling");
+    const flooringVal = this._storage.get("flooring");
+    const appliancesEnabled = this._storage.get("appliances_bool_total");
+    const ceiling =
+        ceilingVal == "stretch ceiling"
+          ? "Натяжна матова"
+          : ceilingVal == "gapless"
+          ? "Натяжна бесщелева матова"
+          : "Гіпсокартон",
+      flooring =
+        flooringVal == "laminat"
+          ? "Ламінат"
+          : flooringVal == "vynil"
+          ? "Вінілова підлога"
+          : "Паркет",
+      appliances = appliancesEnabled
+        ? this._storage.get("appliances").charAt(0).toUpperCase() +
+          this._storage.get("appliances").slice(1)
+        : "Не обрано";
+
+    fd.append("Стеля", ceiling);
+    fd.append("Підлогове покриття", flooring);
+    fd.append("Стяжка підлоги", this._storage.get("floor_screed"));
+    fd.append("Шумоізоляція", this._storage.get("denoising"));
+    fd.append("Вхідні двері", this._storage.get("entrance_doors"));
+    fd.append(
+      "Другий шар гіпсокартону",
+      this._storage.get("second_gypsum_layer")
+    );
+    fd.append("Гігієнічний душ", this._storage.get("hygienic_shower"));
+    fd.append("Тепла підлога", this._storage.get("heated_flooring"));
+    fd.append("Кондиціювання", this._storage.get("conditioning"));
+    fd.append("Меблі", appliancesEnabled);
+    fd.append("Техніка", appliances);
+    fd.append("Термін виконання робіт", months.toString());
+
+    fetch(
+      "https://script.google.com/macros/s/AKfycbyt7QOcA0Dp_2voHy2w1rVGCllwvW_SX_V8iDTD5E7zJohqH0C4/exec",
+      {
+        method: "POST",
+        body: fd,
+      }
+    );
+  }
+
   async collectPortugalCalcData(style: string): Promise<void | Response> {
     const appliancesBoolTotal = Boolean(
         this._storage.get("appliances_bool_total")

@@ -4,6 +4,7 @@ import {
   LocalStorageDestination,
   LocalStorageHandler,
 } from "./utils/LocalStorageHandler";
+import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 
 $(function () {
   const vh = window.innerHeight || document.documentElement.clientHeight;
@@ -11,13 +12,14 @@ $(function () {
 
   $(".choiceactive.card").toggleClass("choiceActiveBorder");
 
-  const $splideNext = document.getElementById("splideNext");
-  const $splidePrev = document.getElementById("splidePrev");
-  const $splideNextText = document.getElementById("splideNextText");
-  const $splidePrevText = document.getElementById("splidePrevText");
-  const storage = new LocalStorageHandler(LocalStorageDestination.en);
-  const $node = <HTMLInputElement>document.getElementById("node");
-  const $splideBody = $(".splide__list");
+  const $splideNext = document.getElementById("splideNext")!;
+  const $splidePrev = document.getElementById("splidePrev")!;
+  const $splideNextText = document.getElementById("splideNextText")!;
+  const $splidePrevText = document.getElementById("splidePrevText")!;
+  const storage = new LocalStorageHandler(LocalStorageDestination.uk);
+  const $node = <HTMLInputElement>document.getElementById("node")!;
+  const $splideBody = $(".splide__list")!;
+  const dataHandler = new DataCollectionHandler(storage);
 
   const splideOptions = {
     arrows: false,
@@ -37,7 +39,7 @@ $(function () {
 
   document.querySelectorAll("input").forEach(function (element) {
     try {
-      element.name = element.dataset.name;
+      element.name = element.dataset.name ?? "";
     } catch (_) {}
   });
 
@@ -141,7 +143,7 @@ $(function () {
 
       const index = parseInt(this.dataset.sliderIndex);
 
-      document.querySelector(`div.tab-new.active`).classList.remove("active");
+      document.querySelector(`div.tab-new.active`)?.classList.remove("active");
       this.classList.add("active");
 
       $(".slider-image-new.active").removeClass("active");
@@ -211,10 +213,10 @@ $(function () {
 
     obj.siblings(".hover-modal").css("display", "flex");
     if (parseInt(obj.siblings(".hover-modal").css("opacity")) == 0) {
-      if (!isInViewport(obj.siblings(".hover-modal").get(0))) {
+      if (!isInViewport(obj.siblings(".hover-modal").get(0)!)) {
         $([document.documentElement, document.body]).animate(
           {
-            scrollTop: obj.siblings(".hover-modal").offset().top - 96,
+            scrollTop: obj.siblings(".hover-modal").offset()!.top - 96,
           },
           450
         );
@@ -241,15 +243,21 @@ $(function () {
     }
   });
 
-  document.getElementById("submit").addEventListener("click", function (evt) {
-    evt.preventDefault();
-    evt.stopImmediatePropagation();
+  document
+    .getElementById("submit")!
+    .addEventListener("click", async function (evt) {
+      evt.preventDefault();
+      evt.stopImmediatePropagation();
 
-    const style = storage.get("style");
-    const color = storage.get("color");
+      const style = storage.get("style");
+      const color = storage.get("color");
 
-    window.open(`/specifications/${style}-${color}`, "_blank");
-  });
+      this.innerText = "Зачекайте...";
+
+      await dataHandler.collectCalcData();
+
+      window.open(`/specifications/${style}-${color}`, "_blank");
+    });
 
   $(".closing-btn").on("click", function () {
     let obj = $(this);
@@ -268,7 +276,7 @@ $(function () {
   if (vw <= 479) {
     document
       .querySelector<HTMLInputElement>('div.tab-new[data-slider-index="1"]')
-      .click();
+      ?.click();
   }
 
   if (vw >= 992) {
@@ -303,7 +311,7 @@ $(function () {
 
         document
           .querySelector(`div.color-tab.active`)
-          .classList.remove("active");
+          ?.classList.remove("active");
         this.classList.add("active");
         storage.set("color", color);
 
@@ -314,21 +322,21 @@ $(function () {
 
     document
       .getElementById("calcSplideNext")
-      .addEventListener("click", () => splideCalc.go(">"));
+      ?.addEventListener("click", () => splideCalc.go(">"));
 
     document
       .getElementById("calcSplidePrev")
-      .addEventListener("click", () => splideCalc.go("<"));
+      ?.addEventListener("click", () => splideCalc.go("<"));
 
     splideCalc.on("move", function (index, ..._) {
       document
         .querySelector("div.calculator-slider-option.active")
-        .classList.remove("active");
+        ?.classList.remove("active");
       document
         .querySelector(
           `div.calculator-slider-option[data-slider-index="${index}"]`
         )
-        .classList.add("active");
+        ?.classList.add("active");
     });
 
     document
@@ -336,7 +344,9 @@ $(function () {
       .forEach((element) =>
         element.addEventListener("click", (evt) =>
           splideCalc.go(
-            parseInt((<HTMLElement>evt.currentTarget).dataset.sliderIndex)
+            parseInt(
+              (<HTMLElement>evt.currentTarget).dataset.sliderIndex ?? "0"
+            )
           )
         )
       );

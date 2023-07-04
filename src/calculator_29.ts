@@ -28,7 +28,7 @@ $(function () {
             return row.c
               .map(function (cell, index: number): Cell {
                 if (cell === null || cell.v === null) {
-                  return;
+                  return new Cell("", "0");
                 }
 
                 return new Cell(
@@ -41,7 +41,7 @@ $(function () {
           .reduce((pv, cv) => [...pv, ...cv])
       );
 
-      document.getElementById("dollarCourse").innerText = table
+      document.getElementById("dollarCourse")!.innerText = table
         .getCell("G7")
         .formattedNumerical();
     });
@@ -70,15 +70,15 @@ $(function () {
   $("#space").on("focusout", function () {
     $(this).val(
       $(this)
-        .val()
+        .val()!
         .toString()
-        .match(/\d*\.?\d+/)
+        .match(/\d*\.?\d+/)!
     );
     storage.set("space", $space.value);
 
     if (storage.get("space") === 0 || storage.get("amount_of_rooms") === 0) {
-      $total.innerText = "0";
-      $totalWhole.innerText = "0";
+      $total!.innerText = "0";
+      $totalWhole!.innerText = "0";
 
       return;
     }
@@ -121,8 +121,8 @@ $(function () {
     }
 
     if (storage.get("amount_of_rooms") == 0) {
-      $total.innerText = "0";
-      $totalWhole.innerText = "0";
+      $total!.innerText = "0";
+      $totalWhole!.innerText = "0";
       return;
     }
 
@@ -207,8 +207,8 @@ $(function () {
         storage.set("costPerMetre", cost);
         storage.set("summedPrice", json.cost_per_meter * storage.get("space"));
 
-        $total.innerText = Formatter.formatCurrency(cost);
-        $totalWhole.innerText = Formatter.formatCurrency(
+        $total!.innerText = Formatter.formatCurrency(cost);
+        $totalWhole!.innerText = Formatter.formatCurrency(
           cost * storage.get("space")
         );
       });

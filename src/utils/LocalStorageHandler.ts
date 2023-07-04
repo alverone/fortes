@@ -22,7 +22,7 @@ class LocalStorageHandler {
 
   get(name: string): any {
     try {
-      return JSON.parse(localStorage.getItem(name));
+      return JSON.parse(localStorage.getItem(name)!);
     } catch {
       return localStorage.getItem(name);
     }
