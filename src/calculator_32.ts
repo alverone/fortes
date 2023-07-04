@@ -70,10 +70,10 @@ $(function () {
     document.getElementById("appliancesBool")!
   );
   const $flooringRadio = <HTMLInputElement>(
-    document.querySelector(`input[type="radio"][name="flooring"]`)!
+    document.querySelector(`input[type="radio"][name="flooring"]:checked`)!
   );
   const $ceilingRadio = <HTMLInputElement>(
-    document.querySelector(`input[type="radio"][name="ceiling"]`)!
+    document.querySelector(`input[type="radio"][name="ceiling"]:checked`)!
   );
 
   const $total = document.getElementById("total");
@@ -100,10 +100,7 @@ $(function () {
 
   $(".calculator input")
     .not(".form-2 input")
-    .on("change", () => {
-      updateUserData();
-      debounceCalculate();
-    });
+    .on("change", () => debounceCalculate());
 
   $("#space").on("focusout", function () {
     $(this).val(
@@ -114,7 +111,7 @@ $(function () {
     );
     storage.set("space", $space.value);
 
-    if (storage.get("space") === 0 || storage.get("amount_of_rooms") === 0) {
+    if (parseInt($space.value) === 0 || parseInt($amountOfRooms.value) === 0) {
       $total!.innerText = "0";
       $totalWhole!.innerText = "0";
 
