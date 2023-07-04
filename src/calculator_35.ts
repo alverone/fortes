@@ -68,12 +68,6 @@ $(function () {
   const $appliancesBool = <HTMLInputElement>(
     document.getElementById("appliancesBool")!
   );
-  const $flooringRadio = <HTMLInputElement>(
-    document.querySelector(`input[type="radio"][name="flooring"]:checked`)!
-  );
-  const $ceilingRadio = <HTMLInputElement>(
-    document.querySelector(`input[type="radio"][name="ceiling"]:checked`)!
-  );
 
   const $total = document.getElementById("total");
   const $totalWhole = document.getElementById("totalWhole");
@@ -255,7 +249,17 @@ $(function () {
     storage.set("floor_screed", $floorScreed.checked);
     storage.set("denoising", $noise.checked);
     storage.set("entrance_doors", $doors.checked);
-    storage.set("ceiling", $ceilingRadio.value);
-    storage.set("flooring", $flooringRadio.value);
+    storage.set(
+      "ceiling",
+      document.querySelector<HTMLInputElement>(
+        `input[type="radio"][name="ceiling"]:checked`
+      )!.value
+    );
+    storage.set(
+      "flooring",
+      document.querySelector<HTMLInputElement>(
+        `input[type="radio"][name="flooring"]:checked`
+      )!.value
+    );
   }
 });
