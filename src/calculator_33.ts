@@ -98,9 +98,9 @@ $(function () {
 
   debounceCalculate();
 
-  $(".calculator input")
-    .not(".form-2 input")
-    .on("change", () => debounceCalculate());
+  document
+    .querySelectorAll("div.calculator form input")
+    .forEach((e) => e.addEventListener("change", () => debounceCalculate()));
 
   $("#space").on("focusout", function () {
     $(this).val(
@@ -220,13 +220,6 @@ $(function () {
     }
   });
 
-  $("#appliancesBool").on("change", function () {
-    if ($(this).is(":checked")) {
-      storage.set("appliances_bool_total", true);
-      debounceCalculate();
-    }
-  });
-
   async function calculate(): Promise<void> {
     updateUserData();
 
@@ -251,7 +244,7 @@ $(function () {
       });
   }
 
-  function updateUserData() {
+  function updateUserData(): void {
     storage.set("space", $space.value);
     storage.set("amount_of_rooms", $amountOfRooms.value);
     storage.set("amount_of_bathrooms", $amountOfBathrooms.value);
