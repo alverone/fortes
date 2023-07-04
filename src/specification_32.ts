@@ -1176,47 +1176,42 @@ fetch(
       );
     }
 
-    $("#wf-form-consult").on("submit", (e) => {
+    $("form#wf-form-consult").on("submit", (e) => {
       e.preventDefault();
 
       if (!$("#agreementCheckbox").is(":checked")) {
-        $(".warning.agreementcheckbox").toggle(true);
+        $("#wf-form-consult.warning.agreementcheckbox").toggle(true);
       } else {
-        $(".warning.agreementcheckbox").toggle(false);
+        $("#wf-form-consult.warning.agreementcheckbox").toggle(false);
       }
 
       if ((<string>$("#phone").val()).length < 12) {
-        $(".warning.inputs.phone").toggle(true);
+        $("#wf-form-consult.warning.inputs.phone").toggle(true);
       } else {
-        $(".warning.inputs.phone").toggle(false);
+        $("#wf-form-consult.warning.inputs.phone").toggle(false);
       }
 
       if (!$("#name").val()) {
-        $(".warning.inputs.name").toggle(true);
+        $("#wf-form-consult.warning.inputs.name").toggle(true);
       } else {
-        $(".warning.inputs.name").toggle(false);
+        $("#wf-form-consult.warning.inputs.name").toggle(false);
       }
 
-      if ($(".warning").is(":visible")) {
+      if ($("#wf-form-consult.warning").is(":visible")) {
         return false;
       } else {
         const oldBtnName = $submitBtn.innerText;
 
         $submitBtn.innerText = "Зачекайте...";
 
-        const fd = new FormData();
-        fd.append(
-          "Ім'я",
-          (<HTMLInputElement>document.getElementById("name")!).value
-        );
-        fd.append("Телефон", <string>$("#phone").val());
-
         //заявки на консультацію
         fetch(
           "https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec",
           {
             method: "POST",
-            body: fd,
+            body: new FormData(
+              <HTMLFormElement>document.getElementById("wf-form-consult")
+            ),
           }
         )
           .then(() => {
@@ -1226,43 +1221,47 @@ fetch(
       }
     });
 
-    $("#wf-form-client-info").on("submit", async function (e) {
+    $("form#wf-form-client-info").on("submit", async function (e) {
       e.preventDefault();
 
       if (!$("#agreementCheckbox").is(":checked")) {
-        $(".warning.agreementcheckbox").toggle(true);
+        $("form#wf-form-client-info .warning.agreementcheckbox").toggle(true);
       } else {
-        $(".warning.agreementcheckbox").toggle(false);
+        $("form#wf-form-client-info .warning.agreementcheckbox").toggle(false);
       }
       if (!$("#sPhone").val()) {
-        $(".warning.inputs.phone").toggle(true);
+        $("form#wf-form-client-info .warning.inputs.phone").toggle(true);
       } else {
-        $(".warning.inputs.phone").toggle(false);
+        $("form#wf-form-client-info .warning.inputs.phone").toggle(false);
       }
       if (!$("#sName").val()) {
-        $(".warning.inputs.name").toggle(true);
+        $("form#wf-form-client-info .warning.inputs.name").toggle(true);
       } else {
-        $(".warning.inputs.name").toggle(false);
+        $("form#wf-form-client-info .warning.inputs.name").toggle(false);
       }
 
       if ((<string>$("#sEmail").val()).length == 0) {
-        $(".warning.inputs.wrongEmail").toggle(false);
-        $(".warning.inputs.emptyEmail").toggle(true);
+        $("form#wf-form-client-info .warning.inputs.wrongEmail").toggle(false);
+        $("form#wf-form-client-info .warning.inputs.emptyEmail").toggle(true);
       } else if (!emailRegex.test(<string>$("#sEmail").val())) {
-        $(".warning.inputs.wrongEmail").toggle(true);
-        $(".warning.inputs.emptyEmail").toggle(false);
+        $("form#wf-form-client-info .warning.inputs.wrongEmail").toggle(true);
+        $("form#wf-form-client-info .warning.inputs.emptyEmail").toggle(false);
       } else {
-        $(".warning.inputs.wrongEmail").toggle(false);
-        $(".warning.inputs.emptyEmail").toggle(false);
+        $("form#wf-form-client-info .warning.inputs.wrongEmail").toggle(false);
+        $("form#wf-form-client-info .warning.inputs.emptyEmail").toggle(false);
       }
 
-      if ($(".warning").is(":visible")) {
+      if ($("form#wf-form-client-info .warning").is(":visible")) {
         e.preventDefault();
         e.stopImmediatePropagation();
         return false;
       } else {
         const collectionHandler = new DataCollectionHandler(storage);
-        collectionHandler.collectSpecificationData();
+        collectionHandler.collectSpecificationData(
+          new FormData(
+            <HTMLFormElement>document.getElementById("wf-form-client-info")
+          )
+        );
         await submit();
         return false;
       }

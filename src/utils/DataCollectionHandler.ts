@@ -114,9 +114,7 @@ export class DataCollectionHandler {
     ).catch((error) => console.error(error));
   }
 
-  async collectSpecificationData(): Promise<void | Response> {
-    const fd = new FormData();
-
+  async collectSpecificationData(fd: FormData): Promise<void | Response> {
     const style = DesignStyle.fromString(this._storage.get("style"));
 
     const space = this._storage.get("space");
@@ -185,19 +183,6 @@ export class DataCollectionHandler {
     fd.append("Меблі", this._storage.get("furniture_bool") ? "1" : "0");
     fd.append("Техніка", appliances);
     fd.append("Термін виконання робіт", months.toString());
-
-    fd.append(
-      "Ім'я",
-      (<HTMLInputElement>document.getElementById("sName"))!.value
-    );
-    fd.append(
-      "Телефон",
-      (<HTMLInputElement>document.getElementById("sName"))!.value
-    );
-    fd.append(
-      "Поштова скринька",
-      (<HTMLInputElement>document.getElementById("sName"))!.value
-    );
 
     return fetch(
       "https://script.google.com/macros/s/AKfycbzymV7zIns6N9AdE882E44BwQAFZ_wy0JNIahqsoDWx3kqLi-U/exec",
