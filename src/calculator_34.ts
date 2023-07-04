@@ -7,7 +7,6 @@ import {
   LocalStorageDestination,
   LocalStorageHandler,
 } from "./utils/LocalStorageHandler";
-import { debounce } from "ts-debounce";
 
 $(function () {
   fetch(
@@ -94,13 +93,12 @@ $(function () {
   );
 
   $space.value = "50";
-  const debounceCalculate = debounce(calculate, 300);
 
-  debounceCalculate();
+  calculate();
 
   document
     .querySelectorAll("div.calculator form input")
-    .forEach((e) => e.addEventListener("change", () => debounceCalculate()));
+    .forEach((e) => e.addEventListener("change", () => calculate()));
 
   $("#space").on("focusout", function () {
     $(this).val(
@@ -118,7 +116,7 @@ $(function () {
       return;
     }
 
-    debounceCalculate();
+    calculate();
   });
 
   $space.addEventListener("focusout", function () {
@@ -129,7 +127,7 @@ $(function () {
     ) {
       $space.value = "30";
       storage.set("space", 30);
-      debounceCalculate();
+      calculate();
     }
   });
 
@@ -161,14 +159,12 @@ $(function () {
       return;
     }
 
-    debounceCalculate();
+    calculate();
   });
 
   document
     .querySelectorAll(".calculator-tab, .tab-new")
-    .forEach((elem) =>
-      elem.addEventListener("click", () => debounceCalculate())
-    );
+    .forEach((elem) => elem.addEventListener("click", () => calculate()));
 
   /*$("#calculate").on("click", function () {
     const slideNumber: number = parseInt(
@@ -198,13 +194,13 @@ $(function () {
 
     storage.set("appliances_bool_total", true);
     storage.set("appliances", $(this).data("appliances"));
-    debounceCalculate();
+    calculate();
   });
 
   $("#node").on("click", function () {
     storage.set("appliances_bool_total", false);
 
-    debounceCalculate();
+    calculate();
   });
 
   $("#appliancesBool").on("click", function () {
@@ -216,7 +212,7 @@ $(function () {
       storage.set("appliances_bool_total", 1);
       storage.set("appliances", "gorenje");
 
-      debounceCalculate();
+      calculate();
     }
   });
 
