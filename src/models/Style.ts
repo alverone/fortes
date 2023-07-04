@@ -8,9 +8,7 @@ export enum DesignStyle {
 
 export namespace DesignStyle {
   export function fromString(name: string): DesignStyle {
-    if (name === "cozy") {
-      return DesignStyle.Cozy;
-    } else if (name === "japandi") {
+    if (name === "japandi") {
       return DesignStyle.Japandi;
     } else if (name === "neoclassic") {
       return DesignStyle.NeoClassic;
@@ -33,5 +31,21 @@ export namespace DesignStyle {
       : number === 3
       ? DesignStyle.Modern
       : DesignStyle.NeoClassic;
+  }
+
+  export function inUkrainian(style: DesignStyle): string {
+    switch (style) {
+      case DesignStyle.NeoClassic:
+        return "Нео Класика";
+      case DesignStyle.Japandi:
+        return "Джапанді";
+      case DesignStyle.Fusion:
+        return "Фьюжн";
+      case DesignStyle.Modern:
+        return "Модерн";
+      case DesignStyle.Cozy:
+      default:
+        return "Козі";
+    }
   }
 }

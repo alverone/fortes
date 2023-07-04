@@ -33,13 +33,10 @@ $(function () {
     document.getElementById("wf-form-consult")!
   );
 
-  // const phoneMask = IMask(document.getElementById("phone"), {
-  //   mask: "+{351} (000) 000 000",
-  //   lazy: false,
-  // });
-  (<HTMLInputElement>(
-    document.querySelector('input[name="Phone-Number"]')
-  )).name = "Phone Number";
+  IMask(document.getElementById("phone")!, {
+    mask: "+{380} (00) 000 0000",
+    lazy: false,
+  });
 
   const splideOptions = {
     arrows: false,

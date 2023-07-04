@@ -32,9 +32,9 @@ $(function () {
   $space.on("focusout", function () {
     $(this).val(
       $(this)
-        .val()
+        .val()!
         .toString()
-        .match(/\d*\.?\d+/)
+        .match(/\d*\.?\d+/)!
     );
 
     storage.set("space", $space.val());
@@ -49,7 +49,7 @@ $(function () {
   });
 
   $space.on("focusout", function () {
-    if (parseInt($(this).val().toString()) < 30 || !$(this).val()) {
+    if (parseInt($(this).val()!.toString()) < 30 || !$(this).val()) {
       $(this).val(30);
       storage.set("space", $space.val());
 

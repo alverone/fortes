@@ -5,6 +5,9 @@ import {
   LocalStorageHandler,
 } from "./utils/LocalStorageHandler";
 import { DataCollectionHandler } from "./utils/DataCollectionHandler";
+import IMask from "imask";
+
+declare function hj(event: string, name: string): void;
 
 $(function () {
   const vh = window.innerHeight || document.documentElement.clientHeight;
@@ -19,6 +22,7 @@ $(function () {
   const storage = new LocalStorageHandler(LocalStorageDestination.uk);
   const $node = <HTMLInputElement>document.getElementById("node")!;
   const $splideBody = $(".splide__list")!;
+  const $submitBtn = document.getElementById("submitBtn")!;
   const dataHandler = new DataCollectionHandler(storage);
 
   const splideOptions = {
@@ -33,6 +37,11 @@ $(function () {
       },
     },
   };
+
+  IMask(document.getElementById("phone")!, {
+    mask: "+{380} (00) 000 0000",
+    lazy: false,
+  });
 
   const splide = new Splide(".slider-wrapper.splide", splideOptions);
   splide.mount();
@@ -153,8 +162,7 @@ $(function () {
         }
       });
 
-      const style = DesignStyle.fromNumber(index);
-      storage.set("style", style.toString());
+      storage.set("style", DesignStyle.fromNumber(index));
 
       document
         .querySelectorAll<HTMLInputElement>(
@@ -399,8 +407,9 @@ $(function () {
       return false;
     } else {
       e.preventDefault();
-      let oldBtnName = $("#submitBtn").html();
-      $("#submitBtn").html("Зачекайте...");
+      const oldBtnName = $submitBtn.innerText;
+
+      $submitBtn.innerText = "Зачекайте...";
 
       const fd = new FormData(
         document.getElementById("wf-form-consult") as HTMLFormElement
@@ -415,7 +424,7 @@ $(function () {
         }
       )
         .then(() => {
-          $("#submitBtn").html(oldBtnName);
+          $submitBtn.innerText = oldBtnName;
         })
         .catch((error) => console.error("Error!", error.message))
         .finally(() => {
@@ -434,6 +443,38 @@ $(function () {
       rect.top >= 0 && rect.left >= 0 && rect.bottom <= vh && rect.right <= vw
     );
   }
+
+  setTimeout(() => {
+    document
+      .querySelector(".bingc-phone-button")
+      ?.addEventListener("click", () => hj("event", "clicked_binotel"));
+  }, 5000);
+  document.getElementById("submitBtn")?.addEventListener("click", function () {
+    if (document.location.href.includes("specification")) {
+      hj("event", "clicked_specification_consult_submission");
+    } else {
+      hj("event", "clicked_consult_submission");
+    }
+  });
+  document
+    .querySelectorAll(".button.order")
+    .forEach((e) =>
+      e.addEventListener("click", () =>
+        hj("event", "clicked_order_design_project")
+      )
+    );
+  document
+    .querySelectorAll(".consult-button-hj")
+    .forEach((e) =>
+      e.addEventListener("click", () => hj("event", "clicked_consult"))
+    );
+  document
+    .querySelectorAll(".button.consult.specification")
+    .forEach((e) =>
+      e.addEventListener("click", () =>
+        hj("event", "clicked_specification_consult")
+      )
+    );
 });
 
 ///commented due to these elements being hidden

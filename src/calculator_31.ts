@@ -7,6 +7,7 @@ import {
   LocalStorageDestination,
   LocalStorageHandler,
 } from "./utils/LocalStorageHandler";
+import { debounce } from "ts-debounce";
 
 $(function () {
   fetch(
@@ -46,25 +47,62 @@ $(function () {
         .formattedNumerical();
     });
 
-  const vw = window.innerWidth || document.documentElement.clientWidth;
+  const $floorScreed = <HTMLInputElement>(
+    document.getElementById("floorscreed")!
+  );
+  const $doors = <HTMLInputElement>document.getElementById("doors")!;
+  const $noise = <HTMLInputElement>document.getElementById("noise")!;
+  const $bathtub = <HTMLInputElement>document.getElementById("bathtub")!;
+  const $shower = <HTMLInputElement>document.getElementById("shower")!;
+  const $conditioning = <HTMLInputElement>(
+    document.getElementById("conditioning")!
+  );
+  const $secondGypsumLayer = <HTMLInputElement>(
+    document.getElementById("secondGypsumLayer")!
+  );
+  const $hygienicShower = <HTMLInputElement>(
+    document.getElementById("hygienicShower")!
+  );
+  const $furnitureBool = <HTMLInputElement>(
+    document.getElementById("furnitureBool")!
+  );
+  const $appliancesBool = <HTMLInputElement>(
+    document.getElementById("appliancesBool")!
+  );
+  const $flooringRadio = <HTMLInputElement>(
+    document.querySelector(`input[type="radio"][name="flooring"]`)!
+  );
+  const $ceilingRadio = <HTMLInputElement>(
+    document.querySelector(`input[type="radio"][name="ceiling"]`)!
+  );
 
   const $total = document.getElementById("total");
   const $totalWhole = document.getElementById("totalWhole");
   const $space = <HTMLInputElement>document.getElementById("space");
+  const $amountOfRooms = <HTMLInputElement>(
+    document.getElementById("amountOfRooms")
+  );
+  const $amountOfBathrooms = <HTMLInputElement>(
+    document.getElementById("amountOfBathrooms")
+  );
+  const $heatedFlooring = <HTMLInputElement>(
+    document.getElementById("heatedFlooring")
+  );
   const storage: LocalStorageHandler = new LocalStorageHandler(
     LocalStorageDestination.uk,
     true
   );
 
   $space.value = "50";
+  const debounceCalculate = debounce(calculate, 300);
 
-  calculate();
+  debounceCalculate();
 
   $(".calculator input")
     .not(".form-2 input")
     .on("change", () => {
       updateUserData();
-      calculate();
+      debounceCalculate();
     });
 
   $("#space").on("focusout", function () {
@@ -83,7 +121,7 @@ $(function () {
       return;
     }
 
-    calculate();
+    debounceCalculate();
   });
 
   $space.addEventListener("focusout", function () {
@@ -94,7 +132,7 @@ $(function () {
     ) {
       $space.value = "30";
       storage.set("space", 30);
-      calculate();
+      debounceCalculate();
     }
   });
 
@@ -126,12 +164,14 @@ $(function () {
       return;
     }
 
-    calculate();
+    debounceCalculate();
   });
 
   document
     .querySelectorAll(".calculator-tab, .tab-new")
-    .forEach((elem) => elem.addEventListener("click", calculate));
+    .forEach((elem) =>
+      elem.addEventListener("click", () => debounceCalculate())
+    );
 
   /*$("#calculate").on("click", function () {
     const slideNumber: number = parseInt(
@@ -161,13 +201,13 @@ $(function () {
 
     storage.set("appliances_bool_total", true);
     storage.set("appliances", $(this).data("appliances"));
-    calculate();
+    debounceCalculate();
   });
 
   $("#node").on("click", function () {
     storage.set("appliances_bool_total", false);
 
-    calculate();
+    debounceCalculate();
   });
 
   $("#appliancesBool").on("click", function () {
@@ -179,14 +219,14 @@ $(function () {
       storage.set("appliances_bool_total", 1);
       storage.set("appliances", "gorenje");
 
-      calculate();
+      debounceCalculate();
     }
   });
 
   $("#appliancesBool").on("change", function () {
     if ($(this).is(":checked")) {
       storage.set("appliances_bool_total", true);
-      calculate();
+      debounceCalculate();
     }
   });
 
@@ -216,20 +256,20 @@ $(function () {
 
   function updateUserData() {
     storage.set("space", $space.value);
-    storage.set("amount_of_rooms", $("#amountOfRooms").val());
-    storage.set("amount_of_bathrooms", $("#amountOfBathrooms").val());
-    storage.set("heated_flooring", $("#heatedFlooring").val());
-    storage.set("conditioning", $("#conditioning").val());
-    storage.set("hygienic_shower", $("#hygienicShower").is(":checked"));
-    storage.set("second_gypsum_layer", $("#secondGypsumLayer").is(":checked"));
-    storage.set("furniture_bool", $("#furnitureBool").is(":checked"));
-    storage.set("bath", $("#bathtub").is(":checked"));
-    storage.set("shower", $("#shower").is(":checked"));
-    storage.set("appliances_bool_total", $("#appliancesBool").is(":checked"));
-    storage.set("floor_screed", $("#floorscreed").is(":checked"));
-    storage.set("denoising", $("#noise").is(":checked"));
-    storage.set("entrance_doors", $("#doors").is(":checked"));
-    storage.set("ceiling", $(":radio[name='ceiling']:checked").val());
-    storage.set("flooring", $(":radio[name='flooring']:checked").val());
+    storage.set("amount_of_rooms", $amountOfRooms.value);
+    storage.set("amount_of_bathrooms", $amountOfBathrooms.value);
+    storage.set("heated_flooring", $heatedFlooring.value);
+    storage.set("conditioning", $conditioning.value);
+    storage.set("hygienic_shower", $hygienicShower.checked);
+    storage.set("second_gypsum_layer", $secondGypsumLayer.checked);
+    storage.set("furniture_bool", $furnitureBool.checked);
+    storage.set("bath", $bathtub.checked);
+    storage.set("shower", $shower.checked);
+    storage.set("appliances_bool_total", $appliancesBool.checked);
+    storage.set("floor_screed", $floorScreed.checked);
+    storage.set("denoising", $noise.checked);
+    storage.set("entrance_doors", $doors.checked);
+    storage.set("ceiling", $ceilingRadio.value);
+    storage.set("flooring", $flooringRadio.value);
   }
 });

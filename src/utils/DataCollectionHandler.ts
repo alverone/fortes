@@ -1,3 +1,4 @@
+import { DesignStyle } from "./../models/Style";
 import { Formatter } from "./Formatter";
 import { LocalStorageHandler } from "./LocalStorageHandler";
 
@@ -35,17 +36,7 @@ export class DataCollectionHandler {
   async collectCalcData(): Promise<void | Response> {
     const fd = new FormData();
 
-    const style = this._storage.get("style");
-    const ukrStyle =
-      style === "cozy"
-        ? "Козі"
-        : style === "japandi"
-        ? "Джапанді"
-        : style === "fusion"
-        ? "Фьюжн"
-        : style === "modern"
-        ? "Модерн"
-        : "Нео Класика";
+    const style = DesignStyle.fromString(this._storage.get("style"));
 
     const space = this._storage.get("space");
     const months =
@@ -63,7 +54,7 @@ export class DataCollectionHandler {
         ? 8
         : 9) + (style == "modern" || style == "neoclassic" ? 1 : 0);
 
-    fd.append("Стиль", ukrStyle);
+    fd.append("Стиль", DesignStyle.inUkrainian(style));
     fd.append("Ціна за метр", this._storage.get("costPerMetre"));
     fd.append("Загальна ціна", this._storage.get("summedPrice"));
     fd.append("Площа", space);
