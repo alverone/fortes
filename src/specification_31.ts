@@ -7,10 +7,7 @@ import {
 } from "./utils/LocalStorageHandler";
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
-
-//TODO: add form submission data collection via
-//https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec
-//macros
+import { DataCollectionHandler } from "./utils/DataCollectionHandler";
 
 fetch(
   "https://docs.google.com/spreadsheets/d/1KkkpKbytztt48mwP1RGgpVFpfke8-IqB0KLWA8Sn2FE/gviz/tq?tqx=out:json?tq=SELECT *"
@@ -50,6 +47,8 @@ fetch(
     $("img").each(function () {
       $(this).attr("loading", "eager");
     });
+
+    const $submitBtn = document.getElementById("submitBtn")!;
 
     //first cell of furniture price column + amount of items to count
     const gorenje: [number, number] = [168, 9];
@@ -1176,7 +1175,56 @@ fetch(
         Formatter.formatCurrency(summedPrice * hrnCourse) + " грн. *"
       );
     }
-    //}
+
+    $("#wf-form-consult").on("submit", (e) => {
+      e.preventDefault();
+
+      if (!$("#agreementCheckbox").is(":checked")) {
+        $(".warning.agreementcheckbox").toggle(true);
+      } else {
+        $(".warning.agreementcheckbox").toggle(false);
+      }
+
+      if ((<string>$("#phone").val()).length < 12) {
+        $(".warning.inputs.phone").toggle(true);
+      } else {
+        $(".warning.inputs.phone").toggle(false);
+      }
+
+      if (!$("#name").val()) {
+        $(".warning.inputs.name").toggle(true);
+      } else {
+        $(".warning.inputs.name").toggle(false);
+      }
+
+      if ($(".warning").is(":visible")) {
+        return false;
+      } else {
+        const oldBtnName = $submitBtn.innerText;
+
+        $submitBtn.innerText = "Зачекайте...";
+
+        const fd = new FormData();
+        fd.append(
+          "Ім'я",
+          (<HTMLInputElement>document.getElementById("name")!).value
+        );
+        fd.append("Телефон", <string>$("#phone").val());
+
+        //заявки на консультацію
+        fetch(
+          "https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec",
+          {
+            method: "POST",
+            body: fd,
+          }
+        )
+          .then(() => {
+            $submitBtn.innerText = oldBtnName;
+          })
+          .catch((error) => console.error("Error!", error.message));
+      }
+    });
 
     $("#wf-form-client-info").on("submit", async function (e) {
       e.preventDefault();
@@ -1213,6 +1261,8 @@ fetch(
         e.stopImmediatePropagation();
         return false;
       } else {
+        const collectionHandler = new DataCollectionHandler(storage);
+        collectionHandler.collectSpecificationData();
         await submit();
         return false;
       }
