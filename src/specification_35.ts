@@ -112,6 +112,12 @@ fetch(
     const workInflation = table.getCell("S44").numeric();
     const s42 = table.getCell("S42").numeric();
 
+    document.querySelectorAll("input").forEach(function (element) {
+      try {
+        element.name = element.dataset.name ?? "";
+      } catch (_) {}
+    });
+
     if (style == "cozy") {
       letter = "I";
       letterModel = "A";
@@ -199,7 +205,10 @@ fetch(
       //inflation
       workInflation;
     let vents = space * amountOfBathrooms * (space <= 100 ? 83.2 : 33.98);
-    const electricity = table.getCell(`${letter}45`).numeric() * space;
+    ///=IF($G$6/($G$10)<=50;650*$G$6*$S$44;IF($G$6/($G$10)<=200;$G$10*20*2070*$S$44))
+    const electricity =
+      (space / amountOfRooms <= 50 ? 650 * space : amountOfRooms * 20 * 2070) *
+      workInflation;
 
     const workPriceArray = [
       space *
