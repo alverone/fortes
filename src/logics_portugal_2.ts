@@ -11,26 +11,26 @@ $(function () {
   const vw = window.innerWidth || document.documentElement.clientWidth;
   const vh = window.innerHeight || document.documentElement.clientHeight;
 
-  const $splideBody = document.getElementById("splideBody");
-  const $splideNext = document.getElementById("splideNext");
-  const $splidePrev = document.getElementById("splidePrev");
-  const $splideNextText = document.getElementById("splideNextText");
-  const $splidePrevText = document.getElementById("splidePrevText");
+  const $splideBody = document.getElementById("splideBody")!;
+  const $splideNext = document.getElementById("splideNext")!;
+  const $splidePrev = document.getElementById("splidePrev")!;
+  const $splideNextText = document.getElementById("splideNextText")!;
+  const $splidePrevText = document.getElementById("splidePrevText")!;
   const $consultationButton = <HTMLInputElement>(
-    document.getElementById("submitBtn")
+    document.getElementById("submitBtn")!
   );
-  const $node = <HTMLInputElement>document.getElementById("node");
+  const $node = <HTMLInputElement>document.getElementById("node")!;
 
-  const $nameInput = <HTMLInputElement>document.getElementById("name");
-  const $phoneInput = <HTMLInputElement>document.getElementById("phone");
+  const $nameInput = <HTMLInputElement>document.getElementById("name")!;
+  const $phoneInput = <HTMLInputElement>document.getElementById("phone")!;
   const $consultCheckbox = <HTMLInputElement>(
-    document.getElementById("agreementCheckbox")
+    document.getElementById("agreementCheckbox")!
   );
   const $appliancesRadio = <HTMLInputElement>(
-    document.getElementById("appliancesBool")
+    document.getElementById("appliancesBool")!
   );
   const $consultForm = <HTMLFormElement>(
-    document.getElementById("wf-form-consult")
+    document.getElementById("wf-form-consult")!
   );
 
   // const phoneMask = IMask(document.getElementById("phone"), {
@@ -55,7 +55,7 @@ $(function () {
   };
 
   const localStorageHandler = new LocalStorageHandler(
-    LocalStorageDestination.uk,
+    LocalStorageDestination.en,
     false
   );
   const dataHandler = new DataCollectionHandler(localStorageHandler);
@@ -65,7 +65,7 @@ $(function () {
 
   document.querySelectorAll("input").forEach(function (element) {
     try {
-      element.name = element.dataset.name;
+      element.name = element.dataset.name ?? "";
     } catch (_) {}
   });
 
@@ -79,14 +79,16 @@ $(function () {
         const index: number = parseInt(this.dataset.sliderIndex);
         const style = DesignStyle.fromNumber(index);
 
-        document.querySelector("div.tab-new.active").classList.remove("active");
+        document
+          .querySelector("div.tab-new.active")
+          ?.classList.remove("active");
         this.classList.add("active");
 
         document
           .querySelector<HTMLInputElement>(
             `div.calculator-tab[data-slider-index="${index}"]`
           )
-          .click();
+          ?.click();
 
         $(".slider-image-new").removeClass("active");
         $(".slider-image-new").each(function () {
@@ -187,7 +189,7 @@ $(function () {
 
       document
         .querySelector(".calculator-tab.active")
-        .classList.remove("active");
+        ?.classList.remove("active");
       this.classList.add("active");
 
       $(".tab-new").eq(index).trigger("click");
@@ -195,7 +197,7 @@ $(function () {
       getCurrentColorTab().classList.remove("active");
       document
         .querySelector('.color-tab[data-color-index="1"]')
-        .classList.add("active");
+        ?.classList.add("active");
       localStorageHandler.set("color", 1);
     })
   );
@@ -274,10 +276,10 @@ $(function () {
 
     obj.siblings(".hover-modal").css("display", "flex");
     if (parseInt(obj.siblings(".hover-modal").css("opacity")) == 0) {
-      if (!isInViewport(obj.siblings(".hover-modal").get(0))) {
+      if (!isInViewport(obj.siblings(".hover-modal").get(0)!)) {
         $([document.documentElement, document.body]).animate(
           {
-            scrollTop: obj.siblings(".hover-modal").offset().top - 96,
+            scrollTop: obj.siblings(".hover-modal").offset()!.top - 96,
           },
           450
         );
@@ -314,12 +316,12 @@ $(function () {
       style = DesignStyle.fromNumber(
         parseInt(
           document.querySelector<HTMLElement>("div.calculator-tab.active")
-            .dataset.sliderIndex
+            ?.dataset.sliderIndex ?? "0"
         )
       ).toString();
       color = parseInt(
-        document.querySelector<HTMLElement>("div.color-tab.active").dataset
-          .colorIndex
+        document.querySelector<HTMLElement>("div.color-tab.active")?.dataset
+          .colorIndex ?? "0"
       );
 
       localStorageHandler.set("style", style);
@@ -372,7 +374,7 @@ $(function () {
     document.querySelectorAll(".color-tab").forEach((element) =>
       element.addEventListener("click", (evt) => {
         const target = <HTMLElement>evt.currentTarget;
-        const color = parseInt(target.dataset.colorIndex);
+        const color = parseInt(target.dataset.colorIndex ?? "0");
         const previousColor = <number>localStorageHandler.get("color");
 
         if (color != previousColor) {
@@ -398,10 +400,10 @@ $(function () {
 
         document
           .querySelector(".calculator-slider-option.active")
-          .classList.remove("active");
+          ?.classList.remove("active");
         this.classList.add("active");
 
-        splideCalc.go(parseInt(target.dataset.sliderIndex));
+        splideCalc.go(parseInt(target.dataset.sliderIndex ?? "0"));
       })
     );
 
@@ -414,7 +416,7 @@ $(function () {
 
       document
         .querySelector(".calculator-slider-option.active")
-        .classList.remove("active");
+        ?.classList.remove("active");
       $(`.calculator-slider-option:eq(${splideCalc.index})`).addClass("active");
     });
 
@@ -426,22 +428,22 @@ $(function () {
   } else {
     document
       .querySelector<HTMLElement>('div.calculator-tab[data-slider-index="1"]')
-      .click();
+      ?.click();
   }
 
   const $modalContainer = document.querySelector<HTMLElement>(
     "div.modal-container"
-  );
+  )!;
   const $mobileNavMenu = document.querySelector<HTMLElement>(
     "nav.nav-menu.w-nav-menu"
-  );
-  const $dim = document.querySelector<HTMLElement>("div.dim");
+  )!;
+  const $dim = document.querySelector<HTMLElement>("div.dim")!;
   const $mobileNavMenuCloseButton = document.querySelector<HTMLElement>(
     "a.mobile-nav-button[data-click-action='navigation-close']"
-  );
+  )!;
   const $mobileNavMenuOpenButton = document.querySelector<HTMLElement>(
     "a.mobile-nav-button[data-click-action='navigation-open']"
-  );
+  )!;
 
   ///consultation modal logic
   document
@@ -455,7 +457,7 @@ $(function () {
 
   document
     .querySelector(".cross-button.modal")
-    .addEventListener("click", hideConsultModal);
+    ?.addEventListener("click", hideConsultModal);
 
   $modalContainer.addEventListener("click", hideConsultModal);
 
@@ -466,7 +468,7 @@ $(function () {
 
   document
     .querySelector("div.consult-modal")
-    .addEventListener("click", function (e) {
+    ?.addEventListener("click", function (e) {
       e.stopPropagation();
     });
 
@@ -545,6 +547,6 @@ $(function () {
   function getCurrentColorTab(): HTMLElement {
     return document.querySelector(
       `.color-tab[data-color-index="${localStorageHandler.get("color")}"]`
-    );
+    )!;
   }
 });

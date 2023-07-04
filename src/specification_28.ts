@@ -31,7 +31,7 @@ fetch(
           return row.c
             .map(function (cell, index: number): Cell {
               if (cell === null || cell.v === null) {
-                return;
+                return new Cell("", "0");
               }
 
               return new Cell(
@@ -55,7 +55,7 @@ fetch(
     const gorenje: [number, number] = [168, 9];
     const bosch: [number, number] = [182, 10];
     const miele: [number, number] = [197, 9];
-    const storage = new LocalStorageHandler(LocalStorageDestination.uk, true);
+    const storage = new LocalStorageHandler(LocalStorageDestination.uk, false);
     let appliances = storage.get("appliances");
 
     const hrnCourse = table.getCell("G7").numeric();

@@ -94,27 +94,33 @@ export class DataCollectionHandler {
 
     fd.append("Стеля", ceiling);
     fd.append("Підлогове покриття", flooring);
-    fd.append("Стяжка підлоги", this._storage.get("floor_screed"));
-    fd.append("Шумоізоляція", this._storage.get("denoising"));
-    fd.append("Вхідні двері", this._storage.get("entrance_doors"));
+    fd.append("Стяжка підлоги", this._storage.get("floor_screed") ? "1" : "0");
+    fd.append("Шумоізоляція", this._storage.get("denoising") ? "1" : "0");
+    fd.append("Вхідні двері", this._storage.get("entrance_doors") ? "1" : "0");
     fd.append(
       "Другий шар гіпсокартону",
-      this._storage.get("second_gypsum_layer")
+      this._storage.get("second_gypsum_layer") ? "1" : "0"
     );
-    fd.append("Гігієнічний душ", this._storage.get("hygienic_shower"));
-    fd.append("Тепла підлога", this._storage.get("heated_flooring"));
-    fd.append("Кондиціювання", this._storage.get("conditioning"));
-    fd.append("Меблі", appliancesEnabled);
+    fd.append(
+      "Гігієнічний душ",
+      this._storage.get("hygienic_shower") ? "1" : "0"
+    );
+    fd.append(
+      "Тепла підлога",
+      this._storage.get("heated_flooring") ? "1" : "0"
+    );
+    fd.append("Кондиціювання", this._storage.get("conditioning") ? "1" : "0");
+    fd.append("Меблі", this._storage.get("furniture_bool") ? "1" : "0");
     fd.append("Техніка", appliances);
     fd.append("Термін виконання робіт", months.toString());
 
-    fetch(
+    return fetch(
       "https://script.google.com/macros/s/AKfycbyt7QOcA0Dp_2voHy2w1rVGCllwvW_SX_V8iDTD5E7zJohqH0C4/exec",
       {
         method: "POST",
         body: fd,
       }
-    );
+    ).catch((error) => console.error(error));
   }
 
   async collectPortugalCalcData(style: string): Promise<void | Response> {

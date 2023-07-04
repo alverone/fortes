@@ -252,9 +252,7 @@ $(function () {
       const style = storage.get("style");
       const color = storage.get("color");
 
-      this.innerText = "Зачекайте...";
-
-      await dataHandler.collectCalcData();
+      dataHandler.collectCalcData();
 
       window.open(`/specifications/${style}-${color}`, "_blank");
     });
