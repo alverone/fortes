@@ -1171,19 +1171,19 @@ fetch(
     $("form#wf-form-consult").on("submit", (e) => {
       e.preventDefault();
 
-      if (!$("#agreementCheckbox").is(":checked")) {
+      if (!$("#agreementCheckboxC").is(":checked")) {
         $("form#wf-form-consult .warning.agreementcheckbox").toggle(true);
       } else {
         $("form#wf-form-consult .warning.agreementcheckbox").toggle(false);
       }
 
-      if ((<string>$("#phone").val()).length < 12) {
+      if ((<string>$("#phoneC").val()).length < 12) {
         $("form#wf-form-consult .warning.inputs.phone").toggle(true);
       } else {
         $("form#wf-form-consult .warning.inputs.phone").toggle(false);
       }
 
-      if (!$("#name").val()) {
+      if (!$("#nameC").val()) {
         $("form#wf-form-consult .warning.inputs.name").toggle(true);
       } else {
         $("form#wf-form-consult .warning.inputs.name").toggle(false);
