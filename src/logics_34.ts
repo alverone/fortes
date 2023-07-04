@@ -38,7 +38,7 @@ $(function () {
     },
   };
 
-  IMask(document.getElementById("phone")!, {
+  const mask = IMask(document.getElementById("phone")!, {
     mask: "+{380} (00) 000 0000",
     lazy: false,
   });
@@ -390,7 +390,7 @@ $(function () {
       $(".warning.agreementcheckbox").toggle(false);
     }
 
-    if (!$("#phone").val()) {
+    if (mask.unmaskedValue.length < 12) {
       $(".warning.inputs.phone").toggle(true);
     } else {
       $(".warning.inputs.phone").toggle(false);
@@ -411,9 +411,12 @@ $(function () {
 
       $submitBtn.innerText = "Зачекайте...";
 
-      const fd = new FormData(
-        document.getElementById("wf-form-consult") as HTMLFormElement
+      const fd = new FormData();
+      fd.append(
+        "Ім'я",
+        (<HTMLInputElement>document.getElementById("name")!).value
       );
+      fd.append("Телефон", mask.unmaskedValue);
 
       //заявки на консультацію
       fetch(
