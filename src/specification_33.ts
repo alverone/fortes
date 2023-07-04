@@ -200,14 +200,6 @@ fetch(
       workInflation;
     let vents = space * amountOfBathrooms * (space <= 100 ? 83.2 : 33.98);
     const electricity = table.getCell(`${letter}45`).numeric() * space;
-    console.log(`inflation: ${workInflation}`);
-    console.log(`rooms: ${amountOfRooms}`);
-    console.log(`baths: ${amountOfBathrooms}`);
-    console.log(`bath: ${bath}`);
-    console.log(`shower: ${shower}`);
-    console.log(`vents: ${vents}`);
-    console.log(`canalisation: ${canalisation}`);
-    console.log(`water: ${water}`);
 
     const workPriceArray = [
       space *
@@ -1180,24 +1172,24 @@ fetch(
       e.preventDefault();
 
       if (!$("#agreementCheckbox").is(":checked")) {
-        $("#wf-form-consult.warning.agreementcheckbox").toggle(true);
+        $("form#wf-form-consult .warning.agreementcheckbox").toggle(true);
       } else {
-        $("#wf-form-consult.warning.agreementcheckbox").toggle(false);
+        $("form#wf-form-consult .warning.agreementcheckbox").toggle(false);
       }
 
       if ((<string>$("#phone").val()).length < 12) {
-        $("#wf-form-consult.warning.inputs.phone").toggle(true);
+        $("form#wf-form-consult .warning.inputs.phone").toggle(true);
       } else {
-        $("#wf-form-consult.warning.inputs.phone").toggle(false);
+        $("form#wf-form-consult .warning.inputs.phone").toggle(false);
       }
 
       if (!$("#name").val()) {
-        $("#wf-form-consult.warning.inputs.name").toggle(true);
+        $("form#wf-form-consult .warning.inputs.name").toggle(true);
       } else {
-        $("#wf-form-consult.warning.inputs.name").toggle(false);
+        $("form#wf-form-consult .warning.inputs.name").toggle(false);
       }
 
-      if ($("#wf-form-consult.warning").is(":visible")) {
+      if ($("form#wf-form-consult .warning").is(":visible")) {
         return false;
       } else {
         const oldBtnName = $submitBtn.innerText;
