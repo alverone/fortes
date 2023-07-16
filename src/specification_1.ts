@@ -8,6 +8,7 @@ import {
 import { Utils } from "./utils/Utils";
 import { Formatter } from "./utils/Formatter";
 import { DataCollectionHandler } from "./utils/DataCollectionHandler";
+//import IMask from "imask";
 
 fetch(
   "https://docs.google.com/spreadsheets/d/1KkkpKbytztt48mwP1RGgpVFpfke8-IqB0KLWA8Sn2FE/gviz/tq?tqx=out:json?tq=SELECT *"
@@ -114,7 +115,14 @@ fetch(
 
     document.querySelectorAll("input").forEach(function (element) {
       try {
-        element.name = element.dataset.name ?? "";
+        const datasetName: string | undefined = element.dataset.name;
+        if (
+          datasetName != undefined &&
+          datasetName.length > 0 &&
+          element.name != datasetName
+        ) {
+          element.name = datasetName;
+        }
       } catch (_) {}
     });
 
@@ -1015,14 +1023,14 @@ fetch(
 
     let $appliances = $("#appliancesList");
     let $appliancesList = $("#appliancesListTotal");
-    let array;
+    let array: number[];
 
     if (appliances === "gorenje") {
-      array = gorenje;
+      array = [...gorenje];
     } else if (appliances === "bosch") {
-      array = bosch;
+      array = [...bosch];
     } else if (appliances === "miele") {
-      array = miele;
+      array = [...miele];
     }
 
     let quantity = 0;
@@ -1177,6 +1185,15 @@ fetch(
       );
     }
 
+    /*const specificationMask = IMask(document.getElementById("phone")!, {
+      mask: "+{380} (00) 000 0000",
+      lazy: false,
+    });
+    const consultMask = IMask(document.getElementById("phone")!, {
+      mask: "+{380} (00) 000 0000",
+      lazy: false,
+    });*/
+
     $("form#wf-form-consult").on("submit", (e) => {
       e.preventDefault();
 
@@ -1307,10 +1324,6 @@ fetch(
         headers: {
           "Content-Type": "application/json",
         },
-      }).finally(() => {
-        setTimeout(() => {
-          window.location.assign("/sdyakuiemo");
-        }, 2000);
-      });
+      }).then(() => window.location.assign("/sdyakuiemo"));
     }
   });

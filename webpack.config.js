@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
-const TerserPlugin = require("terser-webpack-plugin");
-const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
+const { EsbuildPlugin } = require("esbuild-loader");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const entriesProd = {};
 const entriesDev = {
@@ -52,6 +52,7 @@ const replacements = [
 
 module.exports = [
   {
+    context: __dirname,
     stats: "errors-only",
     target: "node",
     entry: entriesProd,
@@ -69,6 +70,7 @@ module.exports = [
           options: {
             loader: "ts",
             target: "es2015",
+            tsconfig: "./tsconfig.json",
           },
           exclude: /node_modules/,
         },
@@ -81,12 +83,16 @@ module.exports = [
         },
       ],
     },
-    plugins: [new ForkTsCheckerPlugin()],
+    plugins: [new ForkTsCheckerWebpackPlugin()],
     resolve: {
       extensions: [".ts", ".js", ".json"],
     },
     optimization: {
-      minimizer: [new TerserPlugin({ extractComments: false })],
+      minimizer: [
+        new EsbuildPlugin({
+          target: "es2015",
+        }),
+      ],
     },
   },
   {
@@ -108,17 +114,22 @@ module.exports = [
           options: {
             loader: "ts",
             target: "es2015",
+            tsconfig: "./tsconfig.json",
           },
           exclude: /node_modules/,
         },
       ],
     },
-    plugins: [new ForkTsCheckerPlugin()],
+    plugins: [new ForkTsCheckerWebpackPlugin()],
     resolve: {
       extensions: [".ts", ".js", ".json"],
     },
     optimization: {
-      minimizer: [new TerserPlugin({ extractComments: false })],
+      minimizer: [
+        new EsbuildPlugin({
+          target: "es2015",
+        }),
+      ],
     },
   },
 ];
