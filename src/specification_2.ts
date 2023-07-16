@@ -1324,6 +1324,7 @@ fetch(
         headers: {
           "Content-Type": "application/json",
         },
-      }).then(() => window.location.assign("/sdyakuiemo"));
+      });
+      window.location.assign("/sdyakuiemo");
     }
   });
