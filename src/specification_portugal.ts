@@ -1119,9 +1119,18 @@ $(function () {
     });
   }
 
-  (<HTMLInputElement>(
-    document.querySelector('input[name="Phone-Number"]')
-  )).name = "Phone Number";
+  document.querySelectorAll("input").forEach(function (element) {
+    try {
+      const datasetName: string | undefined = element.dataset.name;
+      if (
+        datasetName != undefined &&
+        datasetName.length > 0 &&
+        element.name != datasetName
+      ) {
+        element.name = datasetName;
+      }
+    } catch (_) {}
+  });
 
   $("img").each(function () {
     $(this).attr("loading", "eager");
