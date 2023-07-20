@@ -10,13 +10,15 @@ const entriesDev = {
 
 const replacementFiles = {};
 
+const timestamp = new Date().getTime().toString();
+
 fs.readdirSync("./src/")
   .filter((file) => file.match(/_?\d?\.ts$/i))
   .forEach((file) => {
     const name = file.replace(/_*\d*\.ts$/i, "");
 
     if (name !== "test" && !name.includes("snippet")) {
-      entriesProd[file.replace(".ts", "")] = ["./src/" + file];
+      entriesProd[file.replace(".ts", `_${timestamp}`)] = ["./src/" + file];
     }
 
     entriesDev[name] = ["./src/" + file];
@@ -57,7 +59,7 @@ module.exports = [
     target: "node",
     entry: entriesProd,
     output: {
-      path: path.resolve(__dirname, "distv2"),
+      path: path.resolve(__dirname, "dist"),
       filename: "[name].js",
       clean: true,
     },
