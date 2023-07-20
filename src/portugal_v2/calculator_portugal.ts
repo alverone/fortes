@@ -1,9 +1,9 @@
-import { DesignStyle } from "./models/Style";
-import { Formatter } from "./utils/Formatter";
+import { DesignStyle } from "../models/Style";
+import { Formatter } from "../utils/Formatter";
 import {
   LocalStorageDestination,
   LocalStorageHandler,
-} from "./utils/LocalStorageHandler";
+} from "../utils/LocalStorageHandler";
 import { debounce } from "ts-debounce";
 
 $(function () {
@@ -32,9 +32,9 @@ $(function () {
   $space.on("focusout", function () {
     $(this).val(
       $(this)
-        .val()
+        .val()!
         .toString()
-        .match(/\d*\.?\d+/)
+        .match(/\d*\.?\d+/)!
     );
 
     storage.set("space", $space.val());
@@ -49,7 +49,7 @@ $(function () {
   });
 
   $space.on("focusout", function () {
-    if (parseInt($(this).val().toString()) < 30 || !$(this).val()) {
+    if (parseInt($(this).val()!.toString()) < 30 || !$(this).val()) {
       $(this).val(30);
       storage.set("space", $space.val());
 
@@ -126,14 +126,6 @@ $(function () {
   });*/
 
   $(".choice").on("click", function () {
-    if ($("#node").is(":checked")) {
-      $(".choiceActiveBorder").removeClass("choiceActiveBorder");
-      $(this).parent().toggleClass("choiceActiveBorder");
-      $("#appliancesBool").prop("checked", true);
-      $("#node").siblings("div").removeClass("w--redirected-checked");
-      $("#appliancesBool").siblings("div").addClass("w--redirected-checked");
-    }
-
     storage.set("appliances_bool_total", true);
     storage.set("appliances", $(this).data("appliances"));
     debounceCalculate();
@@ -149,7 +141,7 @@ $(function () {
     if (!$(this).is(":checked")) {
       return;
     }
-    if (!document.querySelector(".choiceActiveBorder")) {
+    if (!document.querySelector(".choice-gradient.gradientrevamped")) {
       storage.set("appliances_bool_total", 1);
       storage.set("appliances", "gorenje");
 

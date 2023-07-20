@@ -11,32 +11,35 @@ $(function () {
   const vw = window.innerWidth || document.documentElement.clientWidth;
   const vh = window.innerHeight || document.documentElement.clientHeight;
 
-  const $splideBody = document.getElementById("splideBody")!;
-  const $splideNext = document.getElementById("splideNext")!;
-  const $splidePrev = document.getElementById("splidePrev")!;
-  const $splideNextText = document.getElementById("splideNextText")!;
-  const $splidePrevText = document.getElementById("splidePrevText")!;
+  const $splideBody = document.getElementById("splideBody");
+  const $splideNext = document.getElementById("splideNext");
+  const $splidePrev = document.getElementById("splidePrev");
+  const $splideNextText = document.getElementById("splideNextText");
+  const $splidePrevText = document.getElementById("splidePrevText");
   const $consultationButton = <HTMLInputElement>(
-    document.getElementById("submitBtn")!
+    document.getElementById("submitBtn")
   );
-  const $node = <HTMLInputElement>document.getElementById("node")!;
+  const $node = <HTMLInputElement>document.getElementById("node");
 
-  const $nameInput = <HTMLInputElement>document.getElementById("name")!;
-  const $phoneInput = <HTMLInputElement>document.getElementById("phone")!;
+  const $nameInput = <HTMLInputElement>document.getElementById("name");
+  const $phoneInput = <HTMLInputElement>document.getElementById("phone");
   const $consultCheckbox = <HTMLInputElement>(
-    document.getElementById("agreementCheckbox")!
+    document.getElementById("agreementCheckbox")
   );
   const $appliancesRadio = <HTMLInputElement>(
-    document.getElementById("appliancesBool")!
+    document.getElementById("appliancesBool")
   );
   const $consultForm = <HTMLFormElement>(
-    document.getElementById("wf-form-consult")!
+    document.getElementById("wf-form-consult")
   );
 
-  IMask(document.getElementById("phone")!, {
-    mask: "+{380} (00) 000 0000",
-    lazy: false,
-  });
+  // const phoneMask = IMask(document.getElementById("phone"), {
+  //   mask: "+{351} (000) 000 000",
+  //   lazy: false,
+  // });
+  (<HTMLInputElement>(
+    document.querySelector('input[name="Phone-Number"]')
+  )).name = "Phone Number";
 
   const splideOptions = {
     arrows: false,
@@ -52,7 +55,7 @@ $(function () {
   };
 
   const localStorageHandler = new LocalStorageHandler(
-    LocalStorageDestination.en,
+    LocalStorageDestination.uk,
     false
   );
   const dataHandler = new DataCollectionHandler(localStorageHandler);
@@ -60,13 +63,24 @@ $(function () {
 
   splideCalc.mount();
 
-  document.querySelectorAll("input").forEach(function (element) {
+  document.querySelectorAll("input").forEach(function () {
     try {
-      element.name = element.dataset.name ?? "";
+      this.name = this.dataset.name;
     } catch (_) {}
   });
 
   if ($(".slider-wrapper.splide").length) {
+    $(".fact-link").on("click", function () {
+      if ($(this).is(".active")) {
+        return;
+      }
+
+      $(".fact-container.active").removeClass("active");
+      $(".fact-container").eq($(this).index()).addClass("active");
+      $(".fact-link.active").removeClass("active");
+      $(this).addClass("active");
+    });
+
     document.querySelectorAll("div.tab-new").forEach((element) =>
       element.addEventListener("click", function () {
         if (this.classList.contains("active")) {
@@ -76,16 +90,14 @@ $(function () {
         const index: number = parseInt(this.dataset.sliderIndex);
         const style = DesignStyle.fromNumber(index);
 
-        document
-          .querySelector("div.tab-new.active")
-          ?.classList.remove("active");
+        document.querySelector("div.tab-new.active").classList.remove("active");
         this.classList.add("active");
 
         document
           .querySelector<HTMLInputElement>(
             `div.calculator-tab[data-slider-index="${index}"]`
           )
-          ?.click();
+          .click();
 
         $(".slider-image-new").removeClass("active");
         $(".slider-image-new").each(function () {
@@ -94,6 +106,7 @@ $(function () {
           }
         });
 
+        //, .wrap-border.calculator-btn
         $(
           ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
         ).toggle(false);
@@ -166,12 +179,13 @@ $(function () {
   }
 
   document.querySelectorAll(".calculator-tab").forEach((element) =>
-    element.addEventListener("click", function (evt) {
+    element.addEventListener("click", (evt) => {
       ///using currentTarget here to avoid bubbling to capture actual element that has the handler
-      //const target = <HTMLElement>evt.currentTarget;
-      const index: number = parseInt(this.dataset.sliderIndex);
+      const target = <HTMLElement>evt.currentTarget;
+      const index: number = parseInt(target.dataset.sliderIndex);
       const style = DesignStyle.fromNumber(index);
 
+      //, .wrap-border.calculator-btn
       $(
         ".calculator-slide.splide__slide .calculator-slide, .calculator-slide .color-var"
       ).toggle(false);
@@ -186,16 +200,18 @@ $(function () {
 
       document
         .querySelector(".calculator-tab.active")
-        ?.classList.remove("active");
-      this.classList.add("active");
+        .classList.remove("active");
+      target.classList.add("active");
 
       $(".tab-new").eq(index).trigger("click");
 
       getCurrentColorTab().classList.remove("active");
       document
         .querySelector('.color-tab[data-color-index="1"]')
-        ?.classList.add("active");
+        .classList.add("active");
       localStorageHandler.set("color", 1);
+
+      //splideCalc.refresh();
     })
   );
 
@@ -242,29 +258,39 @@ $(function () {
     }
   });
 
-  $(".choice").on("click", function () {
-    if (!$(this).hasClass("choiceActive")) {
-      if ($appliancesRadio.checked) {
-        $(".choiceActive").removeClass("choiceActive");
-        $(".choice-gradient.gradientrevamped").removeClass("gradientrevamped");
-      }
+  $(".choice").on("click", function (e) {
+    if (!$appliancesRadio.checked) {
+      e.preventDefault();
 
+      $(".choiceActive").toggleClass("choiceActive");
+      $(".choiceActiveBorder").toggleClass("choiceActiveBorder");
+
+      return;
+    }
+
+    if (!$(this).hasClass("choiceActive")) {
+      $(".choiceActive").removeClass("choiceActive");
+      $(".choiceActiveBorder").removeClass("choiceActiveBorder");
       $(this).addClass("choiceActive");
-      $(this).parent().addClass("gradientrevamped");
+      $(this).parent().addClass("choiceActiveBorder");
+
+      if ($("#node").is(":checked")) {
+        $("#appliances").prop("checked", "checked");
+      }
     }
   });
 
   $node.addEventListener("change", function () {
     if (this.checked && $(".choiceActive").length) {
-      $(".choiceActive").removeClass("choiceActive");
-      $(".choice-gradient.gradientrevamped").removeClass("gradientrevamped");
+      $(".choiceActive").toggleClass("choiceActive");
+      $(".choiceActiveBorder").toggleClass("choiceActiveBorder");
     }
   });
 
   $appliancesRadio.addEventListener("change", function () {
-    if (this.checked && !$(".choiceActive").length) {
-      $(".choice").first().addClass("choiceActive");
-      $(".choice-gradient").first().addClass("gradientrevamped");
+    if (this.checked && !$(".choiceActiveBorder").length) {
+      $(".choice").first().toggleClass("choiceActive");
+      $(".choice").first().parent().toggleClass("choiceActiveBorder");
     }
   });
 
@@ -273,10 +299,10 @@ $(function () {
 
     obj.siblings(".hover-modal").css("display", "flex");
     if (parseInt(obj.siblings(".hover-modal").css("opacity")) == 0) {
-      if (!isInViewport(obj.siblings(".hover-modal").get(0)!)) {
+      if (!isInViewport(obj.siblings(".hover-modal").get(0))) {
         $([document.documentElement, document.body]).animate(
           {
-            scrollTop: obj.siblings(".hover-modal").offset()!.top - 96,
+            scrollTop: obj.siblings(".hover-modal").offset().top - 96,
           },
           450
         );
@@ -313,19 +339,19 @@ $(function () {
       style = DesignStyle.fromNumber(
         parseInt(
           document.querySelector<HTMLElement>("div.calculator-tab.active")
-            ?.dataset.sliderIndex ?? "0"
+            .dataset.sliderIndex
         )
       ).toString();
       color = parseInt(
-        document.querySelector<HTMLElement>("div.color-tab.active")?.dataset
-          .colorIndex ?? "0"
+        document.querySelector<HTMLElement>("div.color-tab.active").dataset
+          .colorIndex
       );
 
       localStorageHandler.set("style", style);
       localStorageHandler.set("color", color);
     }
 
-    dataHandler.collectPortugalCalcData(style);
+    dataHandler.collectPortugalCalcData(style as string);
 
     window.open(`/specifications/${style}-${color}`, "_blank");
   });
@@ -371,7 +397,7 @@ $(function () {
     document.querySelectorAll(".color-tab").forEach((element) =>
       element.addEventListener("click", (evt) => {
         const target = <HTMLElement>evt.currentTarget;
-        const color = parseInt(target.dataset.colorIndex ?? "0");
+        const color = parseInt(target.dataset.colorIndex);
         const previousColor = <number>localStorageHandler.get("color");
 
         if (color != previousColor) {
@@ -397,10 +423,10 @@ $(function () {
 
         document
           .querySelector(".calculator-slider-option.active")
-          ?.classList.remove("active");
+          .classList.remove("active");
         this.classList.add("active");
 
-        splideCalc.go(parseInt(target.dataset.sliderIndex ?? "0"));
+        splideCalc.go(parseInt(target.dataset.sliderIndex));
       })
     );
 
@@ -413,7 +439,7 @@ $(function () {
 
       document
         .querySelector(".calculator-slider-option.active")
-        ?.classList.remove("active");
+        .classList.remove("active");
       $(`.calculator-slider-option:eq(${splideCalc.index})`).addClass("active");
     });
 
@@ -425,67 +451,8 @@ $(function () {
   } else {
     document
       .querySelector<HTMLElement>('div.calculator-tab[data-slider-index="1"]')
-      ?.click();
+      .click();
   }
-
-  const $modalContainer = document.querySelector<HTMLElement>(
-    "div.modal-container"
-  )!;
-  const $mobileNavMenu = document.querySelector<HTMLElement>(
-    "nav.nav-menu.w-nav-menu"
-  )!;
-  const $dim = document.querySelector<HTMLElement>("div.dim")!;
-  const $mobileNavMenuCloseButton = document.querySelector<HTMLElement>(
-    "a.mobile-nav-button[data-click-action='navigation-close']"
-  )!;
-  const $mobileNavMenuOpenButton = document.querySelector<HTMLElement>(
-    "a.mobile-nav-button[data-click-action='navigation-open']"
-  )!;
-
-  ///consultation modal logic
-  document
-    .querySelectorAll('.gradientrevamped[data-click-action="consultation"]')
-    .forEach((element) =>
-      element.addEventListener("click", () => {
-        $modalContainer.classList.add("shown");
-        //setSearchHash("consultation");
-      })
-    );
-
-  document
-    .querySelector(".cross-button.modal")
-    ?.addEventListener("click", hideConsultModal);
-
-  $modalContainer.addEventListener("click", hideConsultModal);
-
-  function hideConsultModal() {
-    $modalContainer.classList.remove("shown");
-    //clearSearchHash();
-  }
-
-  document
-    .querySelector("div.consult-modal")
-    ?.addEventListener("click", function (e) {
-      e.stopPropagation();
-    });
-
-  ///mobile navigation modal
-
-  $mobileNavMenuOpenButton.addEventListener("click", function () {
-    $mobileNavMenu.classList.add("shown");
-    $dim.classList.add("shown");
-    this.classList.remove("shown");
-    $mobileNavMenuCloseButton.classList.add("shown");
-  });
-
-  $mobileNavMenuCloseButton.addEventListener("click", function () {
-    $mobileNavMenu.classList.remove("shown");
-    $dim.classList.remove("shown");
-    this.classList.remove("shown");
-    $mobileNavMenuOpenButton.classList.add("shown");
-  });
-
-  $dim.addEventListener("click", () => $mobileNavMenuCloseButton.click());
 
   ///removed due to these elements being hidden, may be brought back
   /*if (vw <= 767) {
@@ -512,27 +479,24 @@ $(function () {
     });
   }*/
 
-  /*document
+  document
     .querySelectorAll(".calculate")
     .forEach((elem) =>
-      elem.addEventListener("click", () => setSearchHash("calculate"))
+      elem.addEventListener(
+        "click",
+        () => (document.location.hash = "calculate")
+      )
     );
 
-  document
-    .querySelectorAll(".crossbtn.calc")
-    .forEach((elem) => elem.addEventListener("click", clearSearchHash));
-
-  function clearSearchHash() {
-    history.pushState(
-      "",
-      document.title,
-      window.location.pathname + window.location.search
-    );
-  }
-
-  function setSearchHash(hash: string) {
-    document.location.hash = hash;
-  }*/
+  document.querySelectorAll(".crossbtn.calc").forEach((elem) =>
+    elem.addEventListener("click", () => {
+      history.pushState(
+        "",
+        document.title,
+        window.location.pathname + window.location.search
+      );
+    })
+  );
 
   function isInViewport(element: HTMLElement): boolean {
     const rect = element.getBoundingClientRect();
@@ -544,6 +508,6 @@ $(function () {
   function getCurrentColorTab(): HTMLElement {
     return document.querySelector(
       `.color-tab[data-color-index="${localStorageHandler.get("color")}"]`
-    )!;
+    );
   }
 });

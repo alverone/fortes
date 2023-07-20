@@ -1,14 +1,14 @@
-import { Cell } from "./models/Cell";
-import { Table } from "./models/Table";
-import { ResponseRow } from "./models/interfaces/Row";
+import { Cell } from "../models/Cell";
+import { Table } from "../models/Table";
+import { ResponseRow } from "../models/interfaces/Row";
 import {
   LocalStorageDestination,
   LocalStorageHandler,
-} from "./utils/LocalStorageHandler";
-import { Utils } from "./utils/Utils";
-import { Formatter } from "./utils/Formatter";
-import { StringConsts } from "./utils/StringConsts";
-import { DataCollectionHandler } from "./utils/DataCollectionHandler";
+} from "../utils/LocalStorageHandler";
+import { Utils } from "../utils/Utils";
+import { Formatter } from "../utils/Formatter";
+import { StringConsts } from "../utils/StringConsts";
+import { DataCollectionHandler } from "../utils/DataCollectionHandler";
 
 $(function () {
   const emailRegex =
