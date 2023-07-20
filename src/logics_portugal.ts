@@ -5,7 +5,7 @@ import {
   LocalStorageDestination,
   LocalStorageHandler,
 } from "./utils/LocalStorageHandler";
-import IMask from "imask";
+//import IMask from "imask";
 
 $(function () {
   const vw = window.innerWidth || document.documentElement.clientWidth;
@@ -33,10 +33,6 @@ $(function () {
     document.getElementById("wf-form-consult")
   );
 
-  // const phoneMask = IMask(document.getElementById("phone"), {
-  //   mask: "+{351} (000) 000 000",
-  //   lazy: false,
-  // });
   (<HTMLInputElement>(
     document.querySelector('input[name="Phone-Number"]')
   )).name = "Phone Number";
@@ -55,8 +51,8 @@ $(function () {
   };
 
   const localStorageHandler = new LocalStorageHandler(
-    LocalStorageDestination.uk,
-    false
+    LocalStorageDestination.en,
+    true
   );
   const dataHandler = new DataCollectionHandler(localStorageHandler);
   const splideCalc = new Splide(".slider-container.splide", splideOptions);
