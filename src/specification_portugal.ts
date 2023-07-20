@@ -1006,8 +1006,6 @@ $(function () {
   const $consultPhoneInput = <HTMLInputElement>document.getElementById("phone");
 
   $consultForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
     if (!$consultCheckbox.checked) {
       $("form#wf-form-consult .warning.agreementcheckbox").toggle(true);
     } else {
@@ -1028,6 +1026,7 @@ $(function () {
 
     if ($("form#wf-form-consult .warning").is(":visible")) {
       e.preventDefault();
+      e.stopImmediatePropagation();
       return false;
     } else {
       dataHandler.collectPortugalClientData(new FormData($consultForm));
