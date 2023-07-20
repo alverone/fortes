@@ -18,11 +18,15 @@ fs.readdirSync("./src/")
     const name = file.replace(/_*\d*\.ts$/i, "");
 
     if (name !== "test" && !name.includes("snippet")) {
-      entriesProd[file.replace(".ts", `_${timestamp}`)] = ["./src/" + file];
+      if (name.includes("code_injection")) {
+        entriesProd[file.replace(".ts", "")] = ["./src/" + file];
+      } else {
+        entriesProd[file.replace(".ts", `_${timestamp}`)] = ["./src/" + file];
+      }
     }
 
     entriesDev[name] = ["./src/" + file];
-    replacementFiles[name] = file.replace("ts", "js");
+    replacementFiles[name] = file.replace(".ts", `_${timestamp}.js`);
   });
 
 const replacements = [
