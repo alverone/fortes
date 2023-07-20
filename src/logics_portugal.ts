@@ -277,9 +277,9 @@ $(function () {
   });
 
   $node.addEventListener("change", function () {
-    if (this.checked && $(".choiceActive").length) {
-      $(".choiceActive").toggleClass("choiceActive");
-      $(".choiceActiveBorder").toggleClass("choiceActiveBorder");
+    if (this.checked) {
+      $(".choiceActive").removeClass("choiceActive");
+      $(".choiceActiveBorder").removeClass("choiceActiveBorder");
     }
   });
 
