@@ -1057,9 +1057,8 @@ $(function () {
         )
       );
 
-      submit().finally(() => {
-        window.location.assign("/sdyakuiemo");
-      });
+      submit();
+      window.location.assign("/sdyakuiemo");
     } else {
       e.stopImmediatePropagation();
       return false;
