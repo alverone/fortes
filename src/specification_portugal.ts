@@ -984,77 +984,87 @@ $(function () {
       $("#total").html(Formatter.formatCurrency(workSum * 1.23));
     });
 
-  $("#wf-form-consult").on("submit", function (e) {
-    e.preventDefault();
-
-    if (!$("#agreementCheckbox").is(":checked")) {
-      $(".warning.agreementcheckbox:not(.specification)").toggle(true);
-    } else {
-      $(".warning.agreementcheckbox:not(.specification)").toggle(false);
-    }
-    if (!$("#phone").val()) {
-      $(".warning.phone:not(.specification)").toggle(true);
-    } else {
-      $(".warning.phone:not(.specification)").toggle(false);
-    }
-    if (!$("#name").val()) {
-      $(".warning.name:not(.specification)").toggle(true);
-    } else {
-      $(".warning.name:not(.specification)").toggle(false);
-    }
-
-    if ($(".warning:not(.specification)").is(":visible")) {
-      e.preventDefault();
-      return false;
-    } else {
-      dataHandler.collectPortugalClientData(
-        new FormData(
-          <HTMLFormElement>document.getElementById("wf-form-consult")
-        )
-      );
-    }
-  });
-
+  const $consultForm = <HTMLFormElement>(
+    document.getElementById("wf-form-consult")
+  );
+  const $specificationForm = <HTMLFormElement>(
+    document.getElementById("wf-form-specification")
+  );
   const $specificationNameInput = <HTMLInputElement>(
     document.getElementById("sName")
   );
   const $specificationEmailInput = <HTMLInputElement>(
     document.getElementById("sEmail")
   );
+  const $specificationCheckbox = <HTMLInputElement>(
+    document.getElementById("sAgreementCheckbox")
+  );
+  const $consultCheckbox = <HTMLInputElement>(
+    document.getElementById("agreementCheckbox")
+  );
+  const $consultNameInput = <HTMLInputElement>document.getElementById("name");
+  const $consultPhoneInput = <HTMLInputElement>document.getElementById("phone");
 
-  $("#wf-form-specification").on("submit", async function (e) {
+  $consultForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    if (!$consultCheckbox.checked) {
+      $("form#wf-form-consult .warning.agreementcheckbox").toggle(true);
+    } else {
+      $("form#wf-form-consult .warning.agreementcheckbox").toggle(false);
+    }
+    if (!$consultPhoneInput.value) {
+      $("form#wf-form-consult .warning.phone:not(.specification)").toggle(true);
+    } else {
+      $("form#wf-form-consult .warning.phone:not(.specification)").toggle(
+        false
+      );
+    }
+    if (!$consultNameInput.value) {
+      $("form#wf-form-consult .warning.name:not(.specification)").toggle(true);
+    } else {
+      $("form#wf-form-consult .warning.name:not(.specification)").toggle(false);
+    }
+
+    if ($("form#wf-form-consult .warning").is(":visible")) {
+      e.preventDefault();
+      return false;
+    } else {
+      dataHandler.collectPortugalClientData(new FormData($consultForm));
+    }
+  });
+
+  $specificationForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const email = $specificationEmailInput.value;
 
-    if (!$("#agreementCheckbox").is(":checked")) {
-      $(".warning.agreementcheckbox.specification").toggle(true);
+    if (!$specificationCheckbox.checked) {
+      $("form#wf-form-specification .warning.agreementcheckbox").toggle(true);
     } else {
-      $(".warning.agreementcheckbox.specification").toggle(false);
+      $("form#wf-form-specification .warning.agreementcheckbox").toggle(false);
     }
 
     if ($specificationNameInput.value.length < 2) {
-      $(".warning.name.specification").toggle(true);
+      $("form#wf-form-specification .warning.name").toggle(true);
     } else {
-      $(".warning.name.specification").toggle(false);
+      $("form#wf-form-specification .warning.name").toggle(false);
     }
 
     if (email.length == 0) {
-      $(".warning.wrongEmail.specification").toggle(false);
-      $(".warning.emptyEmail.specification").toggle(true);
+      $("form#wf-form-specification .warning.wrongEmail").toggle(false);
+      $("form#wf-form-specification .warning.emptyEmail").toggle(true);
     } else if (!emailRegex.test(email)) {
-      $(".warning.wrongEmail.specification").toggle(true);
-      $(".warning.emptyEmail.specification").toggle(false);
+      $("form#wf-form-specification .warning.wrongEmail").toggle(true);
+      $("form#wf-form-specification .warning.emptyEmail").toggle(false);
     } else {
-      $(".warning.wrongEmail.specification").toggle(false);
-      $(".warning.emptyEmail.specification").toggle(false);
+      $("form#wf-form-specification .warning.wrongEmail").toggle(false);
+      $("form#wf-form-specification .warning.emptyEmail").toggle(false);
     }
 
-    if (!$(".warning.specification").is(":visible")) {
+    if (!$("form#wf-form-specification .warning").is(":visible")) {
       dataHandler.collectPortugalSpecificationData(
-        new FormData(
-          <HTMLFormElement>document.getElementById("wf-form-specification")
-        )
+        new FormData($specificationForm)
       );
 
       submit();
@@ -1084,10 +1094,6 @@ $(function () {
     });
     const result = await response.json();
     const id = result.success ? result.id : "";
-
-    $(".modal-note.specification").html(
-      "We sent your estimation to your email address. If you don't see it, check Spam folder or wait a few minutes."
-    );
 
     const name = $specificationNameInput.value;
     const email = $specificationEmailInput.value;
