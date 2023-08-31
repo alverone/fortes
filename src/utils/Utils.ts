@@ -43,6 +43,7 @@ export abstract class Utils {
   }
 
   public static containsRuPath(path: string): boolean {
-    return path.split(/\/(?=.)/).includes('ru');
+    const splitPath = path.split(/\/(?=.)/);
+    return splitPath.includes('ru') || splitPath.includes('blog-ru');
   }
 }

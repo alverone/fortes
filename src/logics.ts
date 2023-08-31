@@ -286,7 +286,11 @@ $(function () {
 
       dataHandler.collectCalcData();
 
-      window.open(`/specifications/${style}-${color}`, '_blank');
+      if (containsRuPath) {
+        window.open(`ru/specifications/${style}-${color}`, '_blank');
+      } else {
+        window.open(`/specifications/${style}-${color}`, '_blank');
+      }
     });
 
   $('.closing-btn').on('click', function () {
