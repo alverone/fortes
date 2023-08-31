@@ -1,24 +1,24 @@
-import { Cell } from "./models/Cell";
-import { Table } from "./models/Table";
-import { ResponseRow } from "./models/interfaces/Row";
+import { Cell } from './models/Cell';
+import { Table } from './models/Table';
+import { ResponseRow } from './models/interfaces/Row';
 import {
   LocalStorageDestination,
   LocalStorageHandler,
-} from "./utils/LocalStorageHandler";
-import { Utils } from "./utils/Utils";
-import { Formatter } from "./utils/Formatter";
-import { DataCollectionHandler } from "./utils/DataCollectionHandler";
+} from './utils/LocalStorageHandler';
+import { Utils } from './utils/Utils';
+import { Formatter } from './utils/Formatter';
+import { DataCollectionHandler } from './utils/DataCollectionHandler';
 //import IMask from "imask";
 
 fetch(
-  "https://docs.google.com/spreadsheets/d/1KkkpKbytztt48mwP1RGgpVFpfke8-IqB0KLWA8Sn2FE/gviz/tq?tqx=out:json?tq=SELECT *"
+  'https://docs.google.com/spreadsheets/d/1KkkpKbytztt48mwP1RGgpVFpfke8-IqB0KLWA8Sn2FE/gviz/tq?tqx=out:json?tq=SELECT *'
 )
   .then((res: Response) => res.text())
   .then((text: string) => {
     const response = JSON.parse(
       text
         .substring(text.length - 2, 0)
-        .replace(`/*O_o*/\ngoogle.visualization.Query.setResponse(`, "")
+        .replace(`/*O_o*/\ngoogle.visualization.Query.setResponse(`, '')
     );
 
     const responseRows: Array<ResponseRow> = response.table.rows;
@@ -29,7 +29,7 @@ fetch(
           return row.c
             .map(function (cell, index: number): Cell {
               if (cell === null || cell.v === null) {
-                return new Cell("", "0");
+                return new Cell('', '0');
               }
 
               return new Cell(
@@ -45,53 +45,53 @@ fetch(
     const emailRegex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    $("img").each(function () {
-      $(this).attr("loading", "eager");
+    $('img').each(function () {
+      $(this).attr('loading', 'eager');
     });
 
-    const $submitBtn = document.getElementById("submitBtn")!;
+    const $submitBtn = document.getElementById('submitBtn')!;
 
     //first cell of furniture price column + amount of items to count
     const gorenje: [number, number] = [168, 9];
     const bosch: [number, number] = [182, 10];
     const miele: [number, number] = [197, 9];
     const storage = new LocalStorageHandler(LocalStorageDestination.uk, false);
-    let appliances = storage.get("appliances");
+    let appliances = storage.get('appliances');
 
-    const hrnCourse = table.getCell("G7").numeric();
-    $("#course").html(Formatter.formatCurrency(hrnCourse));
+    const hrnCourse = table.getCell('G7').numeric();
+    $('#course').html(Formatter.formatCurrency(hrnCourse));
 
-    const style: string = storage.get("style");
-    let appliancesBoolTotal = Boolean(storage.get("appliances_bool_total")),
-      furnitureBool: boolean = Boolean(storage.get("furniture_bool")),
-      space: number = storage.get("space"),
-      bath: boolean = Boolean(storage.get("bath")),
-      shower: boolean = Boolean(storage.get("shower")),
-      amountOfRooms: number = storage.get("amount_of_rooms"),
-      amountOfBathrooms: number = storage.get("amount_of_bathrooms"),
-      letter: string = "",
-      letterModel: string = "",
-      ceiling: string = storage.get("ceiling"),
-      hygienicShower: boolean = storage.get("hygienic_shower"),
-      secondGypsumLayer: boolean = storage.get("second_gypsum_layer"),
-      floorScreed: boolean = storage.get("floor_screed"),
-      heatedFlooring: number = storage.get("heated_flooring"),
-      denoising: boolean = storage.get("denoising"),
-      entranceDoors: boolean = storage.get("entrance_doors"),
-      conditioning: number = storage.get("conditioning"),
-      flooring = storage.get("flooring"),
+    const style: string = storage.get('style');
+    let appliancesBoolTotal = Boolean(storage.get('appliances_bool_total')),
+      furnitureBool: boolean = Boolean(storage.get('furniture_bool')),
+      space: number = storage.get('space'),
+      bath: boolean = Boolean(storage.get('bath')),
+      shower: boolean = Boolean(storage.get('shower')),
+      amountOfRooms: number = storage.get('amount_of_rooms'),
+      amountOfBathrooms: number = storage.get('amount_of_bathrooms'),
+      letter: string = '',
+      letterModel: string = '',
+      ceiling: string = storage.get('ceiling'),
+      hygienicShower: boolean = storage.get('hygienic_shower'),
+      secondGypsumLayer: boolean = storage.get('second_gypsum_layer'),
+      floorScreed: boolean = storage.get('floor_screed'),
+      heatedFlooring: number = storage.get('heated_flooring'),
+      denoising: boolean = storage.get('denoising'),
+      entranceDoors: boolean = storage.get('entrance_doors'),
+      conditioning: number = storage.get('conditioning'),
+      flooring = storage.get('flooring'),
       workSum = 0,
       furnitureSum = 0,
-      summedPrice: number = storage.get("summedPrice"),
-      costPerMetre: number = storage.get("costPerMetre"),
-      $furniture = $("#furnitureList");
+      summedPrice: number = storage.get('summedPrice'),
+      costPerMetre: number = storage.get('costPerMetre'),
+      $furniture = $('#furnitureList');
 
-    $("#total").html(Formatter.formatCurrency(summedPrice));
-    $("#space").html(space.toString());
-    $("#pricePerMetre").html(Formatter.formatCurrency(costPerMetre));
+    $('#total').html(Formatter.formatCurrency(summedPrice));
+    $('#space').html(space.toString());
+    $('#pricePerMetre').html(Formatter.formatCurrency(costPerMetre));
 
-    const furnitureRate = 1 + table.getCell("S164").numeric() / 100;
-    const conditionerRate = 1 + table.getCell("S120").numeric() / 100;
+    const furnitureRate = 1 + table.getCell('S164').numeric() / 100;
+    const conditionerRate = 1 + table.getCell('S120').numeric() / 100;
     let months =
       space <= 40
         ? 3
@@ -106,14 +106,14 @@ fetch(
         : space <= 175
         ? 8
         : 9;
-    if (style == "modern" || style == "neoclassic") {
+    if (style == 'modern' || style == 'neoclassic') {
       months += 1;
     }
-    $("#months").html(months.toString());
-    const workInflation = table.getCell("S44").numeric();
-    const s42 = table.getCell("S42").numeric();
+    $('#months').html(months.toString());
+    const workInflation = table.getCell('S44').numeric();
+    const s42 = table.getCell('S42').numeric();
 
-    document.querySelectorAll("input").forEach(function (element) {
+    document.querySelectorAll('input').forEach(function (element) {
       try {
         const datasetName: string | undefined = element.dataset.name;
         if (
@@ -126,46 +126,46 @@ fetch(
       } catch (_) {}
     });
 
-    if (style == "cozy") {
-      letter = "I";
-      letterModel = "A";
-    } else if (style == "japandi") {
-      letter = "K";
-      letterModel = "B";
-    } else if (style == "fusion") {
-      letter = "M";
-      letterModel = "C";
-    } else if (style == "modern") {
-      letter = "O";
-      letterModel = "D";
-    } else if (style == "neoclassic") {
-      letter = "Q";
-      letterModel = "E";
+    if (style == 'cozy') {
+      letter = 'I';
+      letterModel = 'A';
+    } else if (style == 'japandi') {
+      letter = 'K';
+      letterModel = 'B';
+    } else if (style == 'fusion') {
+      letter = 'M';
+      letterModel = 'C';
+    } else if (style == 'modern') {
+      letter = 'O';
+      letterModel = 'D';
+    } else if (style == 'neoclassic') {
+      letter = 'Q';
+      letterModel = 'E';
     }
     let ceilingPrice = 0,
       flooringPrice = 0;
     let flooringNum, ceilingNum, flooringNum2, mouldings;
 
-    if (flooring == "laminat") {
-      flooringNum = "60";
-      flooringNum2 = "91";
+    if (flooring == 'laminat') {
+      flooringNum = '60';
+      flooringNum2 = '91';
       flooringPrice = space * (space <= 70 ? 201.26 : 198.81) * workInflation;
-    } else if (flooring == "vynil") {
-      flooringNum = "61";
-      flooringNum2 = "92";
+    } else if (flooring == 'vynil') {
+      flooringNum = '61';
+      flooringNum2 = '92';
       flooringPrice = space * (space <= 70 ? 220.33 : 161.8) * workInflation;
-    } else if (flooring == "parket") {
-      flooringNum = "62";
-      flooringNum2 = "93";
+    } else if (flooring == 'parket') {
+      flooringNum = '62';
+      flooringNum2 = '93';
       flooringPrice = space * (space <= 80 ? 369.96 : 240.31) * workInflation;
     }
 
-    if (ceiling == "stretch ceiling") {
-      ceilingNum = "56";
+    if (ceiling == 'stretch ceiling') {
+      ceilingNum = '56';
       mouldings = 0;
       ceilingPrice = table.getCell(`${letter}56`).numeric() * space;
-    } else if (ceiling == "gapless") {
-      ceilingNum = "57";
+    } else if (ceiling == 'gapless') {
+      ceilingNum = '57';
       mouldings = 0;
       ceilingPrice =
         space *
@@ -178,8 +178,8 @@ fetch(
           : 0) *
         workInflation *
         1.65;
-    } else if (ceiling == "gypsum") {
-      ceilingNum = "58";
+    } else if (ceiling == 'gypsum') {
+      ceilingNum = '58';
       mouldings = 1;
       ceilingPrice =
         space *
@@ -194,8 +194,8 @@ fetch(
         workInflation;
     }
 
-    let $work = $("#workList");
-    let textObject = "";
+    let $work = $('#workList');
+    let textObject = '';
     let water =
       2523 *
       ((amountOfRooms > 0 ? 6 : 0) +
@@ -250,7 +250,7 @@ fetch(
           : space <= 180
           ? 114
           : 162) *
-        (style == "modern" || style == "neoclassic" ? 1 : 0),
+        (style == 'modern' || style == 'neoclassic' ? 1 : 0),
       space *
         (space <= 60
           ? 418.86
@@ -259,7 +259,7 @@ fetch(
           : space <= 135
           ? 443.73
           : 481.67) *
-        (ceiling == "gypsum" ? 1 : 0) *
+        (ceiling == 'gypsum' ? 1 : 0) *
         workInflation,
       ceilingPrice,
       flooringPrice,
@@ -267,7 +267,7 @@ fetch(
       space *
         (space <= 70 ? 206.59 : 170) *
         workInflation *
-        (style == "japandi" || style == "fusion" ? 1 : 0),
+        (style == 'japandi' || style == 'fusion' ? 1 : 0),
     ];
     const workAmountArray = [
       1,
@@ -303,8 +303,8 @@ fetch(
         s42 -
       (800 + 950) * workInflation;
     textObject = returnObject(
-      table.getCell("F42").value(),
-      "",
+      table.getCell('F42').value(),
+      '',
       Math.round(
         water * s42 +
           ((bath
@@ -315,58 +315,58 @@ fetch(
               : 0)) *
             s42 -
           (800 + 950) * workInflation
-      ) + " грн."
+      ) + ' грн.'
     );
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
 
     workSum += canalisation * s42;
     textObject = returnObject(
-      table.getCell("F43").value(),
-      "",
-      Math.round(canalisation * s42) + " грн."
+      table.getCell('F43').value(),
+      '',
+      Math.round(canalisation * s42) + ' грн.'
     );
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
 
     workSum += vents * s42 * workInflation;
     textObject = returnObject(
-      table.getCell("F44").value(),
-      "",
-      Math.round(vents * s42 * workInflation) + " грн."
+      table.getCell('F44').value(),
+      '',
+      Math.round(vents * s42 * workInflation) + ' грн.'
     );
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
 
     workSum += electricity * s42;
     textObject = returnObject(
-      table.getCell("F45").value(),
-      "",
-      Math.round(electricity * s42) + " грн."
+      table.getCell('F45').value(),
+      '',
+      Math.round(electricity * s42) + ' грн.'
     );
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
 
     if (shower) {
       //workSum += Math.round(parseInt(shower));
       textObject = returnObject(
-        table.getCell("F46").value(),
-        "",
+        table.getCell('F46').value(),
+        '',
         table
           .getCell(getRightStyleLetter(style) + 46)
           .numeric()
-          .toString() + " грн."
+          .toString() + ' грн.'
       );
-      $("#workList").append(textObject);
+      $('#workList').append(textObject);
     }
 
     if (bath) {
       //workSum += Math.round(parseInt(bath));
       textObject = returnObject(
-        table.getCell("F47").value(),
-        "",
+        table.getCell('F47').value(),
+        '',
         table
           .getCell(getRightStyleLetter(style) + 47)
           .numeric()
-          .toString() + " грн."
+          .toString() + ' грн.'
       );
-      $("#workList").append(textObject);
+      $('#workList').append(textObject);
     }
 
     for (let i = 0; i < workAdressesArray.length; i++) {
@@ -378,34 +378,34 @@ fetch(
 
       workSum += price;
       textObject = returnObject(
-        table.getCell("F" + workAdressesArray[i]).value(),
-        "",
-        Math.round(price) + " грн."
+        table.getCell('F' + workAdressesArray[i]).value(),
+        '',
+        Math.round(price) + ' грн.'
       );
 
-      $("#workList").append(textObject);
+      $('#workList').append(textObject);
     }
     textObject = returnObject(
-      table.getCell("F66").value(),
-      "",
-      Math.round(workSum * 0.022 * s42) + " грн."
+      table.getCell('F66').value(),
+      '',
+      Math.round(workSum * 0.022 * s42) + ' грн.'
     );
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
     workSum += workSum * 0.022 * s42;
 
     textObject = returnObject(
-      table.getCell("F67").value(),
-      "",
+      table.getCell('F67').value(),
+      '',
       Math.round((months * 2 * 1200 + 3000 + space * 100 + space * 120) * s42) +
-        " грн."
+        ' грн.'
     );
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
     workSum += (months * 2 * 1200 + 3000 + space * 100) * s42;
 
-    $("#workList").append(
+    $('#workList').append(
       '</div><div class="list-option-container margined"></div>'
     );
-    $("#workList .list-option-container")
+    $('#workList .list-option-container')
       .last()
       .append(
         `<h4 class=\"pricelist-header small no-padding\">Комплектуючі та чистові матеріали</h4><span class=\'notation amount\'> </span><span class=\'notation\'>Ціна</span>`
@@ -430,7 +430,7 @@ fetch(
       table.getCell(`${letter}88`).numeric(),
       table.getCell(`${letter}89`).numeric(),
       table.getCell(`${letter + flooringNum2}`).numeric(),
-      space * 100 * table.getCell("S74").numeric(),
+      space * 100 * table.getCell('S74').numeric(),
     ];
     let materialsAmountArray = [
       amountOfBathrooms + amountOfRooms,
@@ -502,7 +502,7 @@ fetch(
       let price =
         materialsPriceArray[i] *
         materialsAmountArray[i] *
-        table.getCell("S72").numeric();
+        table.getCell('S72').numeric();
 
       if (price === 0 || isNaN(price)) {
         continue;
@@ -510,27 +510,27 @@ fetch(
 
       workSum += price;
       textObject = returnObject(
-        table.getCell("F" + materialsAdressesArray[i]).value(),
-        "",
-        Math.round(price) + " грн."
+        table.getCell('F' + materialsAdressesArray[i]).value(),
+        '',
+        Math.round(price) + ' грн.'
       );
 
-      $("#workList").append(textObject);
+      $('#workList').append(textObject);
     }
 
     /////
-    $("#workList").append(
+    $('#workList').append(
       '</div><div class="list-option-container margined"></div>'
     );
-    $("#workList .list-option-container")
+    $('#workList .list-option-container')
       .last()
       .append(
         `<h4 class=\"pricelist-header small no-padding\">Витрати компанії</h4><span class=\'notation amount\'>Кількість</span><span class=\'notation\'>Ціна</span>`
       );
     textObject = `<div class=\"option-block\"><div class=\"division-block pricelist\"></div><div class=\"list-option-container\"><span class=\'name\'>${table
-      .getCell("F100")
+      .getCell('F100')
       .value()}</span><span class=\'list-text amount\'>${months} міс.</span><span class=\'list-text\'> </span></div></div>`;
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
 
     const casualtiesPriceArray = [
       table.getCell(`${letter}101`).numeric(),
@@ -549,42 +549,42 @@ fetch(
       )} грн./місяць</span><span class=\'list-text\'>${Math.round(
         price
       )} грн.</span></div></div>`;
-      $("#workList").append(textObject);
+      $('#workList').append(textObject);
     }
     workSum +=
-      hrnCourse * space * table.getCell("G37").numeric() +
+      hrnCourse * space * table.getCell('G37').numeric() +
       months * table.getCell(`${letter}214`).numeric();
     textObject = `<div class=\"option-block\"><div class=\"division-block pricelist\"></div><div class=\"list-option-container\"><span class=\'name\'>
 		${table.getCell(`F212`).value()}
 			</span><span class=\'list-text amount\'></span><span class=\'list-text\'>${Formatter.formatCurrency(
-        hrnCourse * table.getCell("G37").numeric() * space
+        hrnCourse * table.getCell('G37').numeric() * space
       )} грн.</span></div></div>`;
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
     textObject = `<div class=\"option-block\"><div class=\"division-block pricelist\"></div><div class=\"list-option-container\"><span class=\'name\'>${table
-      .getCell("F214")
+      .getCell('F214')
       .value()}</span><span class=\'list-text amount\'>${table
       .getCell(`${letter}214`)
       .numeric()} грн./місяць</span><span class=\'list-text\'>${Math.round(
       months * table.getCell(`${letter}214`).numeric()
     )} грн.</span></div></div>`;
-    $("#workList").append(textObject);
+    $('#workList').append(textObject);
 
     if (furnitureBool) {
-      $("#furnitureList").append(
+      $('#furnitureList').append(
         '</div><div class="list-option-container"></div>'
       );
-      $("#furnitureList .list-option-container")
+      $('#furnitureList .list-option-container')
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\">Кухня</h4><span class=\'notation amount\'>Кількість</span><span class=\'notation\'>Ціна</span>`
         );
 
       appendFurnitureOption(
-        table.getCell("F127").value(),
+        table.getCell('F127').value(),
         table.getCell(`${letterModel}127`)?.value(),
         1,
         table.getCell(`${letter}127`).numeric(),
-        table.getCell("G120").value()
+        table.getCell('G120').value()
       );
 
       furnitureSum +=
@@ -593,10 +593,10 @@ fetch(
       $furniture.append(
         '<div class="option-block"><div class="division-block pricelist small-heading"></div><div class="list-option-container"></div></div>'
       );
-      $("#furnitureList .option-block .list-option-container")
+      $('#furnitureList .option-block .list-option-container')
         .last()
         .append(
-          `<span class=\'name\'>${table.getCell("F127").value()}
+          `<span class=\'name\'>${table.getCell('F127').value()}
 						</span><span class=\'list-text amount\'>1 шт.</span><span class=\'list-text\'>${Formatter.formatCurrency(
               table.getCell(`${letter}128`).numeric() * furnitureRate
             )} грн.</span>`
@@ -604,251 +604,251 @@ fetch(
       $furniture.append(
         '<div class="option-block"><div class="division-block pricelist small-heading"></div><div class="list-option-container"></div></div>'
       );
-      $("#furnitureList .option-block .list-option-container")
+      $('#furnitureList .option-block .list-option-container')
         .last()
         .append(
           `<span class=\'name\'>${table
-            .getCell("F128")
+            .getCell('F128')
             .value()}</span><span class=\'list-text amount\'>1 шт.</span><span class=\'list-text\'>${Formatter.formatCurrency(
             table.getCell(`${letter}129`).numeric() * furnitureRate
           )} грн.</span>`
         );
 
       appendFurnitureOption(
-        table.getCell("F130").value(),
+        table.getCell('F130').value(),
         table.getCell(`${letterModel}130`)?.value(),
         1,
         table.getCell(`${letter}130`)?.numeric(),
-        table.getCell("G130")?.value()
+        table.getCell('G130')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F131").value(),
-        table.getCell(letterModel + "131")?.value(),
+        table.getCell('F131').value(),
+        table.getCell(letterModel + '131')?.value(),
         1,
         table.getCell(`${letter}131`)?.numeric(),
-        table.getCell("G131")?.value()
+        table.getCell('G131')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F132").value(),
-        table.getCell(letterModel + "132")?.value(),
+        table.getCell('F132').value(),
+        table.getCell(letterModel + '132')?.value(),
         1,
         table.getCell(`${letter}132`)?.numeric(),
-        table.getCell("G132")?.value()
+        table.getCell('G132')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F133").value(),
-        table.getCell(letterModel + "133")?.value(),
+        table.getCell('F133').value(),
+        table.getCell(letterModel + '133')?.value(),
         4,
         table.getCell(`${letter}133`)?.numeric(),
-        table.getCell("G133")?.value()
+        table.getCell('G133')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F134").value(),
-        table.getCell(letterModel + "134")?.value(),
+        table.getCell('F134').value(),
+        table.getCell(letterModel + '134')?.value(),
         1,
         table.getCell(`${letter}134`)?.numeric(),
-        table.getCell("G134")?.value()
+        table.getCell('G134')?.value()
       );
 
       appendObject(
-        $("#furnitureList"),
+        $('#furnitureList'),
         '</div><div class="list-option-container margined"></div>'
       );
       appendObject(
-        $("#furnitureList .list-option-container").last(),
+        $('#furnitureList .list-option-container').last(),
         `<h4 class=\"pricelist-header small no-padding\">Вітальня</h4><span class=\'notation amount\'>Кількість</span><span class=\'notation\'>Ціна</span>`
       );
 
       appendFurnitureOption(
-        table.getCell("F138").value(),
-        table.getCell(letterModel + "138")?.value(),
+        table.getCell('F138').value(),
+        table.getCell(letterModel + '138')?.value(),
         1,
         table.getCell(`${letter}138`)?.numeric(),
-        table.getCell("G138")?.value()
+        table.getCell('G138')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F139").value(),
-        table.getCell(letterModel + "139")?.value(),
+        table.getCell('F139').value(),
+        table.getCell(letterModel + '139')?.value(),
         1,
         table.getCell(`${letter}139`)?.numeric(),
-        table.getCell("G139")?.value()
+        table.getCell('G139')?.value()
       );
 
       appendObject(
-        $("#furnitureList"),
+        $('#furnitureList'),
         '</div><div class="list-option-container margined"></div>'
       );
       appendObject(
-        $("#furnitureList .list-option-container").last(),
+        $('#furnitureList .list-option-container').last(),
         `<h4 class=\"pricelist-header small no-padding\">Спальня</h4><span class=\'notation amount\'>Кількість</span><span class=\'notation\'>Ціна</span>`
       );
 
       appendFurnitureOption(
-        table.getCell("F141").value(),
-        table.getCell(letterModel + "141")?.value(),
+        table.getCell('F141').value(),
+        table.getCell(letterModel + '141')?.value(),
         1,
         table.getCell(`${letter}141`)?.numeric(),
-        table.getCell("G141")?.value()
+        table.getCell('G141')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F142").value(),
-        table.getCell(letterModel + "142")?.value(),
+        table.getCell('F142').value(),
+        table.getCell(letterModel + '142')?.value(),
         1,
         table.getCell(`${letter}142`)?.numeric(),
-        table.getCell("G142")?.value()
+        table.getCell('G142')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F143").value(),
-        table.getCell(letterModel + "143")?.value(),
+        table.getCell('F143').value(),
+        table.getCell(letterModel + '143')?.value(),
         2,
         table.getCell(`${letter}143`)?.numeric(),
-        table.getCell("G143")?.value()
+        table.getCell('G143')?.value()
       );
 
       appendFurnitureOption(
-        table.getCell("F144").value(),
-        table.getCell(letterModel + "144")?.value(),
+        table.getCell('F144').value(),
+        table.getCell(letterModel + '144')?.value(),
         1,
         table.getCell(`${letter}144`)?.numeric(),
-        table.getCell("G144")?.value()
+        table.getCell('G144')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F145").value(),
-        table.getCell(letterModel + "145")?.value(),
+        table.getCell('F145').value(),
+        table.getCell(letterModel + '145')?.value(),
         1,
         table.getCell(`${letter}145`)?.numeric(),
-        table.getCell("G145")?.value()
+        table.getCell('G145')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F146").value(),
-        table.getCell(letterModel + "146")?.value(),
+        table.getCell('F146').value(),
+        table.getCell(letterModel + '146')?.value(),
         1,
         table.getCell(`${letter}146`)?.numeric(),
-        table.getCell("G146")?.value()
+        table.getCell('G146')?.value()
       );
 
       appendObject(
-        $("#furnitureList"),
+        $('#furnitureList'),
         '</div><div class="list-option-container margined"></div>'
       );
-      $("#furnitureList .list-option-container")
+      $('#furnitureList .list-option-container')
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\">Світильники</h4><span class=\'notation amount\'>Кількість</span><span class=\'notation\'>Ціна</span>`
         );
 
       appendFurnitureOption(
-        table.getCell("F148").value(),
-        table.getCell(letterModel + "148")?.value(),
+        table.getCell('F148').value(),
+        table.getCell(letterModel + '148')?.value(),
         Math.ceil(space * 0.48),
         table.getCell(`${letter}148`)?.numeric(),
-        table.getCell("G148")?.value()
+        table.getCell('G148')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F149").value(),
-        table.getCell(letterModel + "149")?.value(),
+        table.getCell('F149').value(),
+        table.getCell(letterModel + '149')?.value(),
         1,
         table.getCell(`${letter}149`)?.numeric(),
-        table.getCell("G149")?.value()
+        table.getCell('G149')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F151").value(),
-        table.getCell(letterModel + "151")?.value(),
+        table.getCell('F151').value(),
+        table.getCell(letterModel + '151')?.value(),
         1,
         table.getCell(`${letter}151`)?.numeric(),
-        table.getCell("G151")?.value()
+        table.getCell('G151')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F153").value(),
-        table.getCell(letterModel + "153")?.value(),
+        table.getCell('F153').value(),
+        table.getCell(letterModel + '153')?.value(),
         1,
         table.getCell(`${letter}153`)?.numeric(),
-        table.getCell("G153")?.value()
+        table.getCell('G153')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F154").value(),
-        table.getCell(letterModel + "154")?.value(),
+        table.getCell('F154').value(),
+        table.getCell(letterModel + '154')?.value(),
         1,
         table.getCell(`${letter}154`)?.numeric(),
-        table.getCell("G154")?.value()
+        table.getCell('G154')?.value()
       );
 
       appendFurnitureOption(
-        table.getCell("F150").value(),
-        table.getCell(letterModel + "150")?.value(),
+        table.getCell('F150').value(),
+        table.getCell(letterModel + '150')?.value(),
         amountOfRooms > 1 ? 1 : 0,
         table.getCell(`${letter}150`)?.numeric(),
-        table.getCell("G150")?.value()
+        table.getCell('G150')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F152").value(),
-        table.getCell(letterModel + "152")?.value(),
+        table.getCell('F152').value(),
+        table.getCell(letterModel + '152')?.value(),
         2,
         table.getCell(`${letter}152`)?.numeric(),
-        table.getCell("G152")?.value()
+        table.getCell('G152')?.value()
       );
 
-      $("#furnitureList").append(
+      $('#furnitureList').append(
         '</div><div class="list-option-container margined"></div>'
       );
-      $("#furnitureList .list-option-container")
+      $('#furnitureList .list-option-container')
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\">Декор</h4><span class=\'notation amount\'>Кількість</span><span class=\'notation\'>Ціна</span>`
         );
 
       appendFurnitureOption(
-        table.getCell("F156").value(),
-        table.getCell(letterModel + "156")?.value(),
+        table.getCell('F156').value(),
+        table.getCell(letterModel + '156')?.value(),
         amountOfRooms,
         table.getCell(`${letter}156`)?.numeric(),
-        table.getCell("G156")?.value()
+        table.getCell('G156')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F157").value(),
-        table.getCell(letterModel + "157")?.value(),
+        table.getCell('F157').value(),
+        table.getCell(letterModel + '157')?.value(),
         amountOfRooms,
         table.getCell(`${letter}157`)?.numeric(),
-        table.getCell("G157")?.value()
+        table.getCell('G157')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F158").value(),
-        table.getCell(letterModel + "158")?.value(),
+        table.getCell('F158').value(),
+        table.getCell(letterModel + '158')?.value(),
         amountOfRooms,
         table.getCell(`${letter}158`)?.numeric(),
-        table.getCell("G158")?.value()
+        table.getCell('G158')?.value()
       );
 
       appendFurnitureOption(
-        table.getCell("F159").value(),
-        table.getCell(letterModel + "159")?.value(),
+        table.getCell('F159').value(),
+        table.getCell(letterModel + '159')?.value(),
         1,
         table.getCell(`${letter}159`)?.numeric(),
-        table.getCell("G159")?.value()
+        table.getCell('G159')?.value()
       );
       appendFurnitureOption(
-        table.getCell("F160").value(),
-        table.getCell(letterModel + "160")?.value(),
+        table.getCell('F160').value(),
+        table.getCell(letterModel + '160')?.value(),
         amountOfRooms - 1,
         table.getCell(`${letter}160`)?.numeric(),
-        table.getCell("G160")?.value()
+        table.getCell('G160')?.value()
       );
 
       appendObject(
-        $("#furnitureList"),
+        $('#furnitureList'),
         returnObject(
-          table.getCell("F162").value(),
-          " ",
-          Math.round(furnitureSum * 0.03 * furnitureRate) + " грн."
+          table.getCell('F162').value(),
+          ' ',
+          Math.round(furnitureSum * 0.03 * furnitureRate) + ' грн.'
         )
       );
       furnitureSum += furnitureSum * 0.03 * furnitureRate;
       appendObject(
-        $("#furnitureList"),
+        $('#furnitureList'),
         '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
       );
       appendObject(
-        $("#furnitureList .list-option-container").last(),
+        $('#furnitureList .list-option-container').last(),
         `<span class=\'name summary\'>Всього по меблях:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
           Math.round(furnitureSum)
         )} грн.</span>`
@@ -864,17 +864,17 @@ fetch(
       entranceDoors ||
       conditioning
     ) {
-      $("#workList").append(
+      $('#workList').append(
         '</div><div class="list-option-container margined"></div>'
       );
-      $("#workList .list-option-container")
+      $('#workList .list-option-container')
         .last()
         .append(
           `<h4 class=\"pricelist-header small no-padding\"> Опції</h4><span class=\'notation amount\'> </span><span class=\'notation\'>Ціна</span>`
         );
     }
 
-    const optionInflation = table.getCell("T109").numeric();
+    const optionInflation = table.getCell('T109').numeric();
 
     let optionsPriceArray = [
       space * table.getCell(`${letter}109`).numeric() * 1.25,
@@ -949,28 +949,28 @@ fetch(
       appendObject(
         $work,
         returnObject(
-          table.getCell("F" + optionsAdressesArray[i])?.value() +
-            ", " +
+          table.getCell('F' + optionsAdressesArray[i])?.value() +
+            ', ' +
             table.getCell(`${letterModel}${optionsAdressesArray[i]}`)?.value(),
-          "",
-          Math.round(price) + " грн."
+          '',
+          Math.round(price) + ' грн.'
         )
       );
     }
 
     if (!appliancesBoolTotal) {
-      $(".comfy-section").toggle(false);
+      $('.comfy-section').toggle(false);
     }
     if (!furnitureBool) {
-      $("#furnitureList").toggle(false);
+      $('#furnitureList').toggle(false);
     }
 
     appendObject(
-      $("#workList"),
+      $('#workList'),
       '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
     );
     appendObject(
-      $("#workList .list-option-container").last(),
+      $('#workList .list-option-container').last(),
       `<span class=\'name summary\'>Всього по будівельній частині:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
         workSum
       )} грн.</span>`
@@ -997,58 +997,58 @@ fetch(
       );
       if (manufacturer === null) {
         appendObject(
-          $("#materialsList .option-block .list-option-container").last(),
+          $('#materialsList .option-block .list-option-container').last(),
           `<span class=\'name\'>${name}</span><span class=\'list-text\'>${amount} ${dim} </span>`
         );
         return;
       }
       appendObject(
-        $("#furnitureList .option-block .list-option-container").last(),
+        $('#furnitureList .option-block .list-option-container').last(),
         `<span class=\'name\'>${name}, ${manufacturer}</span><span class=\'list-text amount\'>${amount} ${dim}</span><span class=\'list-text\'>${Formatter.formatCurrency(
-          price * amount * (1 + table.getCell("S164").numeric() / 100)
+          price * amount * (1 + table.getCell('S164').numeric() / 100)
         )} грн.</span>`
       );
     }
     appendObject(
-      $("#materialsList"),
+      $('#materialsList'),
       '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
     );
     appendObject(
-      $("#materialsList .list-option-container").last(),
+      $('#materialsList .list-option-container').last(),
       `<span class=\'name summary\'>Всього по будівельній частині:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
         workSum
       )} грн.</span>`
     );
     let sum = 0;
 
-    let $appliances = $("#appliancesList");
-    let $appliancesList = $("#appliancesListTotal");
+    let $appliances = $('#appliancesList');
+    let $appliancesList = $('#appliancesListTotal');
     let array: number[];
 
-    if (appliances === "gorenje") {
+    if (appliances === 'gorenje') {
       array = [...gorenje];
-    } else if (appliances === "bosch") {
+    } else if (appliances === 'bosch') {
       array = [...bosch];
-    } else if (appliances === "miele") {
+    } else if (appliances === 'miele') {
       array = [...miele];
     }
 
     let quantity = 0;
-    if (appliances !== "undefined") {
+    if (appliances !== 'undefined') {
       quantity = 1;
       for (let i = 0; i < array[1]; i++) {
         $appliances.append(
           '<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"></div></div>'
         );
-        $("#appliancesList .option-block .list-option-container.appliances")
+        $('#appliancesList .option-block .list-option-container.appliances')
           .last()
           .append(
             `<span class=\'name white\'>${table
-              .getCell("F" + (array[0] + i))
+              .getCell('F' + (array[0] + i))
               .value()} ${table
-              .getCell("E" + (array[0] + i))
+              .getCell('E' + (array[0] + i))
               .value()}</span><span class=\'list-text white\'>${Formatter.formatCurrency(
-              table.getCell("D" + (array[0] + i)).numeric()
+              table.getCell('D' + (array[0] + i)).numeric()
             )} грн.</span>`
           );
 
@@ -1056,30 +1056,30 @@ fetch(
           $appliancesList.append(
             '<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"></div></div>'
           );
-          $("#appliancesListTotal .option-block .list-option-container")
+          $('#appliancesListTotal .option-block .list-option-container')
             .last()
             .append(
               `<span class=\'name\'>${table
-                .getCell("F" + (array[0] + i))
+                .getCell('F' + (array[0] + i))
                 .value()} ${table
-                .getCell("E" + (array[0] + i))
+                .getCell('E' + (array[0] + i))
                 .value()}</span><span class=\'list-text amount\'>1 шт.</span><span class=\'list-text\'>${Formatter.formatCurrency(
-                table.getCell("D" + (array[0] + i)).numeric()
+                table.getCell('D' + (array[0] + i)).numeric()
               )} грн.</span>`
             );
         }
-        sum += table.getCell("D" + (array[0] + i)).numeric();
-        sum += table.getCell("G36").numeric();
+        sum += table.getCell('D' + (array[0] + i)).numeric();
+        sum += table.getCell('G36').numeric();
         quantity++;
       }
 
       if (appliancesBoolTotal) {
-        const g36 = table.getCell("G36").numeric();
+        const g36 = table.getCell('G36').numeric();
         sum += g36;
         $appliancesList.append(
           '<div class="option-block"><div class="division-block pricelist"></div><div class="list-option-container"></div></div>'
         );
-        $("#appliancesListTotal .option-block .list-option-container")
+        $('#appliancesListTotal .option-block .list-option-container')
           .last()
           .append(
             `<span class=\'name\'>Доставка техніки</span><span class=\'list-text amount\'></span><span class=\'list-text\'>${
@@ -1089,7 +1089,7 @@ fetch(
         $appliances.append(
           '<div class="option-block"><div class="division-block white"></div><div class="list-option-container appliances"></div></div>'
         );
-        $("#appliancesList .option-block .list-option-container.appliances")
+        $('#appliancesList .option-block .list-option-container.appliances')
           .last()
           .append(
             `<span class=\'name white\'>Доставка техніки</span><span class=\'list-text white\'>${
@@ -1100,16 +1100,16 @@ fetch(
           '<div class="division-block pricelist"></div><div class="list-option-container summary"></div>'
         );
 
-        $("#appliancesTotalDiscount").html(Formatter.formatCurrency(sum * 0.9));
+        $('#appliancesTotalDiscount').html(Formatter.formatCurrency(sum * 0.9));
 
-        $("#appliancesListTotal .list-option-container")
+        $('#appliancesListTotal .list-option-container')
           .last()
           .append(
             `<span class=\'name summary\'>Всього по техніці:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
               sum
             )} грн.</span>`
           );
-        $("#appliancesListTotal .list-option-container")
+        $('#appliancesListTotal .list-option-container')
           .last()
           .append(
             `<span class=\'name summary\'><b>Всього по техніці, зі знижкою</b>:</span><span class=\'list-text summary work\'>${Formatter.formatCurrency(
@@ -1119,7 +1119,7 @@ fetch(
       }
     }
     if (!appliancesBoolTotal) {
-      $("#appliancesListTotal").toggle(false);
+      $('#appliancesListTotal').toggle(false);
     }
 
     const styleLetter = getRightStyleLetter(style);
@@ -1133,18 +1133,18 @@ fetch(
     }
 
     function getRightStyleLetter(style: string) {
-      let styleLetter = "J";
+      let styleLetter = 'J';
 
-      if (style == "cozy") {
-        styleLetter = "J";
-      } else if (style == "japandi") {
-        styleLetter = "L";
-      } else if (style == "fusion") {
-        styleLetter = "N";
-      } else if (style == "modern") {
-        styleLetter = "P";
-      } else if (style == "neoclassic") {
-        styleLetter = "R";
+      if (style == 'cozy') {
+        styleLetter = 'J';
+      } else if (style == 'japandi') {
+        styleLetter = 'L';
+      } else if (style == 'fusion') {
+        styleLetter = 'N';
+      } else if (style == 'modern') {
+        styleLetter = 'P';
+      } else if (style == 'neoclassic') {
+        styleLetter = 'R';
       }
 
       return styleLetter;
@@ -1155,20 +1155,20 @@ fetch(
     const kitchenDelivery = table.getCell(`${styleLetter}129`).numeric();
     const kitchenTotal = kitchenMontage + kitchenPrice + kitchenDelivery;
 
-    $("#kitchenPrice").html(Formatter.formatCurrency(kitchenPrice) + " грн.");
-    $("#kitchenMontage").html(
-      Formatter.formatCurrency(kitchenMontage) + " грн."
+    $('#kitchenPrice').html(Formatter.formatCurrency(kitchenPrice) + ' грн.');
+    $('#kitchenMontage').html(
+      Formatter.formatCurrency(kitchenMontage) + ' грн.'
     );
-    $("#kitchenDelivery").html(
-      Formatter.formatCurrency(kitchenDelivery) + " грн."
+    $('#kitchenDelivery').html(
+      Formatter.formatCurrency(kitchenDelivery) + ' грн.'
     );
-    $("#kitchenTotal").html(Formatter.formatCurrency(kitchenTotal) + " грн");
-    $("#kitchenTotalPrice").html(Formatter.formatCurrency(sum) + " грн.");
+    $('#kitchenTotal').html(Formatter.formatCurrency(kitchenTotal) + ' грн');
+    $('#kitchenTotalPrice').html(Formatter.formatCurrency(sum) + ' грн.');
     if (furnitureBool) {
       furnitureSum = 0;
     }
-    $("#kitchenTotalPriceDiscount").html(Formatter.formatCurrency(sum * 0.9));
-    $("#discountTotal").html(
+    $('#kitchenTotalPriceDiscount').html(Formatter.formatCurrency(sum * 0.9));
+    $('#discountTotal').html(
       `<span class='bold-text-7'>${Formatter.formatCurrency(
         sum - sum * 0.9
       )} грн.</span>`
@@ -1178,10 +1178,10 @@ fetch(
     //} else {
 
     if (summedPrice * hrnCourse < workSum) {
-      $("#totalPriceTotal").html(Formatter.formatCurrency(workSum) + " грн. *");
+      $('#totalPriceTotal').html(Formatter.formatCurrency(workSum) + ' грн. *');
     } else {
-      $("#totalPriceTotal").html(
-        Formatter.formatCurrency(summedPrice * hrnCourse) + " грн. *"
+      $('#totalPriceTotal').html(
+        Formatter.formatCurrency(summedPrice * hrnCourse) + ' грн. *'
       );
     }
 
@@ -1194,82 +1194,82 @@ fetch(
       lazy: false,
     });*/
 
-    $("form#wf-form-consult").on("submit", (e) => {
+    $('form#wf-form-consult').on('submit', (e) => {
       e.preventDefault();
 
-      if (!$("#agreementCheckboxC").is(":checked")) {
-        $("form#wf-form-consult .warning.agreementcheckbox").toggle(true);
+      if (!$('#agreementCheckboxC').is(':checked')) {
+        $('form#wf-form-consult .warning.agreementcheckbox').toggle(true);
       } else {
-        $("form#wf-form-consult .warning.agreementcheckbox").toggle(false);
+        $('form#wf-form-consult .warning.agreementcheckbox').toggle(false);
       }
 
-      if ((<string>$("#phoneC").val()).length < 12) {
-        $("form#wf-form-consult .warning.inputs.phone").toggle(true);
+      if ((<string>$('#phoneC').val()).length < 12) {
+        $('form#wf-form-consult .warning.inputs.phone').toggle(true);
       } else {
-        $("form#wf-form-consult .warning.inputs.phone").toggle(false);
+        $('form#wf-form-consult .warning.inputs.phone').toggle(false);
       }
 
-      if (!$("#nameC").val()) {
-        $("form#wf-form-consult .warning.inputs.name").toggle(true);
+      if (!$('#nameC').val()) {
+        $('form#wf-form-consult .warning.inputs.name').toggle(true);
       } else {
-        $("form#wf-form-consult .warning.inputs.name").toggle(false);
+        $('form#wf-form-consult .warning.inputs.name').toggle(false);
       }
 
-      if ($("form#wf-form-consult .warning").is(":visible")) {
+      if ($('form#wf-form-consult .warning').is(':visible')) {
         return false;
       } else {
         const oldBtnName = $submitBtn.innerText;
 
-        $submitBtn.innerText = "Зачекайте...";
+        $submitBtn.innerText = 'Зачекайте...';
 
         //заявки на консультацію
         fetch(
-          "https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec",
+          'https://script.google.com/macros/s/AKfycbyTfAJSAOSn1mB5Ua10w0AHAdKLb1weCd3ve139FkPzbqLEPnBeiE8gGGTq5S6XhmevIQ/exec',
           {
-            method: "POST",
+            method: 'POST',
             body: new FormData(
-              <HTMLFormElement>document.getElementById("wf-form-consult")
+              <HTMLFormElement>document.getElementById('wf-form-consult')
             ),
           }
         )
           .then(() => {
             $submitBtn.innerText = oldBtnName;
           })
-          .catch((error) => console.error("Error!", error.message));
+          .catch((error) => console.error('Error!', error.message));
       }
     });
 
-    $("form#wf-form-client-info").on("submit", async function (e) {
+    $('form#wf-form-client-info').on('submit', async function (e) {
       e.preventDefault();
 
-      if (!$("#agreementCheckbox").is(":checked")) {
-        $("form#wf-form-client-info .warning.agreementcheckbox").toggle(true);
+      if (!$('#agreementCheckbox').is(':checked')) {
+        $('form#wf-form-client-info .warning.agreementcheckbox').toggle(true);
       } else {
-        $("form#wf-form-client-info .warning.agreementcheckbox").toggle(false);
+        $('form#wf-form-client-info .warning.agreementcheckbox').toggle(false);
       }
-      if (!$("#sPhone").val()) {
-        $("form#wf-form-client-info .warning.inputs.phone").toggle(true);
+      if (!$('#sPhone').val()) {
+        $('form#wf-form-client-info .warning.inputs.phone').toggle(true);
       } else {
-        $("form#wf-form-client-info .warning.inputs.phone").toggle(false);
+        $('form#wf-form-client-info .warning.inputs.phone').toggle(false);
       }
-      if (!$("#sName").val()) {
-        $("form#wf-form-client-info .warning.inputs.name").toggle(true);
+      if (!$('#sName').val()) {
+        $('form#wf-form-client-info .warning.inputs.name').toggle(true);
       } else {
-        $("form#wf-form-client-info .warning.inputs.name").toggle(false);
-      }
-
-      if ((<string>$("#sEmail").val()).length == 0) {
-        $("form#wf-form-client-info .warning.inputs.wrongEmail").toggle(false);
-        $("form#wf-form-client-info .warning.inputs.emptyEmail").toggle(true);
-      } else if (!emailRegex.test(<string>$("#sEmail").val())) {
-        $("form#wf-form-client-info .warning.inputs.wrongEmail").toggle(true);
-        $("form#wf-form-client-info .warning.inputs.emptyEmail").toggle(false);
-      } else {
-        $("form#wf-form-client-info .warning.inputs.wrongEmail").toggle(false);
-        $("form#wf-form-client-info .warning.inputs.emptyEmail").toggle(false);
+        $('form#wf-form-client-info .warning.inputs.name').toggle(false);
       }
 
-      if ($("form#wf-form-client-info .warning").is(":visible")) {
+      if ((<string>$('#sEmail').val()).length == 0) {
+        $('form#wf-form-client-info .warning.inputs.wrongEmail').toggle(false);
+        $('form#wf-form-client-info .warning.inputs.emptyEmail').toggle(true);
+      } else if (!emailRegex.test(<string>$('#sEmail').val())) {
+        $('form#wf-form-client-info .warning.inputs.wrongEmail').toggle(true);
+        $('form#wf-form-client-info .warning.inputs.emptyEmail').toggle(false);
+      } else {
+        $('form#wf-form-client-info .warning.inputs.wrongEmail').toggle(false);
+        $('form#wf-form-client-info .warning.inputs.emptyEmail').toggle(false);
+      }
+
+      if ($('form#wf-form-client-info .warning').is(':visible')) {
         e.preventDefault();
         e.stopImmediatePropagation();
         return false;
@@ -1277,7 +1277,7 @@ fetch(
         const collectionHandler = new DataCollectionHandler(storage);
         collectionHandler.collectSpecificationData(
           new FormData(
-            <HTMLFormElement>document.getElementById("wf-form-client-info")
+            <HTMLFormElement>document.getElementById('wf-form-client-info')
           )
         );
         await submit();
@@ -1286,45 +1286,49 @@ fetch(
     });
 
     async function submit() {
-      $(".modal-note").html("Зачекайте...");
+      $('.modal-note').html('Зачекайте...');
 
-      const pageContent = $("html")
+      const pageContent = $('html')
         .clone()
-        .find("script")
+        .find('script')
         .remove()
         .end()
         .html();
       const fileString =
         `<!DOCTYPE html><html lang="uk">` + pageContent + `</html>`;
-      const file = new File([fileString], "source.html", {
-        type: "text/html",
+      const file = new File([fileString], 'source.html', {
+        type: 'text/html',
       });
 
       const body = new FormData();
-      body.append("file", file, "source.html");
+      body.append('file', file, 'source.html');
 
-      const response = await fetch("https://api.fortes.agency/convert", {
-        method: "POST",
+      const response = await fetch('https://api.fortes.agency/convert', {
+        method: 'POST',
         body: body,
       });
       const result = await response.json();
-      const id = result.success ? result.id : "";
+      const id = result.success ? result.id : '';
 
-      $(".modal-note").html(
-        "Ми надіслали вам лист на електронну пошту. Якщо ви не бачите його у списку, перевірте папку Спам або зачекайте декілька хвилин."
+      $('.modal-note').html(
+        'Ми надіслали вам лист на електронну пошту. Якщо ви не бачите його у списку, перевірте папку Спам або зачекайте декілька хвилин.'
       );
 
-      fetch("https://api.fortes.agency/mail", {
-        method: "POST",
+      fetch('https://api.fortes.agency/mail', {
+        method: 'POST',
         body: JSON.stringify({
           fileId: id,
-          fileName: localStorage.getItem("style"),
-          recipientMail: $("#sEmail").val(),
+          fileName: localStorage.getItem('style'),
+          recipientMail: $('#sEmail').val(),
         }),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
-      window.location.assign("/sdyakuiemo");
+      if (Utils.containsRuPath(document.location.href)) {
+        window.location.assign('ru/sdyakuiemo');
+      } else {
+        window.location.assign('/sdyakuiemo');
+      }
     }
   });
