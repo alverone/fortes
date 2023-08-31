@@ -286,10 +286,19 @@ $(function () {
 
       dataHandler.collectCalcData();
 
+      const hostname = document.location.hostname;
+      const protocol = document.location.protocol;
+
       if (containsRuPath) {
-        window.open(`ru/specifications/${style}-${color}`, '_blank');
+        window.open(
+          protocol + '//' + hostname + `ru/specifications/${style}-${color}`,
+          '_blank'
+        );
       } else {
-        window.open(`/specifications/${style}-${color}`, '_blank');
+        window.open(
+          protocol + '//' + hostname + `/specifications/${style}-${color}`,
+          '_blank'
+        );
       }
     });
 
