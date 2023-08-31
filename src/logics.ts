@@ -44,6 +44,7 @@ $(function () {
     mask: '+{380} (00) 000 0000',
     lazy: false,
   });
+  const containsRuPath = Utils.containsRuPath(document.location.href);
 
   document.querySelectorAll('input').forEach(function (element) {
     try {
@@ -65,8 +66,6 @@ $(function () {
   if (document.querySelector('.slider-wrapper.splide') != undefined) {
     const splide = new Splide('.slider-wrapper.splide', splideOptions);
     splide.mount();
-
-    const containsRuPath = Utils.containsRuPath(document.location.href);
 
     splide.on('move', (index, ..._) => {
       setTimeout(
@@ -187,6 +186,7 @@ $(function () {
         .toggle(true);
       $('.calculator-tab.active').removeClass('active');
       $(this).addClass('active');
+      storage.set('style', DesignStyle.fromNumber(index));
 
       document
         .querySelectorAll<HTMLInputElement>(
@@ -286,7 +286,11 @@ $(function () {
 
       dataHandler.collectCalcData();
 
-      window.open(`/specifications/${style}-${color}`, '_blank');
+      if (containsRuPath) {
+        window.open(`ru/specifications/${style}-${color}`, '_blank');
+      } else {
+        window.open(`/specifications/${style}-${color}`, '_blank');
+      }
     });
 
   $('.closing-btn').on('click', function () {
