@@ -1326,7 +1326,7 @@ fetch(
         },
       });
       if (Utils.containsRuPath(document.location.href)) {
-        window.location.assign('ru/sdyakuiemo');
+        window.location.assign('/ru/sdyakuiemo');
       } else {
         window.location.assign('/sdyakuiemo');
       }
