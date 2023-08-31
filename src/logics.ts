@@ -291,7 +291,7 @@ $(function () {
 
       if (containsRuPath) {
         window.open(
-          protocol + '//' + hostname + `ru/specifications/${style}-${color}`,
+          protocol + '//' + hostname + `/ru/specifications/${style}-${color}`,
           '_blank'
         );
       } else {
