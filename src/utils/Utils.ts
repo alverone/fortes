@@ -1,5 +1,5 @@
 export abstract class Utils {
-  private static readonly alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  private static readonly alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   public static numberToEncodedLetter(number: number): string | undefined {
     if (isNaN(number)) {
@@ -36,9 +36,13 @@ export abstract class Utils {
     }
 
     if (number === 0) {
-      return "";
+      return '';
     } else {
       return this.alphabet.slice(number - 1, number);
     }
+  }
+
+  public static containsRuPath(path: string): boolean {
+    return path.split(/\/(?=.)/).includes('ru');
   }
 }
