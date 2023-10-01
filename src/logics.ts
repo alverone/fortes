@@ -1,4 +1,4 @@
-import Splide, { Options } from '@splidejs/splide';
+import Splide, { Options, SlideComponent } from '@splidejs/splide';
 import { DesignStyle } from './models/Style';
 import {
   LocalStorageDestination,
@@ -36,42 +36,31 @@ $(function () {
     breakpoints: {
       480: {
         pagination: true,
-        speed: 650,
+        speed: 550,
       },
     },
   };
 
-  const mask = IMask(document.getElementById('phone')!, {
-    mask: '+{380} (00) 000 0000',
-    lazy: false,
-  });
   const containsRuPath = Utils.containsRuPath(document.location.href);
-
-  document.querySelectorAll('input').forEach(function (element) {
-    try {
-      element.name = element.dataset.name ?? '';
-    } catch (_) {}
-  });
-
-  $('.fact-link').on('click', function () {
-    if ($(this).is('.active')) {
-      return;
-    }
-
-    $('.fact-container.active').removeClass('active');
-    $('.fact-container').eq($(this).index()).addClass('active');
-    $('.fact-link.active').removeClass('active');
-    $(this).addClass('active');
-  });
 
   if (document.querySelector('.slider-wrapper.splide') != undefined) {
     const splide = new Splide('.slider-wrapper.splide', splideOptions);
-    splide.mount();
 
-    splide.on('active', function (e) {
-      e.slide.parentElement.style.height =
-        e.slide.getBoundingClientRect().height + 'px';
-    });
+    const updateMainSliderHeight = () => {
+      document.querySelector<HTMLElement>(
+        'div.slider-new div.splide__list'
+      ).style.height =
+        document
+          .querySelector(
+            'div.slider-new div.splide__slide.is-active div.active img'
+          )
+          .getBoundingClientRect().height + 'px';
+    };
+
+    splide.on('ready', () => setTimeout(updateMainSliderHeight, 100));
+    splide.on('active', () => setTimeout(updateMainSliderHeight, 175));
+
+    splide.mount();
 
     splide.on('move', (index, ..._) => {
       $splidePrev.classList.remove('disabled');
@@ -159,10 +148,34 @@ $(function () {
           )
           .forEach((element) => element.click());
 
-        splide.refresh();
+        //splide.refresh();
+
+        setTimeout(updateMainSliderHeight, 375);
       })
     );
   }
+
+  const mask = IMask(document.getElementById('phone')!, {
+    mask: '+{380} (00) 000 0000',
+    lazy: false,
+  });
+
+  document.querySelectorAll('input').forEach(function (element) {
+    try {
+      element.name = element.dataset.name ?? '';
+    } catch (_) {}
+  });
+
+  $('.fact-link').on('click', function () {
+    if ($(this).is('.active')) {
+      return;
+    }
+
+    $('.fact-container.active').removeClass('active');
+    $('.fact-container').eq($(this).index()).addClass('active');
+    $('.fact-link.active').removeClass('active');
+    $(this).addClass('active');
+  });
 
   //calculator slider tab
   document.querySelectorAll('div.calculator-tab').forEach((element) =>
