@@ -32,7 +32,8 @@ $(function () {
     pagination: false,
     speed: 550,
     flickPower: 400,
-    lazyLoad: false,
+    //lazyLoad: false,
+    autoHeight: true,
     breakpoints: {
       480: {
         pagination: true,
@@ -44,23 +45,24 @@ $(function () {
   const containsRuPath = Utils.containsRuPath(document.location.href);
 
   if (document.querySelector('.slider-wrapper.splide') != undefined) {
-    const splide = new Splide('.slider-wrapper.splide', splideOptions);
-
     const updateMainSliderHeight = () => {
       document.querySelector<HTMLElement>(
         'div.slider-new div.splide__list'
       ).style.height =
         document
-          .querySelector(
+          .querySelector<HTMLElement>(
             'div.slider-new div.splide__slide.is-active div.active img'
           )
-          .getBoundingClientRect().height + 'px';
+          ?.getBoundingClientRect().height + 'px' ?? 'auto';
     };
 
-    splide.on('ready', () => setTimeout(updateMainSliderHeight, 100));
-    splide.on('active', () => setTimeout(updateMainSliderHeight, 175));
+    setTimeout(updateMainSliderHeight, 50);
+
+    const splide = new Splide('.slider-wrapper.splide', splideOptions);
 
     splide.mount();
+
+    splide.on('active', () => setTimeout(updateMainSliderHeight, 125));
 
     splide.on('move', (index, ..._) => {
       $splidePrev.classList.remove('disabled');
@@ -147,10 +149,6 @@ $(function () {
             `div.calculator-tab[data-slider-index="${index}"], div.color-tab[data-color-index='1']`
           )
           .forEach((element) => element.click());
-
-        //splide.refresh();
-
-        setTimeout(updateMainSliderHeight, 375);
       })
     );
   }
