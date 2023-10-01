@@ -32,7 +32,6 @@ $(function () {
     pagination: false,
     speed: 550,
     flickPower: 400,
-    autoHeight: true,
     lazyLoad: false,
     breakpoints: {
       480: {
@@ -69,16 +68,12 @@ $(function () {
     const splide = new Splide('.slider-wrapper.splide', splideOptions);
     splide.mount();
 
-    splide.on('move', (index, ..._) => {
-      /*setTimeout(
-        () =>
-          $splideBody.css(
-            'height',
-            $('.splide__slide.is-active .active img').css('height')
-          ),
-        vw > 480 ? 550 : 750
-      );*/
+    splide.on('active', function (e) {
+      e.slide.parentElement.style.height =
+        e.slide.getBoundingClientRect().height + 'px';
+    });
 
+    splide.on('move', (index, ..._) => {
       $splidePrev.classList.remove('disabled');
       $splideNext.classList.remove('disabled');
 
