@@ -1,4 +1,4 @@
-import Splide from '@splidejs/splide';
+import Splide, { Options } from '@splidejs/splide';
 import { DesignStyle } from './models/Style';
 import {
   LocalStorageDestination,
@@ -27,11 +27,13 @@ $(function () {
   const $submitBtn = document.getElementById('submitBtn')!;
   const dataHandler = new DataCollectionHandler(storage);
 
-  const splideOptions = {
+  const splideOptions: Options = {
     arrows: false,
     pagination: false,
     speed: 550,
     flickPower: 400,
+    autoHeight: true,
+    lazyLoad: false,
     breakpoints: {
       480: {
         pagination: true,
@@ -68,14 +70,14 @@ $(function () {
     splide.mount();
 
     splide.on('move', (index, ..._) => {
-      setTimeout(
+      /*setTimeout(
         () =>
           $splideBody.css(
             'height',
             $('.splide__slide.is-active .active img').css('height')
           ),
         vw > 480 ? 550 : 750
-      );
+      );*/
 
       $splidePrev.classList.remove('disabled');
       $splideNext.classList.remove('disabled');
@@ -193,8 +195,6 @@ $(function () {
           `div.color-tab[data-color-index='1'], .tab-new[data-slider-index="${index}"]`
         )
         .forEach((element) => element.click());
-
-      //splideCalc.refresh();
     })
   );
 
@@ -391,25 +391,6 @@ $(function () {
       }
     });
   }
-
-  /*document
-    .querySelectorAll(".calculate")
-    .forEach((elem) =>
-      elem.addEventListener(
-        "click",
-        () => (document.location.hash = "calculate")
-      )
-    );*/
-
-  document.querySelectorAll('.crossbtn.calc').forEach((elem) =>
-    elem.addEventListener('click', () => {
-      history.pushState(
-        '',
-        document.title,
-        window.location.pathname + window.location.search
-      );
-    })
-  );
 
   $('#wf-form-consult').on('submit', (e) => {
     if (!$('#agreementCheckbox').is(':checked')) {
